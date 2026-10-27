@@ -3,125 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GDL-Rentas - Gestión Documental y FIUD</title>
-    <!-- Tailwind CSS CDN -->
+    <title>GDL-Rentas - Hoja de Control y FIUD Oficial</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-6">
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased pb-12">
 
-    <div class="max-w-4xl mx-auto space-y-6">
-        
-        <!-- Cabecera Institucional -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Gobernación del Valle del Cauca</span>
-                <h1 class="text-2xl font-black text-white mt-1">GDL-Rentas • Módulo Hoja de Control</h1>
-                <p class="text-slate-400 text-sm">Subgerencia de Liquidación y Devoluciones — Transferencia al FIUD Oficial</p>
+    <!-- Barra Superior Institucional -->
+    <header class="bg-slate-900 border-b border-slate-800 py-4 px-6 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-white shadow-lg shadow-emerald-900/40">
+                    GDL
+                </div>
+                <div>
+                    <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Gobernación del Valle del Cauca</span>
+                    <h1 class="text-lg font-bold text-white leading-tight">GDL-Rentas • Módulo Hoja de Control & FIUD</h1>
+                </div>
             </div>
-            <div class="bg-emerald-950/60 border border-emerald-800 text-emerald-300 text-xs px-3 py-1.5 rounded-xl font-mono">
-                Estado: Conectado a Google Sheets
+            <div class="flex items-center gap-2 bg-emerald-950/80 border border-emerald-700/60 text-emerald-300 text-xs px-3 py-1.5 rounded-lg font-medium shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Conectado a Google Sheets
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal -->
+    <main class="max-w-7xl mx-auto p-6 space-y-6">
+        
+        <!-- Sección 1: Identificación del Expediente -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-slate-850 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
+                <div>
+                    <h2 class="text-base font-semibold text-white">1. Identificación del Expediente (Hoja de Control FO-M9-P3-17)</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Subgerencia de Liquidación y Devoluciones</p>
+                </div>
+                <span class="text-xs font-mono text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Cabecera</span>
+            </div>
+
+            <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Código TRD</label>
+                    <input type="text" id="codigoTrd" value="1.120.60.20 - 64.05" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-emerald-400">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nombre del Expediente / Contribuyente</label>
+                    <input type="text" id="nombreExpediente" placeholder="Ej. Exp. 001 / 2025 - Constructora Bolívar S.A, Nit. 900.112.123-1." class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Código y Nombre de la Subserie Documental</label>
+                    <input type="text" id="serieSubserie" value="05 - Procesos Administrativos de Exención de Impuesto de Registro." class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nº Caja Fïsica</label>
+                        <input type="number" id="caja" value="1" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2.5 text-sm text-white text-center focus:outline-none focus:border-emerald-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nº Carpeta</label>
+                        <input type="number" id="carpeta" value="1" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2.5 text-sm text-white text-center focus:outline-none focus:border-emerald-400">
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Formulario Principal -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                📁 Registro de Expediente para Inventario
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <!-- Sección 2: Tabla de Contenido (Ítems de la Hoja de Control) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-slate-850 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
                 <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Código TRD</label>
-                    <input type="text" id="codigoTrd" value="1.120.60.20-64.05" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white font-mono text-xs focus:border-emerald-500 focus:outline-none">
+                    <h2 class="text-base font-semibold text-white">2. Contenido del Expediente (Tipos Documentales)</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Agregue cada documento incorporado al expediente</p>
                 </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Nombre / Título del Expediente</label>
-                    <input type="text" id="nombreExpediente" placeholder="Ej. EXP. 846 – 2024. CONSTRUCTORA BOLÍVAR S.A" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-xs focus:border-emerald-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Serie y Subserie Documental</label>
-                    <input type="text" id="serieSubserie" value="Procesos Administrativos / Exención de Impuesto" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-xs focus:border-emerald-500 focus:outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Fecha Inicial (Extrema)</label>
-                        <input type="date" id="fechaInicial" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-white text-xs focus:border-emerald-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Fecha Final (Extrema)</label>
-                        <input type="date" id="fechaFinal" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-white text-xs focus:border-emerald-500 focus:outline-none">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Ubicación Física (Caja / Carpeta)</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="caja" placeholder="Caja" value="1" class="w-1/2 bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-xs text-center">
-                        <input type="number" id="carpeta" placeholder="Carpeta" value="1" class="w-1/2 bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-xs text-center">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Rango Total de Folios (Ej. 1-147)</label>
-                    <input type="text" id="folios" placeholder="1-147" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white font-mono text-xs focus:border-emerald-500 focus:outline-none">
-                </div>
+                <button onclick="agregarFilaContenido()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-600/50 px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1 cursor-pointer">
+                    + Agregar Documento
+                </button>
             </div>
 
-            <div class="pt-4 flex justify-end">
-                <button onclick="enviarAlFIUD()" id="btnEnviar" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-emerald-900/30 flex items-center gap-2 text-sm">
+            <div class="p-6 overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-950 text-slate-400 uppercase tracking-wider border-b border-slate-800">
+                        <tr>
+                            <th class="p-3 w-12 text-center">Ítem</th>
+                            <th class="p-3">F. Incorporación</th>
+                            <th class="p-3">F. Documento</th>
+                            <th class="p-3">Descripción Tipo Documental</th>
+                            <th class="p-3 w-28">Folios</th>
+                            <th class="p-3">Responsable</th>
+                            <th class="p-3 text-center w-16">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaContenido" class="divide-y divide-slate-800">
+                        <!-- Fila inicial de ejemplo -->
+                        <tr>
+                            <td class="p-3 text-center font-bold text-white item-num">1</td>
+                            <td class="p-3"><input type="date" class="f-inc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="2025-08-01"></td>
+                            <td class="p-3"><input type="date" class="f-doc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="2025-08-01"></td>
+                            <td class="p-3"><input type="text" class="f-desc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="Solicitud Exención de Impuesto de Registro. SADE No. 1389900"></td>
+                            <td class="p-3"><input type="text" class="f-folios w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs font-mono" value="1-50"></td>
+                            <td class="p-3"><input type="text" class="f-resp w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="María Cristina Posso Molina"></td>
+                            <td class="p-3 text-center"><button onclick="eliminarFila(this)" class="text-red-400 hover:text-red-300 font-bold p-1">✕</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Botón Final de Envío -->
+            <div class="p-6 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-slate-400">Al guardar, el sistema calculará fechas extremas y folios totales para replicar la fila en el FIUD oficial.</p>
+                <button onclick="enviarAlFIUD()" id="btnEnviar" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg shadow-emerald-900/40 flex items-center justify-center gap-2 text-sm cursor-pointer">
                     🚀 Guardar y Replicar en FIUD Oficial
                 </button>
             </div>
         </div>
 
-        <!-- Mensaje de Estado -->
-        <div id="resultado" class="hidden p-4 rounded-xl text-sm border"></div>
+        <!-- Alerta de Respuesta -->
+        <div id="resultado" class="hidden p-4 rounded-xl text-sm border shadow-lg"></div>
 
-    </div>
+    </main>
 
     <script>
-        // PEGA AQUÍ LA URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
+        // PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
         const WEB_APP_URL = "https://script.google.com/macros/s/TU_URL_DE_APPS_SCRIPT_AQUI/exec";
+
+        function agregarFilaContenido() {
+            const tbody = document.getElementById('tablaContenido');
+            const rowCount = tbody.rows.length + 1;
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="p-3 text-center font-bold text-white item-num">${rowCount}</td>
+                <td class="p-3"><input type="date" class="f-inc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs"></td>
+                <td class="p-3"><input type="date" class="f-doc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs"></td>
+                <td class="p-3"><input type="text" class="f-desc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" placeholder="Descripción tipo documental"></td>
+                <td class="p-3"><input type="text" class="f-folios w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs font-mono" placeholder="Ej. 51-54"></td>
+                <td class="p-3"><input type="text" class="f-resp w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="María Cristina Posso Molina"></td>
+                <td class="p-3 text-center"><button onclick="eliminarFila(this)" class="text-red-400 hover:text-red-300 font-bold p-1">✕</button></td>
+            `;
+            tbody.appendChild(tr);
+            actualizarNumeracion();
+        }
+
+        function eliminarFila(btn) {
+            const row = btn.closest('tr');
+            row.remove();
+            actualizarNumeracion();
+        }
+
+        function actualizarNumeracion() {
+            const filas = document.querySelectorAll('#tablaContenido tr');
+            filas.forEach((tr, index) => {
+                tr.querySelector('.item-num').innerText = index + 1;
+            });
+        }
 
         function enviarAlFIUD() {
             const btn = document.getElementById('btnEnviar');
             const resDiv = document.getElementById('resultado');
             
-            const datos = {
-                codigoTrd: document.getElementById('codigoTrd').value,
-                unidadDocumental: document.getElementById('nombreExpediente').value,
-                serie: document.getElementById('serieSubserie').value,
-                fechaInicial: document.getElementById('fechaInicial').value,
-                fechaFinal: document.getElementById('fechaFinal').value,
-                caja: document.getElementById('caja').value,
-                carpeta: document.getElementById('carpeta').value,
-                folios: document.getElementById('folios').value
-            };
-
-            if (!datos.unidadDocumental || !datos.folios) {
-                alert("Por favor completa el nombre del expediente y el rango de folios.");
+            const nombreExpediente = document.getElementById('nombreExpediente').value;
+            if (!nombreExpediente) {
+                alert("Por favor ingresa el nombre del expediente.");
                 return;
             }
 
-            btn.disabled = true;
-            btn.innerText = "Enviando a la base de datos...";
+            // Recopilar documentos de la tabla
+            const filas = document.querySelectorAll('#tablaContenido tr');
+            let fechasDoc = [];
+            let primerFolio = "";
+            let ultimoFolio = "";
 
-            // Nota: Para evitar bloqueos CORS con Google Apps Script, se envía mediante no-cors o un fetch estándar
+            filas.forEach((tr, idx) => {
+                const fDoc = tr.querySelector('.f-doc').value;
+                const folios = tr.querySelector('.f-folios').value;
+
+                if (fDoc) fechasDoc.push(fDoc);
+                if (folios) {
+                    if (idx === 0) {
+                        primerFolio = folios.split('-')[0].trim();
+                    }
+                    const partes = folios.split('-');
+                    ultimoFolio = partes[partes.length - 1].trim();
+                }
+            });
+
+            if (fechasDoc.length === 0) {
+                alert("Debes registrar al menos un documento en la tabla de contenido.");
+                return;
+            }
+
+            fechasDoc.sort();
+            const fechaInicial = fechasDoc[0];
+            const fechaFinal = fechasDoc[fechasDoc.length - 1];
+            const foliosTotales = primerFolio + (ultimoFolio && ultimoFolio !== primerFolio ? "-" + ultimoFolio : "");
+
+            const datos = {
+                codigoTrd: document.getElementById('codigoTrd').value,
+                unidadDocumental: nombreExpediente,
+                serie: document.getElementById('serieSubserie').value,
+                fechaInicial: fechaInicial,
+                fechaFinal: fechaFinal,
+                caja: document.getElementById('caja').value,
+                carpeta: document.getElementById('carpeta').value,
+                folios: foliosTotales
+            };
+
+            btn.disabled = true;
+            btn.innerText = "Sincronizando con Google Sheets...";
+
             fetch(WEB_APP_URL, {
                 method: "POST",
                 mode: "no-cors",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datos)
             }).then(() => {
-                resDiv.className = "p-4 rounded-xl text-sm border bg-emerald-950 border-emerald-800 text-emerald-300";
-                resDiv.innerText = "¡Expediente guardado y replicado correctamente en la plantilla FIUD oficial en Google Sheets!";
+                resDiv.className = "p-4 rounded-xl text-sm border bg-emerald-950/90 border-emerald-700 text-emerald-200 shadow-xl";
+                resDiv.innerHTML = "<strong>¡Éxito!</strong> Las fechas extremas y folios calculados se han replicado correctamente en la plantilla FIUD oficial.";
                 resDiv.classList.remove('hidden');
                 btn.disabled = false;
                 btn.innerText = "🚀 Guardar y Replicar en FIUD Oficial";
             }).catch(error => {
-                resDiv.className = "p-4 rounded-xl text-sm border bg-red-950 border-red-800 text-red-300";
+                resDiv.className = "p-4 rounded-xl text-sm border bg-red-950/90 border-red-700 text-red-200 shadow-xl";
                 resDiv.innerText = "Error al conectar con la base de datos: " + error;
                 resDiv.classList.remove('hidden');
                 btn.disabled = false;
