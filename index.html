@@ -1,1 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDL-Rentas - Gestión Documental y FIUD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-6">
 
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- Cabecera Institucional -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Gobernación del Valle del Cauca</span>
+                <h1 class="text-2xl font-black text-white mt-1">GDL-Rentas • Módulo Hoja de Control</h1>
+                <p class="text-slate-400 text-sm">Subgerencia de Liquidación y Devoluciones — Transferencia al FIUD Oficial</p>
+            </div>
+            <div class="bg-emerald-950/60 border border-emerald-800 text-emerald-300 text-xs px-3 py-1.5 rounded-xl font-mono">
+                Estado: Conectado a Google Sheets
+            </div>
+        </div>
+
+        <!-- Formulario Principal -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                📁 Registro de Expediente para Inventario
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Código TRD</label>
+                    <input type="text" id="codigoTrd" value="1.120.60.20-64.05" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white font-mono text-xs focus:border-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Nombre / Título del Expediente</label>
+                    <input type="text" id="nombreExpediente" placeholder="Ej. EXP. 846 – 2024. CONSTRUCTORA BOLÍVAR S.A" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-xs focus:border-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Serie y Subserie Documental</label>
+                    <input type="text" id="serieSubserie" value="Procesos Administrativos / Exención de Impuesto" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-xs focus:border-emerald-500 focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Fecha Inicial (Extrema)</label>
+                        <input type="date" id="fechaInicial" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-white text-xs focus:border-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Fecha Final (Extrema)</label>
+                        <input type="date" id="fechaFinal" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-white text-xs focus:border-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Ubicación Física (Caja / Carpeta)</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="caja" placeholder="Caja" value="1" class="w-1/2 bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-xs text-center">
+                        <input type="number" id="carpeta" placeholder="Carpeta" value="1" class="w-1/2 bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white text-xs text-center">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">Rango Total de Folios (Ej. 1-147)</label>
+                    <input type="text" id="folios" placeholder="1-147" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-white font-mono text-xs focus:border-emerald-500 focus:outline-none">
+                </div>
+            </div>
+
+            <div class="pt-4 flex justify-end">
+                <button onclick="enviarAlFIUD()" id="btnEnviar" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-emerald-900/30 flex items-center gap-2 text-sm">
+                    🚀 Guardar y Replicar en FIUD Oficial
+                </button>
+            </div>
+        </div>
+
+        <!-- Mensaje de Estado -->
+        <div id="resultado" class="hidden p-4 rounded-xl text-sm border"></div>
+
+    </div>
+
+    <script>
+        // PEGA AQUÍ LA URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
+        const WEB_APP_URL = "https://script.google.com/macros/s/TU_URL_DE_APPS_SCRIPT_AQUI/exec";
+
+        function enviarAlFIUD() {
+            const btn = document.getElementById('btnEnviar');
+            const resDiv = document.getElementById('resultado');
+            
+            const datos = {
+                codigoTrd: document.getElementById('codigoTrd').value,
+                unidadDocumental: document.getElementById('nombreExpediente').value,
+                serie: document.getElementById('serieSubserie').value,
+                fechaInicial: document.getElementById('fechaInicial').value,
+                fechaFinal: document.getElementById('fechaFinal').value,
+                caja: document.getElementById('caja').value,
+                carpeta: document.getElementById('carpeta').value,
+                folios: document.getElementById('folios').value
+            };
+
+            if (!datos.unidadDocumental || !datos.folios) {
+                alert("Por favor completa el nombre del expediente y el rango de folios.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Enviando a la base de datos...";
+
+            // Nota: Para evitar bloqueos CORS con Google Apps Script, se envía mediante no-cors o un fetch estándar
+            fetch(WEB_APP_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datos)
+            }).then(() => {
+                resDiv.className = "p-4 rounded-xl text-sm border bg-emerald-950 border-emerald-800 text-emerald-300";
+                resDiv.innerText = "¡Expediente guardado y replicado correctamente en la plantilla FIUD oficial en Google Sheets!";
+                resDiv.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerText = "🚀 Guardar y Replicar en FIUD Oficial";
+            }).catch(error => {
+                resDiv.className = "p-4 rounded-xl text-sm border bg-red-950 border-red-800 text-red-300";
+                resDiv.innerText = "Error al conectar con la base de datos: " + error;
+                resDiv.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerText = "🚀 Guardar y Replicar en FIUD Oficial";
+            });
+        }
+    </script>
+</body>
+</html>
