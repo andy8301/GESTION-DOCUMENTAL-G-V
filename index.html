@@ -4,47 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GDL-Rentas - Hoja de Control y FIUD Oficial</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
+    <style> body { font-family: 'Inter', sans-serif; } </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen antialiased pb-12">
 
-    <!-- Barra Superior Institucional -->
     <header class="bg-slate-900 border-b border-slate-800 py-4 px-6 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-white shadow-lg shadow-emerald-900/40">
-                    GDL
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center font-bold text-white shadow-lg shadow-emerald-900/40">GDL</div>
                 <div>
                     <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Gobernación del Valle del Cauca</span>
                     <h1 class="text-lg font-bold text-white leading-tight">GDL-Rentas • Módulo Hoja de Control & FIUD</h1>
                 </div>
             </div>
-            <div class="flex items-center gap-2 bg-emerald-950/80 border border-emerald-700/60 text-emerald-300 text-xs px-3 py-1.5 rounded-lg font-medium shadow-inner">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                Conectado a Google Sheets
+            <div class="flex items-center gap-2 bg-emerald-950/80 border border-emerald-700/60 text-emerald-300 text-xs px-3 py-1.5 rounded-lg font-medium">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Sincronizado
             </div>
         </div>
     </header>
 
-    <!-- Contenedor Principal -->
     <main class="max-w-7xl mx-auto p-6 space-y-6">
         
-        <!-- Sección 1: Identificación del Expediente -->
+        <!-- Identificación del Expediente -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
-            <div class="bg-slate-850 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
-                <div>
-                    <h2 class="text-base font-semibold text-white">1. Identificación del Expediente (Hoja de Control FO-M9-P3-17)</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Subgerencia de Liquidación y Devoluciones</p>
-                </div>
-                <span class="text-xs font-mono text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Cabecera</span>
+            <div class="bg-slate-850 px-6 py-4 border-b border-slate-800">
+                <h2 class="text-base font-semibold text-white">1. Identificación del Expediente (Hoja de Control FO-M9-P3-17)</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Subgerencia de Liquidación y Devoluciones</p>
             </div>
-
             <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Código TRD</label>
@@ -52,40 +40,34 @@
                 </div>
                 <div class="md:col-span-2">
                     <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nombre del Expediente / Contribuyente</label>
-                    <input type="text" id="nombreExpediente" placeholder="Ej. Exp. 001 / 2025 - Constructora Bolívar S.A, Nit. 900.112.123-1." class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400">
+                    <input type="text" id="nombreExpediente" placeholder="Ej. Exp. 001 / 2025 - Constructora Bolívar S.A" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400">
                 </div>
                 <div class="md:col-span-2">
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Código y Nombre de la Subserie Documental</label>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Subserie Documental</label>
                     <input type="text" id="serieSubserie" value="05 - Procesos Administrativos de Exención de Impuesto de Registro." class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nº Caja Fïsica</label>
-                        <input type="number" id="caja" value="1" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2.5 text-sm text-white text-center focus:outline-none focus:border-emerald-400">
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nº Caja</label>
+                        <input type="number" id="caja" value="1" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2.5 text-sm text-white text-center">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nº Carpeta</label>
-                        <input type="number" id="carpeta" value="1" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2.5 text-sm text-white text-center focus:outline-none focus:border-emerald-400">
+                        <input type="number" id="carpeta" value="1" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2.5 text-sm text-white text-center">
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Sección 2: Tabla de Contenido (Ítems de la Hoja de Control) -->
+        <!-- Tabla de Contenido -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
             <div class="bg-slate-850 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
-                <div>
-                    <h2 class="text-base font-semibold text-white">2. Contenido del Expediente (Tipos Documentales)</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Agregue cada documento incorporado al expediente</p>
-                </div>
-                <button onclick="agregarFilaContenido()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-600/50 px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1 cursor-pointer">
-                    + Agregar Documento
-                </button>
+                <h2 class="text-base font-semibold text-white">2. Contenido del Expediente (Tipos Documentales)</h2>
+                <button onclick="agregarFilaContenido()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-600/50 px-3 py-1.5 rounded-xl text-xs font-semibold">+ Agregar Documento</button>
             </div>
-
             <div class="p-6 overflow-x-auto">
                 <table class="w-full text-left text-xs text-slate-300">
-                    <thead class="bg-slate-950 text-slate-400 uppercase tracking-wider border-b border-slate-800">
+                    <thead class="bg-slate-950 text-slate-400 uppercase border-b border-slate-800">
                         <tr>
                             <th class="p-3 w-12 text-center">Ítem</th>
                             <th class="p-3">F. Incorporación</th>
@@ -97,122 +79,144 @@
                         </tr>
                     </thead>
                     <tbody id="tablaContenido" class="divide-y divide-slate-800">
-                        <!-- Fila inicial de ejemplo -->
                         <tr>
                             <td class="p-3 text-center font-bold text-white item-num">1</td>
                             <td class="p-3"><input type="date" class="f-inc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="2025-08-01"></td>
                             <td class="p-3"><input type="date" class="f-doc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="2025-08-01"></td>
-                            <td class="p-3"><input type="text" class="f-desc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="Solicitud Exención de Impuesto de Registro. SADE No. 1389900"></td>
+                            <td class="p-3"><input type="text" class="f-desc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="Solicitud Exención de Impuesto de Registro"></td>
                             <td class="p-3"><input type="text" class="f-folios w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs font-mono" value="1-50"></td>
                             <td class="p-3"><input type="text" class="f-resp w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="María Cristina Posso Molina"></td>
-                            <td class="p-3 text-center"><button onclick="eliminarFila(this)" class="text-red-400 hover:text-red-300 font-bold p-1">✕</button></td>
+                            <td class="p-3 text-center"><button onclick="eliminarFila(this)" class="text-red-400 font-bold p-1">✕</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
-            <!-- Botón Final de Envío -->
-            <div class="p-6 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p class="text-xs text-slate-400">Al guardar, el sistema calculará fechas extremas y folios totales para replicar la fila en el FIUD oficial.</p>
-                <button onclick="enviarAlFIUD()" id="btnEnviar" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg shadow-emerald-900/40 flex items-center justify-center gap-2 text-sm cursor-pointer">
-                    🚀 Guardar y Replicar en FIUD Oficial
-                </button>
+            <div class="p-6 bg-slate-900 border-t border-slate-800 flex justify-end">
+                <button onclick="enviarAlFIUD()" id="btnEnviar" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg text-sm">🚀 Guardar y Replicar en FIUD Oficial</button>
             </div>
         </div>
 
-        <!-- Alerta de Respuesta -->
+        <!-- Sección 3: Visualización del FIUD Oficial en Vivo -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden p-6 space-y-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-base font-semibold text-white">📋 Visualización del FIUD Oficial (Registros Guardados en la Nube)</h2>
+                <button onclick="cargarRegistrosFIUD()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl text-xs border border-slate-700">🔄 Actualizar Lista</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-950 text-slate-400 uppercase border-b border-slate-800">
+                        <tr>
+                            <th class="p-3">Ord</th>
+                            <th class="p-3">TRD</th>
+                            <th class="p-3">Nombre del Expediente</th>
+                            <th class="p-3">Fechas Extremas</th>
+                            <th class="p-3">Caja/Carpeta</th>
+                            <th class="p-3">Folios</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaFiudLive" class="divide-y divide-slate-800">
+                        <tr><td colspan="6" class="p-4 text-center text-slate-500">Cargando registros del FIUD...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div id="resultado" class="hidden p-4 rounded-xl text-sm border shadow-lg"></div>
 
     </main>
 
     <script>
-        // PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
         const WEB_APP_URL = "https://script.google.com/macros/s/TU_URL_DE_APPS_SCRIPT_AQUI/exec";
 
         function agregarFilaContenido() {
             const tbody = document.getElementById('tablaContenido');
             const rowCount = tbody.rows.length + 1;
-            
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td class="p-3 text-center font-bold text-white item-num">${rowCount}</td>
                 <td class="p-3"><input type="date" class="f-inc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs"></td>
                 <td class="p-3"><input type="date" class="f-doc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs"></td>
-                <td class="p-3"><input type="text" class="f-desc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" placeholder="Descripción tipo documental"></td>
+                <td class="p-3"><input type="text" class="f-desc w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" placeholder="Descripción"></td>
                 <td class="p-3"><input type="text" class="f-folios w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs font-mono" placeholder="Ej. 51-54"></td>
                 <td class="p-3"><input type="text" class="f-resp w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs" value="María Cristina Posso Molina"></td>
-                <td class="p-3 text-center"><button onclick="eliminarFila(this)" class="text-red-400 hover:text-red-300 font-bold p-1">✕</button></td>
+                <td class="p-3 text-center"><button onclick="eliminarFila(this)" class="text-red-400 font-bold p-1">✕</button></td>
             `;
             tbody.appendChild(tr);
             actualizarNumeracion();
         }
 
         function eliminarFila(btn) {
-            const row = btn.closest('tr');
-            row.remove();
+            btn.closest('tr').remove();
             actualizarNumeracion();
         }
 
         function actualizarNumeracion() {
-            const filas = document.querySelectorAll('#tablaContenido tr');
-            filas.forEach((tr, index) => {
-                tr.querySelector('.item-num').innerText = index + 1;
-            });
+            document.querySelectorAll('#tablaContenido tr').forEach((tr, i) => tr.querySelector('.item-num').innerText = i + 1);
+        }
+
+        function cargarRegistrosFIUD() {
+            fetch(WEB_APP_URL)
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('tablaFiudLive');
+                    tbody.innerHTML = '';
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">No hay registros en el FIUD todavía.</td></tr>';
+                        return;
+                    }
+                    data.forEach(r => {
+                        tbody.innerHTML += `
+                            <tr class="hover:bg-slate-850">
+                                <td class="p-3 font-bold text-white">${r.orden}</td>
+                                <td class="p-3 font-mono text-emerald-400">${r.codigoTrd}</td>
+                                <td class="p-3 text-white font-semibold">${r.unidadDocumental}</td>
+                                <td class="p-3 font-mono">${r.fechaInicial} al ${r.fechaFinal}</td>
+                                <td class="p-3">Caja ${r.caja}, Carpeta ${r.carpeta}</td>
+                                <td class="p-3 font-mono font-bold text-white">${r.folios}</td>
+                            </tr>
+                        `;
+                    });
+                }).catch(() => {
+                    document.getElementById('tablaFiudLive').innerHTML = '<tr><td colspan="6" class="p-4 text-center text-red-400">Error al cargar registros.</td></tr>';
+                });
         }
 
         function enviarAlFIUD() {
             const btn = document.getElementById('btnEnviar');
             const resDiv = document.getElementById('resultado');
-            
             const nombreExpediente = document.getElementById('nombreExpediente').value;
-            if (!nombreExpediente) {
-                alert("Por favor ingresa el nombre del expediente.");
-                return;
-            }
+            if (!nombreExpediente) { alert("Ingresa el nombre del expediente."); return; }
 
-            // Recopilar documentos de la tabla
             const filas = document.querySelectorAll('#tablaContenido tr');
-            let fechasDoc = [];
-            let primerFolio = "";
-            let ultimoFolio = "";
+            let fechasDoc = [], primerFolio = "", ultimoFolio = "";
 
             filas.forEach((tr, idx) => {
                 const fDoc = tr.querySelector('.f-doc').value;
                 const folios = tr.querySelector('.f-folios').value;
-
                 if (fDoc) fechasDoc.push(fDoc);
                 if (folios) {
-                    if (idx === 0) {
-                        primerFolio = folios.split('-')[0].trim();
-                    }
+                    if (idx === 0) primerFolio = folios.split('-')[0].trim();
                     const partes = folios.split('-');
                     ultimoFolio = partes[partes.length - 1].trim();
                 }
             });
 
-            if (fechasDoc.length === 0) {
-                alert("Debes registrar al menos un documento en la tabla de contenido.");
-                return;
-            }
-
+            if (fechasDoc.length === 0) { alert("Agrega al menos un documento."); return; }
             fechasDoc.sort();
-            const fechaInicial = fechasDoc[0];
-            const fechaFinal = fechasDoc[fechasDoc.length - 1];
-            const foliosTotales = primerFolio + (ultimoFolio && ultimoFolio !== primerFolio ? "-" + ultimoFolio : "");
 
             const datos = {
                 codigoTrd: document.getElementById('codigoTrd').value,
                 unidadDocumental: nombreExpediente,
                 serie: document.getElementById('serieSubserie').value,
-                fechaInicial: fechaInicial,
-                fechaFinal: fechaFinal,
+                fechaInicial: fechasDoc[0],
+                fechaFinal: fechasDoc[fechasDoc.length - 1],
                 caja: document.getElementById('caja').value,
                 carpeta: document.getElementById('carpeta').value,
-                folios: foliosTotales
+                folios: primerFolio + (ultimoFolio && ultimoFolio !== primerFolio ? "-" + ultimoFolio : "")
             };
 
             btn.disabled = true;
-            btn.innerText = "Sincronizando con Google Sheets...";
+            btn.innerText = "Guardando en FIUD...";
 
             fetch(WEB_APP_URL, {
                 method: "POST",
@@ -220,19 +224,23 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datos)
             }).then(() => {
-                resDiv.className = "p-4 rounded-xl text-sm border bg-emerald-950/90 border-emerald-700 text-emerald-200 shadow-xl";
-                resDiv.innerHTML = "<strong>¡Éxito!</strong> Las fechas extremas y folios calculados se han replicado correctamente en la plantilla FIUD oficial.";
+                resDiv.className = "p-4 rounded-xl text-sm border bg-emerald-950 border-emerald-700 text-emerald-200 shadow-xl";
+                resDiv.innerHTML = "<strong>¡Éxito!</strong> Expediente guardado en el FIUD oficial.";
                 resDiv.classList.remove('hidden');
                 btn.disabled = false;
                 btn.innerText = "🚀 Guardar y Replicar en FIUD Oficial";
-            }).catch(error => {
-                resDiv.className = "p-4 rounded-xl text-sm border bg-red-950/90 border-red-700 text-red-200 shadow-xl";
-                resDiv.innerText = "Error al conectar con la base de datos: " + error;
+                cargarRegistrosFIUD(); // Recarga la tabla en vivo automáticamente
+            }).catch(err => {
+                resDiv.className = "p-4 rounded-xl text-sm border bg-red-950 border-red-700 text-red-200 shadow-xl";
+                resDiv.innerText = "Error: " + err;
                 resDiv.classList.remove('hidden');
                 btn.disabled = false;
                 btn.innerText = "🚀 Guardar y Replicar en FIUD Oficial";
             });
         }
+
+        // Cargar la tabla automáticamente al abrir la página
+        window.onload = cargarRegistrosFIUD;
     </script>
 </body>
 </html>
