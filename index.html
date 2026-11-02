@@ -232,4 +232,610 @@
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-200">
                     <div>
-                        <span class="bg-slate-800 text-white text
+                        <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded">CÓDIGO: FO-M9-P3-06 V04</span>
+                        <h2 class="text-xl font-bold text-slate-800 mt-1">Formato Único de Inventario Documental (FUID)</h2>
+                        <p class="text-xs text-slate-500">Consolidado oficial para transferencias secundarias al Archivo General.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="exportFUIDExcel()" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-excel"></i> Exportar FUID a Excel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vista Previa Tabla FUID -->
+                <div class="mt-6 overflow-x-auto border border-slate-300 rounded-lg">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-800 text-white font-semibold uppercase text-center text-[11px]">
+                                <th class="p-2 border border-slate-600">N° Orden</th>
+                                <th class="p-2 border border-slate-600">Código TRD</th>
+                                <th class="p-2 border border-slate-600">Nombre Serie / Subserie</th>
+                                <th class="p-2 border border-slate-600">Nombre de la Unidad Documental</th>
+                                <th class="p-2 border border-slate-600" colspan="2">Fechas Extremas</th>
+                                <th class="p-2 border border-slate-600" colspan="2">Unidad Conservación</th>
+                                <th class="p-2 border border-slate-600">N° Folios</th>
+                                <th class="p-2 border border-slate-600">Ubicación (Dep / Caja / Carpeta)</th>
+                            </tr>
+                            <tr class="bg-slate-700 text-slate-200 text-[10px] text-center">
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600">Inicial</th>
+                                <th class="p-1 border border-slate-600">Final</th>
+                                <th class="p-1 border border-slate-600">Caja</th>
+                                <th class="p-1 border border-slate-600">Carpeta</th>
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="fuid-table-body" class="divide-y divide-slate-200">
+                            <!-- Dinámico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL: REGISTRAR NUEVA CAJA (BANDEJA DE ENTRADA CON FOTO) -->
+    <div id="modal-box" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-camera mr-2 text-emerald-400"></i> Registrar Caja en Bandeja de Entrada</h3>
+                <button onclick="closeModal('modal-box')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tipo de Impuesto / Renta:</label>
+                    <select id="box-impuesto" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500">
+                        <option value="Impuesto de Vehículos Automotores">Impuesto de Vehículos Automotores</option>
+                        <option value="Impuesto de Registro">Impuesto de Registro</option>
+                        <option value="Impuesto de Licores, Vinos y Aperitivos">Impuesto de Licores, Vinos y Aperitivos</option>
+                        <option value="Estampillas Departamentales">Estampillas Departamentales</option>
+                        <option value="Impoconsumo (Cerveza, Cigarrillo)">Impoconsumo (Cerveza, Cigarrillo)</option>
+                        <option value="Cobro Coactivo / Devoluciones">Cobro Coactivo / Devoluciones</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Colaborador / Remitente:</label>
+                    <input type="text" id="box-remite" placeholder="Ej. Yohana Estrada / Equipo Fiscalización" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Foto o Evidencia de la Caja (Subir imagen o simular captura):</label>
+                    <input type="file" id="box-foto" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Observaciones / Descripción inicial:</label>
+                    <textarea id="box-obs" rows="2" placeholder="Caja con expedientes 2026..." class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+            </div>
+            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
+                <button onclick="closeModal('modal-box')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
+                <button onclick="saveNewBox()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Guardar en Bandeja</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: NUEVO EXPEDIENTE -->
+    <div id="modal-exp" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-folder-plus mr-2 text-emerald-400"></i> Crear Nuevo Expediente</h3>
+                <button onclick="closeModal('modal-exp')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número o Código de Expediente:</label>
+                    <input type="text" id="exp-codigo" placeholder="Ej. Exp. 0530" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombre del Contribuyente / Ciudadano:</label>
+                    <input type="text" id="exp-nombre" placeholder="Ej. LUIS ANDRES BOTIA" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Serie / Subserie TRD:</label>
+                    <select id="exp-trd" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                        <option value="1.120.80.20 - 65.04 | Procesos Administrativos de Devolución">65.04 - Procesos Administrativos de Devolución</option>
+                        <option value="1.120.40.30 - 63.85 | Procesos Administrativos de Aforo">63.85 - Procesos Administrativos de Aforo</option>
+                        <option value="1.120.40.30 - 63.84 | Procesos Administrativos de Revisión">63.84 - Procesos Administrativos de Revisión</option>
+                        <option value="1.120.60.20 - 64.03 | Exención de Impuesto de Registro">64.03 - Exención de Impuesto de Registro</option>
+                    </select>
+                </div>
+            </div>
+            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
+                <button onclick="closeModal('modal-exp')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
+                <button onclick="saveNewExpediente()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Crear Expediente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: AÑADIR ÍTEM A HOJA DE CONTROL -->
+    <div id="modal-item" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-file-circle-plus mr-2 text-emerald-400"></i> Añadir Tipo Documental</h3>
+                <button onclick="closeModal('modal-item')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Fecha del Documento:</label>
+                    <input type="date" id="item-fdoc" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Seleccionar Tipo Documental:</label>
+                    <select id="item-doc-name" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white font-semibold text-slate-800">
+                        <option value="SOLICITUD RADICADO">SOLICITUD RADICADO</option>
+                        <option value="CERTIFICACION DE INGRESO">CERTIFICACION DE INGRESO</option>
+                        <option value="CERTIFICADO DE NO PAGO">CERTIFICADO DE NO PAGO</option>
+                        <option value="SOLICITUD DE CERTIFICACION">SOLICITUD DE CERTIFICACION</option>
+                        <option value="CERTIFICACION DE EXPEDICION DE PASAPORTE">CERTIFICACION DE EXPEDICION DE PASAPORTE</option>
+                        <option value="CERTIFICACION EXPEDICION DE PASAPORTES">CERTIFICACION EXPEDICION DE PASAPORTES</option>
+                        <option value="VERIFICACION PAGO TRAMITE DE PASAPORTES">VERIFICACION PAGO TRAMITE DE PASAPORTES</option>
+                        <option value="RESPUESTA A SOLICITUD">RESPUESTA A SOLICITUD</option>
+                        <option value="RESOLUCION y CDP">RESOLUCION y CDP</option>
+                        <option value="ACTA DE ENVIO Y ENTREGA DE MENSAJE DE DATOS">ACTA DE ENVIO Y ENTREGA DE MENSAJE DE DATOS</option>
+                        <option value="Constancia de notificación - Términos y ejecutoria">Constancia de notificación - Términos y ejecutoria</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número / Radicado posterior a la raya (-):</label>
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg font-bold text-slate-500">-</span>
+                        <input type="text" id="item-doc-number" placeholder="Ej. 2026005381" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 font-mono font-bold text-emerald-700">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Rango de Folios:</label>
+                        <input type="text" id="item-folios" placeholder="Ej. 1-4" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Funcionario que incorpora:</label>
+                        <input type="text" id="item-func" value="YOHANA ESTRADA" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Observaciones:</label>
+                    <input type="text" id="item-obs" placeholder="Ninguna" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                </div>
+            </div>
+            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
+                <button onclick="closeModal('modal-item')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
+                <button onclick="saveItemToExpediente()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Registrar Ítem</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ASIGNAR UBICACIÓN FÍSICA -->
+    <div id="modal-ubicacion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-map-pin mr-2 text-emerald-400"></i> Asignar Ubicación en Archivo</h3>
+                <button onclick="closeModal('modal-ubicacion')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <input type="hidden" id="ubicacion-exp-id">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Depósito:</label>
+                        <select id="ub-dep" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                            <option value="Depósito 1 (Edificio Gobernación)">Depósito 1 (Edificio Gobernación)</option>
+                            <option value="Depósito 2 (Archivo Yumbo)">Depósito 2 (Archivo Yumbo)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">N° de Caja:</label>
+                        <input type="number" id="ub-caja" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Módulo:</label>
+                        <input type="text" id="ub-modulo" value="A-2" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Estante:</label>
+                        <input type="text" id="ub-estante" value="03" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Carpeta:</label>
+                        <input type="text" id="ub-carpeta" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                    </div>
+                </div>
+            </div>
+            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
+                <button onclick="closeModal('modal-ubicacion')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
+                <button onclick="saveUbicacion()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Guardar Ubicación</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de lógica de la aplicación -->
+    <script>
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+        const defaultDb = {
+            boxes: [
+                { id: 'BOX-001', impuesto: 'Impuesto de Vehículos Automotores', remite: 'Yohana Estrada', fecha: '2026-10-15', estado: 'Pendiente', obs: 'Caja con liquidaciones trimestre 3', foto: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=100&auto=format&fit=crop&q=80' },
+                { id: 'BOX-002', impuesto: 'Impuesto de Registro', remite: 'Diana Osorio', fecha: '2026-10-18', estado: 'Procesada', obs: 'Trámites de pasaportes y exenciones', foto: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80' }
+            ],
+            expedientes: [
+                {
+                    id: 'EXP-0519',
+                    codigo: 'Exp. 0519',
+                    nombre: 'WILSON MILLAN PARRA',
+                    trd: '1.120.80.20 - 65.04 | Procesos Administrativos de Devolución',
+                    estado: 'Abierto',
+                    ubicacion: { dep: 'Depósito 1 (Edificio Gobernación)', caja: 1, modulo: 'A-1', estante: '02', carpeta: 1 },
+                    items: [
+                        { item: 1, fdocInc: '2025-07-15', fdoc: '2025-07-15', desc: 'SOLICITUD RADICADO - 2025029340', folios: '1-4', func: 'YOHANA ESTRADA', obs: 'Ninguna' },
+                        { item: 2, fdocInc: '2025-07-30', fdoc: '2025-07-30', desc: 'CERTIFICACION DE INGRESO - 2025032191', folios: '5-6', func: 'YOHANA ESTRADA', obs: 'Ok' }
+                    ]
+                }
+            ]
+        };
+
+        let savedDb = JSON.parse(localStorage.getItem('gdl_rentas_db'));
+        let db = (savedDb && savedDb.boxes && savedDb.boxes.length > 0) ? savedDb : defaultDb;
+
+        function saveDB() {
+            localStorage.setItem('gdl_rentas_db', JSON.stringify(db));
+            renderAll();
+        }
+
+        function resetDemoData() {
+            if(confirm('¿Desea restaurar los registros de prueba predeterminados?')) {
+                db = JSON.parse(JSON.stringify(defaultDb));
+                saveDB();
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('border-green-600', 'text-green-700');
+                el.classList.add('border-transparent', 'text-slate-600');
+            });
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('border-transparent', 'text-slate-600');
+            activeBtn.classList.add('border-green-600', 'text-green-700');
+        }
+
+        function openModal(id) { 
+            const m = document.getElementById(id);
+            if(m) m.style.display = 'flex';
+        }
+        function closeModal(id) { 
+            const m = document.getElementById(id);
+            if(m) m.style.display = 'none';
+        }
+
+        function openNewBoxModal() { openModal('modal-box'); }
+        function openNewExpedienteModal() { openModal('modal-exp'); }
+        function openAddItemModal() {
+            const expId = document.getElementById('select-expediente').value;
+            if(!expId) { alert('Por favor seleccione un expediente primero.'); return; }
+            document.getElementById('item-doc-number').value = '';
+            openModal('modal-item');
+        }
+
+        function saveNewBox() {
+            const impuesto = document.getElementById('box-impuesto').value;
+            const remite = document.getElementById('box-remite').value || 'Colaborador';
+            const obs = document.getElementById('box-obs').value;
+            const fileInput = document.getElementById('box-foto');
+            
+            let fotoUrl = 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=100&auto=format&fit=crop&q=80';
+            if(fileInput.files && fileInput.files[0]) {
+                fotoUrl = URL.createObjectURL(fileInput.files[0]);
+            }
+
+            const newBox = {
+                id: 'BOX-' + String(db.boxes.length + 1).padStart(3, '0'),
+                impuesto,
+                remite,
+                fecha: new Date().toISOString().split('T')[0],
+                estado: 'Pendiente',
+                obs,
+                foto: fotoUrl
+            };
+
+            db.boxes.unshift(newBox);
+            saveDB();
+            closeModal('modal-box');
+        }
+
+        function saveNewExpediente() {
+            const codigo = document.getElementById('exp-codigo').value;
+            const nombre = document.getElementById('exp-nombre').value;
+            const trd = document.getElementById('exp-trd').value;
+
+            if(!codigo || !nombre) { alert('Complete los campos obligatorios.'); return; }
+
+            const newExp = {
+                id: codigo,
+                codigo,
+                nombre,
+                trd,
+                estado: 'Abierto',
+                ubicacion: { dep: 'Pendiente', caja: 0, modulo: '-', estante: '-', carpeta: 1 },
+                items: []
+            };
+
+            db.expedientes.push(newExp);
+            saveDB();
+            closeModal('modal-exp');
+            document.getElementById('select-expediente').value = codigo;
+            loadExpedienteDetails();
+        }
+
+        function loadExpedienteDetails() {
+            const expId = document.getElementById('select-expediente').value;
+            const container = document.getElementById('expediente-container');
+            if(!expId) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(!exp) return;
+
+            container.classList.remove('hidden');
+            document.getElementById('title-current-exp').innerText = `${exp.codigo} - ${exp.nombre}`;
+            document.getElementById('meta-trd').innerHTML = `<strong class="text-slate-800">TRD Asignada:</strong> ${exp.trd}`;
+
+            let tbody = document.getElementById('items-table-body');
+            tbody.innerHTML = '';
+            if(exp.items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">No hay documentos incorporados todavía en este expediente.</td></tr>`;
+                return;
+            }
+
+            exp.items.forEach((it, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-2.5 border-b font-bold">${idx + 1}</td>
+                        <td class="p-2.5 border-b">${it.fdocInc}</td>
+                        <td class="p-2.5 border-b">${it.fdoc}</td>
+                        <td class="p-2.5 border-b font-medium">${it.desc}</td>
+                        <td class="p-2.5 border-b">${it.folios}</td>
+                        <td class="p-2.5 border-b">${it.func}</td>
+                        <td class="p-2.5 border-b text-slate-500">${it.obs}</td>
+                        <td class="p-2.5 border-b text-center">
+                            <button onclick="deleteItem('${exp.id}', ${idx})" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function saveItemToExpediente() {
+            const expId = document.getElementById('select-expediente').value;
+            const fdoc = document.getElementById('item-fdoc').value || new Date().toISOString().split('T')[0];
+            const docName = document.getElementById('item-doc-name').value;
+            const docNumber = document.getElementById('item-doc-number').value.trim();
+            const folios = document.getElementById('item-folios').value || '1';
+            const func = document.getElementById('item-func').value;
+            const obs = document.getElementById('item-obs').value || 'Ninguna';
+
+            if(!docNumber) { alert('Por favor ingrese el número o radicado posterior a la raya.'); return; }
+
+            const fullDesc = `${docName} - ${docNumber}`;
+
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.items.push({
+                    item: exp.items.length + 1,
+                    fdocInc: new Date().toISOString().split('T')[0],
+                    fdoc,
+                    desc: fullDesc,
+                    folios,
+                    func,
+                    obs
+                });
+                saveDB();
+                closeModal('modal-item');
+                loadExpedienteDetails();
+            }
+        }
+
+        function deleteItem(expId, idx) {
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.items.splice(idx, 1);
+                saveDB();
+                loadExpedienteDetails();
+            }
+        }
+
+        function closeExpedienteToOutbox() {
+            const expId = document.getElementById('select-expediente').value;
+            if(!expId) return;
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.estado = 'Cerrado';
+                saveDB();
+                alert('Expediente cerrado y enviado a la Bandeja de Salida para asignación de ubicación.');
+                switchTab('outbox');
+            }
+        }
+
+        function openUbicacionModal(expId) {
+            document.getElementById('ubicacion-exp-id').value = expId;
+            openModal('modal-ubicacion');
+        }
+
+        function saveUbicacion() {
+            const expId = document.getElementById('ubicacion-exp-id').value;
+            const dep = document.getElementById('ub-dep').value;
+            const caja = parseInt(document.getElementById('ub-caja').value) || 1;
+            const modulo = document.getElementById('ub-modulo').value;
+            const estante = document.getElementById('ub-estante').value;
+            const carpeta = document.getElementById('ub-carpeta').value;
+
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.ubicacion = { dep, caja, modulo, estante, carpeta };
+                exp.estado = 'Archivado';
+                saveDB();
+                closeModal('modal-ubicacion');
+            }
+        }
+
+        function renderAll() {
+            const sel = document.getElementById('select-expediente');
+            const currentVal = sel.value;
+            sel.innerHTML = '<option value="">-- Seleccione un expediente --</option>';
+            db.expedientes.forEach(e => {
+                sel.innerHTML += `<option value="${e.id}">${e.codigo} - ${e.nombre} (${e.estado})</option>`;
+            });
+            sel.value = currentVal;
+
+            let pendingBoxes = db.boxes.filter(b => b.estado === 'Pendiente').length;
+            let processedBoxes = db.boxes.filter(b => b.estado === 'Procesada').length;
+            document.getElementById('stat-pending').innerText = pendingBoxes;
+            document.getElementById('stat-processed').innerText = processedBoxes;
+            document.getElementById('stat-total-boxes').innerText = db.boxes.length;
+            document.getElementById('badge-inbox').innerText = pendingBoxes;
+            document.getElementById('badge-outbox').innerText = db.expedientes.filter(e => e.estado === 'Cerrado' || e.estado === 'Archivado').length;
+
+            const searchFilter = (document.getElementById('search-box').value || '').toLowerCase();
+            let inboxBody = document.getElementById('inbox-table-body');
+            inboxBody.innerHTML = '';
+            
+            const filteredBoxes = db.boxes.filter(b => 
+                b.id.toLowerCase().includes(searchFilter) || 
+                b.remite.toLowerCase().includes(searchFilter) || 
+                b.impuesto.toLowerCase().includes(searchFilter)
+            );
+
+            if(filteredBoxes.length === 0) {
+                inboxBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">No se encontraron cajas registradas.</td></tr>`;
+            } else {
+                filteredBoxes.forEach(b => {
+                    inboxBody.innerHTML += `
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-3"><img src="${b.foto}" class="w-10 h-10 object-cover rounded-lg border shadow-sm"></td>
+                            <td class="p-3 font-bold text-slate-700">${b.id}</td>
+                            <td class="p-3 font-semibold text-emerald-700">${b.impuesto}</td>
+                            <td class="p-3 text-slate-600">${b.remite}</td>
+                            <td class="p-3 text-slate-500 text-xs">${b.fecha}</td>
+                            <td class="p-3">
+                                <span class="px-2.5 py-1 text-xs font-bold rounded-full ${b.estado === 'Pendiente' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">${b.estado}</span>
+                            </td>
+                            <td class="p-3 text-center">
+                                <button onclick="toggleBoxStatus('${b.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg shadow">
+                                    ${b.estado === 'Pendiente' ? 'Marcar Procesada' : 'Reabrir'}
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            let outboxBody = document.getElementById('outbox-table-body');
+            outboxBody.innerHTML = '';
+            if(db.expedientes.length === 0) {
+                outboxBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No hay expedientes registrados.</td></tr>`;
+            } else {
+                db.expedientes.forEach(e => {
+                    outboxBody.innerHTML += `
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-3 font-bold text-slate-800">${e.codigo}<br><span class="font-normal text-slate-500">${e.nombre}</span></td>
+                            <td class="p-3 text-xs text-slate-600">${e.trd}</td>
+                            <td class="p-3 font-semibold">${e.items.length > 0 ? e.items[e.items.length-1].folios : '0'}</td>
+                            <td class="p-3 text-xs">
+                                <strong class="text-slate-700">${e.ubicacion.dep}</strong><br>
+                                Caja: ${e.ubicacion.caja} | Mód: ${e.ubicacion.modulo} | Carpeta: ${e.ubicacion.carpeta}
+                            </td>
+                            <td class="p-3">
+                                <span class="px-2.5 py-1 text-xs font-bold rounded-full ${e.estado === 'Archivado' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${e.estado}</span>
+                            </td>
+                            <td class="p-3 text-center">
+                                <button onclick="openUbicacionModal('${e.id}')" class="text-xs bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg shadow">
+                                    <i class="fa-solid fa-map-pin mr-1"></i> Ubicación
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            let fuidBody = document.getElementById('fuid-table-body');
+            fuidBody.innerHTML = '';
+            db.expedientes.forEach((e, idx) => {
+                let trdCode = e.trd.split('|')[0].trim();
+                let trdName = e.trd.split('|')[1] || e.trd;
+                let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
+                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-10-30';
+                let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
+
+                fuidBody.innerHTML += `
+                    <tr class="text-center text-[11px] hover:bg-slate-50">
+                        <td class="p-2 border border-slate-300 font-bold">${idx + 1}</td>
+                        <td class="p-2 border border-slate-300 font-mono text-[10px]">${trdCode}</td>
+                        <td class="p-2 border border-slate-300 text-left">${trdName}</td>
+                        <td class="p-2 border border-slate-300 text-left font-semibold">${e.codigo} - ${e.nombre}</td>
+                        <td class="p-2 border border-slate-300">${fechaIni}</td>
+                        <td class="p-2 border border-slate-300">${fechaFin}</td>
+                        <td class="p-2 border border-slate-300">${e.ubicacion.caja || 1}</td>
+                        <td class="p-2 border border-slate-300">${e.ubicacion.carpeta || 1}</td>
+                        <td class="p-2 border border-slate-300 font-bold">${nFolios}</td>
+                        <td class="p-2 border border-slate-300 text-xs">${e.ubicacion.dep}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function toggleBoxStatus(id) {
+            const box = db.boxes.find(b => b.id === id);
+            if(box) {
+                box.estado = box.estado === 'Pendiente' ? 'Procesada' : 'Pendiente';
+                saveDB();
+            }
+        }
+
+        function exportFUIDExcel() {
+            let wb = XLSX.utils.book_new();
+            let wsData = [
+                ["GOBERNACIÓN DEL VALLE DEL CAUCA"],
+                ["FORMATO ÚNICO DE INVENTARIO DOCUMENTAL (FUID)"],
+                ["OFICINA PRODUCTORA:", "Subgerencia de Liquidación y Devoluciones"],
+                [],
+                ["N° Orden", "Código TRD", "Nombre Serie / Subserie", "Nombre de la Unidad Documental", "Fecha Inicial", "Fecha Final", "Caja", "Carpeta", "N° Folios", "Ubicación Física"]
+            ];
+
+            db.expedientes.forEach((e, idx) => {
+                let trdCode = e.trd.split('|')[0].trim();
+                let trdName = e.trd.split('|')[1] || e.trd;
+                let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
+                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-10-30';
+                let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
+
+                wsData.push([
+                    idx + 1,
+                    trdCode,
+                    trdName,
+                    `${e.codigo} - ${e.nombre}`,
+                    fechaIni,
+                    fechaFin,
+                    e.ubicacion.caja || 1,
+                    e.ubicacion.carpeta || 1,
+                    nFolios,
+                    e.ubicacion.dep
+                ]);
+            });
+
+            let ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, "FUID_Consolidado");
+            XLSX.writeFile(wb, "FUID_Gobernacion_Valle_Rentas.xlsx");
+        }
+
+        renderAll();
+    </script>
+</body>
+</html>
