@@ -1,1100 +1,518 @@
-<!DOCTYPE html>
-<html lang="es" class="h-full">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GDL-Rentas Gestor Documental - Gobernación del Valle del Cauca</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        valle: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#16a34a',
-                            600: '#15803d',
-                            700: '#166534',
-                            800: '#14532d',
-                            900: '#052e16',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printable-area, #printable-area * {
-                visibility: visible;
-            }
-            #printable-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                margin: 0;
-                padding: 20px;
-                background: white;
-            }
-            .no-print {
-                display: none !important;
-            }
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-    </style>
-</head>
-<body class="h-full bg-slate-50 text-slate-800 font-sans antialiased flex flex-col">
-
-    <!-- Header Institucional -->
-    <header class="bg-valle-900 text-white shadow-md border-b-4 border-valle-500 no-print">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <div class="bg-valle-800 p-2.5 rounded-xl border border-valle-600 shadow-inner flex items-center justify-center">
-                    <i class="fa-solid fa-landmark text-valle-100 text-2xl"></i>
-                </div>
+N FOTO) -->
+    <div id="modal-box" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-camera mr-2 text-green-400"></i> Registrar Caja en Bandeja de Entrada</h3>
+                <button onclick="closeModal('modal-box')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
                 <div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xs uppercase tracking-wider bg-valle-700 text-valle-100 px-2 py-0.5 rounded font-medium">Gobernación del Valle del Cauca</span>
-                        <span class="text-xs text-valle-300">NIT: 890.399.015-3</span>
-                    </div>
-                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight">GDL-Rentas Gestor Documental</h1>
-                    <p class="text-xs text-valle-200">UAE de Impuestos, Rentas y Gestión Tributaria | Versión TRD Vigente</p>
-                </div>
-            </div>
-            <div class="hidden md:flex items-center space-x-3">
-                <button onclick="app.openSettingsModal()" class="bg-valle-800 hover:bg-valle-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-2 border border-valle-600">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Configurar Rentas / TRD</span>
-                </button>
-                <button onclick="app.exportBackup()" class="bg-valle-700 hover:bg-valle-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-2">
-                    <i class="fa-solid fa-download"></i>
-                    <span>Backup Datos</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main App Container -->
-    <div class="flex-1 flex flex-col md:flex-row overflow-hidden max-w-7xl w-full mx-auto p-2 sm:p-4 gap-4">
-
-        <!-- Sidebar Navigation -->
-        <aside class="w-full md:w-64 bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between no-print">
-            <div class="space-y-6">
-                <div>
-                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-2">Módulos Principales</p>
-                    <nav class="space-y-1">
-                        <button onclick="app.switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-600 hover:bg-slate-100">
-                            <div class="flex items-center space-x-3">
-                                <i class="fa-solid fa-chart-pie text-valle-600 w-5"></i>
-                                <span>Panel General</span>
-                            </div>
-                        </button>
-                        <button onclick="app.switchTab('inbox')" id="nav-inbox" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-600 hover:bg-slate-100">
-                            <div class="flex items-center space-x-3">
-                                <i class="fa-solid fa-inbox text-amber-500 w-5"></i>
-                                <span>Bandeja de Entrada</span>
-                            </div>
-                            <span id="badge-inbox" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
-                        </button>
-                        <button onclick="app.switchTab('outbox')" id="nav-outbox" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-600 hover:bg-slate-100">
-                            <div class="flex items-center space-x-3">
-                                <i class="fa-solid fa-box-archive text-valle-600 w-5"></i>
-                                <span>Bandeja de Salida (FUID)</span>
-                            </div>
-                            <span id="badge-outbox" class="bg-emerald-100 text-valle-800 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
-                        </button>
-                        <button onclick="app.switchTab('catalog')" id="nav-catalog" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-600 hover:bg-slate-100">
-                            <div class="flex items-center space-x-3">
-                                <i class="fa-solid fa-book-bookmark text-blue-600 w-5"></i>
-                                <span>Catálogo & TRD</span>
-                            </div>
-                        </button>
-                    </nav>
-                </div>
-
-                <div>
-                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-2">Acciones Rápidas</p>
-                    <div class="space-y-2 px-1">
-                        <button onclick="app.openNewExpedientModal()" class="w-full bg-valle-600 hover:bg-valle-700 text-white py-2.5 px-3 rounded-xl text-sm font-medium shadow-sm transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-plus-circle"></i>
-                            <span>Nuevo Expediente</span>
-                        </button>
-                        <button onclick="app.openSettingsModal()" class="w-full md:hidden bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-3 rounded-xl text-sm font-medium transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-gear"></i>
-                            <span>Gestionar Rentas</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Sidebar Info -->
-            <div class="pt-4 border-t border-slate-100 text-xs text-slate-500 space-y-1">
-                <p class="font-medium text-slate-700">Formato FO-M9-P3-17 & 06</p>
-                <p>Gestión Documental V2.4</p>
-            </div>
-        </aside>
-
-        <!-- Dynamic Content Area -->
-        <main class="flex-1 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-y-auto p-4 sm:p-6 flex flex-col">
-            
-            <!-- VIEW: DASHBOARD -->
-            <section id="view-dashboard" class="space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Panel General y Estadísticas</h2>
-                        <p class="text-sm text-slate-500">Resumen operativo del estado documental de la UAE de Impuestos y Rentas.</p>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-valle-700 border border-emerald-200">
-                            <span class="w-2 h-2 mr-1.5 bg-valle-500 rounded-full animate-pulse"></span> Sistema en Línea (localStorage)
-                        </span>
-                    </div>
-                </div>
-
-                <!-- KPI Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase">Expedientes Activos</p>
-                            <h3 id="kpi-active" class="text-2xl font-bold text-slate-900 mt-1">0</h3>
-                            <p class="text-xs text-amber-600 mt-1"><i class="fa-solid fa-clock"></i> En bandeja de entrada</p>
-                        </div>
-                        <div class="bg-amber-100 text-amber-600 p-3 rounded-xl text-xl">
-                            <i class="fa-solid fa-folder-open"></i>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase">Listos / Trasladados</p>
-                            <h3 id="kpi-transferred" class="text-2xl font-bold text-slate-900 mt-1">0</h3>
-                            <p class="text-xs text-valle-600 mt-1"><i class="fa-solid fa-check-circle"></i> Con FUID generado</p>
-                        </div>
-                        <div class="bg-emerald-100 text-valle-600 p-3 rounded-xl text-xl">
-                            <i class="fa-solid fa-box-archive"></i>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase">Tipos de Impuestos</p>
-                            <h3 id="kpi-taxes" class="text-2xl font-bold text-slate-900 mt-1">0</h3>
-                            <p class="text-xs text-blue-600 mt-1"><i class="fa-solid fa-tags"></i> Rentas configuradas</p>
-                        </div>
-                        <div class="bg-blue-100 text-blue-600 p-3 rounded-xl text-xl">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </div>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase">Total Documentos</p>
-                            <h3 id="kpi-docs" class="text-2xl font-bold text-slate-900 mt-1">0</h3>
-                            <p class="text-xs text-indigo-600 mt-1"><i class="fa-solid fa-file-lines"></i> En hojas de control</p>
-                        </div>
-                        <div class="bg-indigo-100 text-indigo-600 p-3 rounded-xl text-xl">
-                            <i class="fa-solid fa-file-contract"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Actions & Recent Activity -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-4">
-                    <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-                        <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center justify-between">
-                            <span>Expedientes Recientes en Trámite</span>
-                            <button onclick="app.switchTab('inbox')" class="text-xs text-valle-600 hover:underline font-semibold">Ver todos &rarr;</button>
-                        </h3>
-                        <div id="dashboard-recent-list" class="space-y-3">
-                            <!-- Populated dynamically -->
-                        </div>
-                    </div>
-
-                    <div class="bg-valle-50 rounded-2xl border border-valle-200 p-5 shadow-sm flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center space-x-2 text-valle-800 font-bold mb-2">
-                                <i class="fa-solid fa-circle-info"></i>
-                                <h4>Normativa Archivística</h4>
-                            </div>
-                            <p class="text-xs text-valle-900 leading-relaxed">
-                                Recuerde que cada expediente debe diligenciar estrictamente su <b>Hoja de Control (FO-M9-P3-17)</b> anotando cada tipo documental incorporado, número de folios y fecha, para que al realizar la transferencia el <b>FUID (FO-M9-P3-06)</b> se genere sin inconsistencias.
-                            </p>
-                        </div>
-                        <div class="mt-6 pt-4 border-t border-valle-200 flex flex-col space-y-2">
-                            <button onclick="app.openNewExpedientModal()" class="w-full bg-valle-700 hover:bg-valle-800 text-white py-2 px-4 rounded-xl text-xs font-semibold transition shadow">
-                                + Crear Nuevo Expediente
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- VIEW: INBOX (TRABAJOS PENDIENTES) -->
-            <section id="view-inbox" class="space-y-6 hidden">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Bandeja de Entrada (Trabajos Pendientes)</h2>
-                        <p class="text-sm text-slate-500">Gestión de expedientes activos y control de hojas de control en curso.</p>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <select id="filter-inbox-tax" onchange="app.renderInbox()" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-xl px-3 py-2 focus:ring-2 focus:ring-valle-500 outline-none">
-                            <option value="">Todas las Rentas / Impuestos</option>
-                        </select>
-                        <button onclick="app.openNewExpedientModal()" class="bg-valle-600 hover:bg-valle-700 text-white text-xs px-3 py-2 rounded-xl font-medium transition flex items-center space-x-1.5">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>Nuevo Expediente</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-semibold uppercase tracking-wider">
-                                    <th class="p-3.5">Radicado / Expediente</th>
-                                    <th class="p-3.5">Contribuyente / Asunto</th>
-                                    <th class="p-3.5">Renta / Impuesto</th>
-                                    <th class="p-3.5">Código TRD</th>
-                                    <th class="p-3.5 text-center">Folios</th>
-                                    <th class="p-3.5 text-center">Estado</th>
-                                    <th class="p-3.5 text-right">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-inbox-body" class="divide-y divide-slate-100 text-sm">
-                                <!-- Populated dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- VIEW: OUTBOX (BANDEJA DE SALIDA & FUID) -->
-            <section id="view-outbox" class="space-y-6 hidden">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Bandeja de Salida & Generador FUID</h2>
-                        <p class="text-sm text-slate-500">Expedientes cerrados, listos para transferencia y ubicación física definitiva.</p>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <button onclick="app.openFUIDModal()" class="bg-valle-700 hover:bg-valle-800 text-white text-xs px-3 py-2 rounded-xl font-medium transition flex items-center space-x-1.5 shadow">
-                            <i class="fa-solid fa-file-excel"></i>
-                            <span>Consolidar & Imprimir FUID (FO-M9-P3-06)</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-semibold uppercase tracking-wider">
-                                    <th class="p-3.5">Expediente</th>
-                                    <th class="p-3.5">Renta</th>
-                                    <th class="p-3.5">Fechas Extremas</th>
-                                    <th class="p-3.5 text-center">Folios</th>
-                                    <th class="p-3.5">Ubicación Física (Caja/Carpeta)</th>
-                                    <th class="p-3.5 text-right">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-outbox-body" class="divide-y divide-slate-100 text-sm">
-                                <!-- Populated dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- VIEW: CATALOG & TRD -->
-            <section id="view-catalog" class="space-y-6 hidden">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Catálogo de Rentas y TRD Oficiales</h2>
-                        <p class="text-sm text-slate-500">Gestión de tipos de impuestos, series documentales y tablas de retención vigentes.</p>
-                    </div>
-                    <button onclick="app.openTaxModal()" class="bg-valle-600 hover:bg-valle-700 text-white text-xs px-3 py-2 rounded-xl font-medium transition flex items-center space-x-1.5">
-                        <i class="fa-solid fa-plus"></i>
-                        <span>Agregar Nueva Renta</span>
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="catalog-tax-grid">
-                    <!-- Populated dynamically -->
-                </div>
-            </section>
-
-        </main>
-    </div>
-
-    <!-- MODAL: EXPEDIENTE DETAIL / HOJA DE CONTROL (FO-M9-P3-17) -->
-    <div id="modal-expedient" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
-            <div class="bg-valle-900 text-white px-6 py-4 flex items-center justify-between">
-                <div>
-                    <span class="text-xs bg-valle-700 text-valle-100 px-2 py-0.5 rounded font-mono">Modelo FO-M9-P3-17 V02</span>
-                    <h3 id="modal-exp-title" class="text-lg font-bold mt-1">Hoja de Control de Expediente</h3>
-                </div>
-                <button onclick="app.closeExpedientModal()" class="text-valle-200 hover:text-white p-2">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-
-            <div class="p-6 overflow-y-auto space-y-6 flex-1">
-                <!-- Expedient Meta Info -->
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                    <div>
-                        <span class="text-slate-500 block font-semibold">Oficina Productora:</span>
-                        <span id="modal-meta-office" class="text-slate-900 font-medium">UAE Impuestos y Rentas</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-500 block font-semibold">Serie / Subserie TRD:</span>
-                        <span id="modal-meta-trd" class="text-slate-900 font-medium">-</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-500 block font-semibold">Contribuyente / Expediente:</span>
-                        <span id="modal-meta-name" class="text-slate-900 font-medium">-</span>
-                    </div>
-                </div>
-
-                <!-- Add Document Form -->
-                <div class="bg-valle-50 p-4 rounded-xl border border-valle-200">
-                    <h4 class="text-xs font-bold text-valle-900 uppercase mb-3"><i class="fa-solid fa-plus-circle"></i> Incorporar Nuevo Documento a la Hoja de Control</h4>
-                    <form id="form-add-doc" onsubmit="app.addDocumentToExpedient(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs">
-                        <div class="sm:col-span-3">
-                            <label class="block font-medium text-slate-700 mb-1">Fecha Doc. (AAAA-MM-DD)</label>
-                            <input type="date" id="doc-date" required class="w-full bg-white border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-valle-500 outline-none">
-                        </div>
-                        <div class="sm:col-span-4">
-                            <label class="block font-medium text-slate-700 mb-1">Tipo Documental (Ej. Resolución, Liquidación)</label>
-                            <input type="text" id="doc-type" placeholder="Ej. Auto Comisorio" required class="w-full bg-white border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-valle-500 outline-none">
-                        </div>
-                        <div class="sm:col-span-2">
-                            <label class="block font-medium text-slate-700 mb-1">Folios (Ej. 1-3)</label>
-                            <input type="text" id="doc-folios" placeholder="1-2" required class="w-full bg-white border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-valle-500 outline-none">
-                        </div>
-                        <div class="sm:col-span-3">
-                            <label class="block font-medium text-slate-700 mb-1">Funcionario / Elaboró</label>
-                            <input type="text" id="doc-author" placeholder="Nombre funcionario" required class="w-full bg-white border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-valle-500 outline-none">
-                        </div>
-                        <div class="sm:col-span-12 flex justify-end">
-                            <button type="submit" class="bg-valle-600 hover:bg-valle-700 text-white px-4 py-2 rounded-lg font-semibold transition">
-                                <i class="fa-solid fa-plus"></i> Agregar Documento
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Documents Table -->
-                <div class="border border-slate-200 rounded-xl overflow-hidden">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-100 text-slate-700 uppercase font-semibold">
-                            <tr>
-                                <th class="p-3">Ítem</th>
-                                <th class="p-3">Fecha Doc.</th>
-                                <th class="p-3">Tipo Documental</th>
-                                <th class="p-3 text-center">Folios</th>
-                                <th class="p-3">Funcionario</th>
-                                <th class="p-3 text-right">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="modal-docs-tbody" class="divide-y divide-slate-100">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div class="text-xs text-slate-500 flex items-center space-x-2">
-                    <span id="modal-exp-status-badge" class="px-2.5 py-1 rounded-full font-medium">Estado: En Trámite</span>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <button onclick="app.toggleExpedientStatus()" id="btn-toggle-status" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition">
-                        Marcar como Cerrado / Listo para Transferencia
-                    </button>
-                    <button onclick="app.closeExpedientModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-xl text-xs font-semibold transition">
-                        Cerrar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: NEW EXPEDIENT -->
-    <div id="modal-new-exp" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden">
-            <div class="bg-valle-900 text-white px-6 py-4 flex items-center justify-between">
-                <h3 class="text-lg font-bold">Crear Nuevo Expediente Tributario</h3>
-                <button onclick="app.closeNewExpedientModal()" class="text-valle-200 hover:text-white p-2">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            <form onsubmit="app.createNewExpedient(event)" class="p-6 space-y-4 text-sm">
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Seleccionar Renta / Impuesto</label>
-                    <select id="new-exp-tax" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-valle-500 outline-none">
-                        <!-- Populated dynamically -->
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tipo de Impuesto / Renta:</label>
+                    <select id="box-impuesto" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-green-500">
+                        <option value="Impuesto de Vehículos Automotores">Impuesto de Vehículos Automotores</option>
+                        <option value="Impuesto de Registro">Impuesto de Registro</option>
+                        <option value="Impuesto de Licores, Vinos y Aperitivos">Impuesto de Licores, Vinos y Aperitivos</option>
+                        <option value="Estampillas Departamentales">Estampillas Departamentales</option>
+                        <option value="Impoconsumo (Cerveza, Cigarrillo)">Impoconsumo (Cerveza, Cigarrillo)</option>
+                        <option value="Cobro Coactivo / Devoluciones">Cobro Coactivo / Devoluciones</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block font-medium text-slate-700 mb-1">Número de Radicado / Expediente</label>
-                    <input type="text" id="new-exp-code" placeholder="Ej. EXP-2026-0045" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-valle-500 outline-none">
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Colaborador / Remitente:</label>
+                    <input type="text" id="box-remite" placeholder="Ej. Yohana Estrada / Equipo Fiscalización" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-green-500">
                 </div>
                 <div>
-                    <label class="block font-medium text-slate-700 mb-1">Contribuyente / Sujeto Pasivo / Asunto</label>
-                    <input type="text" id="new-exp-name" placeholder="Ej. COMERCIALIZADORA VALLE S.A.S." required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-valle-500 outline-none">
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Foto o Evidencia de la Caja (Subir imagen o simular captura):</label>
+                    <input type="file" id="box-foto" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Observaciones / Descripción inicial:</label>
+                    <textarea id="box-obs" rows="2" placeholder="Caja con expedientes 2026..." class="w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-green-500"></textarea>
+                </div>
+            </div>
+            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
+                <button onclick="closeModal('modal-box')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
+                <button onclick="saveNewBox()" class="px-5 py-2 text-xs font-bold bg-green-600 hover:bg-green-500 text-white rounded-lg shadow">Guardar en Bandeja</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: NUEVO EXPEDIENTE -->
+    <div id="modal-exp" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-folder-plus mr-2 text-green-400"></i> Crear Nuevo Expediente</h3>
+                <button onclick="closeModal('modal-exp')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número o Código de Expediente:</label>
+                    <input type="text" id="exp-codigo" placeholder="Ej. Exp. 0530" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombre del Contribuyente / Ciudadano:</label>
+                    <input type="text" id="exp-nombre" placeholder="Ej. LUIS ANDRES BOTIA" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Serie / Subserie TRD:</label>
+                    <select id="exp-trd" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                        <option value="1.120.80.20 - 65.04 | Procesos Administrativos de Devolución">65.04 - Procesos Administrativos de Devolución</option>
+                        <option value="1.120.40.30 - 63.85 | Procesos Administrativos de Aforo">63.85 - Procesos Administrativos de Aforo</option>
+                        <option value="1.120.40.30 - 63.84 | Procesos Administrativos de Revisión">63.84 - Procesos Administrativos de Revisión</option>
+                        <option value="1.120.60.20 - 64.03 | Exención de Impuesto de Registro">64.03 - Exención de Impuesto de Registro</option>
+                    </select>
+                </div>
+            </div>
+            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
+                <button onclick="closeModal('modal-exp')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
+                <button onclick="saveNewExpediente()" class="px-5 py-2 text-xs font-bold bg-green-600 hover:bg-green-500 text-white rounded-lg shadow">Crear Expediente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: AÑADIR ÍTEM A HOJA DE CONTROL -->
+    <div id="modal-item" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-file-circle-plus mr-2 text-green-400"></i> Añadir Tipo Documental</h3>
+                <button onclick="closeModal('modal-item')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Fecha del Documento:</label>
+                    <input type="date" id="item-fdoc" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Descripción / Tipo Documental:</label>
+                    <input type="text" id="item-desc" placeholder="Ej. SOLICITUD RADICADO 2026001234" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block font-medium text-slate-700 mb-1">Número de Caja Física</label>
-                        <input type="text" id="new-exp-box" placeholder="Ej. Caja 12" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-valle-500 outline-none">
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Rango de Folios:</label>
+                        <input type="text" id="item-folios" placeholder="Ej. 1-4" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
                     </div>
                     <div>
-                        <label class="block font-medium text-slate-700 mb-1">Número de Carpeta</label>
-                        <input type="text" id="new-exp-folder" placeholder="Ej. Carpeta 1" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-valle-500 outline-none">
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Funcionario que incorpora:</label>
+                        <input type="text" id="item-func" value="YOHANA ESTRADA" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
                     </div>
                 </div>
-                <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="app.closeNewExpedientModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2.5 rounded-xl font-semibold transition text-xs">Cancelar</button>
-                    <button type="submit" class="bg-valle-600 hover:bg-valle-700 text-white px-5 py-2.5 rounded-xl font-semibold transition text-xs">Crear Expediente</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL: FUID GENERATOR PREVIEW (FO-M9-P3-06) -->
-    <div id="modal-fuid" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-6xl w-full max-h-[95vh] flex flex-col overflow-hidden">
-            <div class="bg-valle-900 text-white px-6 py-4 flex items-center justify-between no-print">
                 <div>
-                    <span class="text-xs bg-valle-700 text-valle-100 px-2 py-0.5 rounded font-mono">Formato Único de Inventario Documental - FUID (FO-M9-P3-06 V04)</span>
-                    <h3 class="text-lg font-bold mt-1">Consolidado de Transferencia Documental</h3>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition">
-                        <i class="fa-solid fa-print"></i>
-                        <span>Imprimir / PDF</span>
-                    </button>
-                    <button onclick="app.closeFUIDModal()" class="text-valle-200 hover:text-white p-2">
-                        <i class="fa-solid fa-xmark text-xl"></i>
-                    </button>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Observaciones:</label>
+                    <input type="text" id="item-obs" placeholder="Ninguna" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
                 </div>
             </div>
-
-            <div id="printable-area" class="p-6 overflow-y-auto space-y-6 flex-1 bg-white text-slate-900 text-xs">
-                <!-- FUID Header info -->
-                <div class="border-2 border-slate-900 p-4 rounded-xl space-y-3">
-                    <div class="flex justify-between items-center border-b border-slate-300 pb-2">
-                        <div class="font-bold text-sm">GOBERNACIÓN DEL VALLE DEL CAUCA</div>
-                        <div class="text-right font-mono text-slate-600">FORMATO ÚNICO DE INVENTARIO DOCUMENTAL - FUID</div>
-                    </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <div><span class="font-bold">ENTIDAD REMITENTE:</span><br>UAE Impuestos y Rentas</div>
-                        <div><span class="font-bold">ENTIDAD PRODUCTORA:</span><br>Gobernación del Valle</div>
-                        <div><span class="font-bold">UNIDAD ADMINISTRATIVA:</span><br>Gestión Tributaria</div>
-                        <div><span class="font-bold">OFICINA PRODUCTORA:</span><br>Despacho y Subgerencias</div>
-                    </div>
-                </div>
-
-                <!-- FUID Table -->
-                <div class="border border-slate-900 overflow-hidden rounded-lg">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-slate-200 text-slate-900 font-bold border-b border-slate-900 text-[11px]">
-                                <th class="p-2 border-r border-slate-900 text-center">No. Orden</th>
-                                <th class="p-2 border-r border-slate-900">Código TRD</th>
-                                <th class="p-2 border-r border-slate-900">Nombre Serie / Subserie / Asunto</th>
-                                <th class="p-2 border-r border-slate-900">Nombre Unidad Documental (Expediente)</th>
-                                <th class="p-2 border-r border-slate-900 text-center">Fechas Extremas</th>
-                                <th class="p-2 border-r border-slate-900 text-center">Folios</th>
-                                <th class="p-2 border-r border-slate-900 text-center">Soporte</th>
-                                <th class="p-2">Ubicación (Dep./Caja/Carpeta)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fuid-table-tbody" class="divide-y divide-slate-300">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="grid grid-cols-2 gap-8 pt-8 text-slate-700">
-                    <div class="border-t border-slate-400 pt-2">
-                        <p class="font-bold">ELABORÓ:</p>
-                        <p class="text-slate-500 mt-6">Firma Funcionario Responsable de Archivo</p>
-                    </div>
-                    <div class="border-t border-slate-400 pt-2">
-                        <p class="font-bold">ENTREGÓ:</p>
-                        <p class="text-slate-500 mt-6">Firma Subgerente / Jefe de Dependencia</p>
-                    </div>
-                </div>
+            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
+                <button onclick="closeModal('modal-item')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
+                <button onclick="saveItemToExpediente()" class="px-5 py-2 text-xs font-bold bg-green-600 hover:bg-green-500 text-white rounded-lg shadow">Registrar Ítem</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: ADD / EDIT TAX CATALOG -->
-    <div id="modal-tax" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden">
-            <div class="bg-valle-900 text-white px-6 py-4 flex items-center justify-between">
-                <h3 class="text-lg font-bold">Configurar Renta / Impuesto & TRD</h3>
-                <button onclick="app.closeTaxModal()" class="text-valle-200 hover:text-white p-2">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
+    <!-- MODAL: ASIGNAR UBICACIÓN FÍSICA -->
+    <div id="modal-ubicacion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-map-pin mr-2 text-green-400"></i> Asignar Ubicación en Archivo</h3>
+                <button onclick="closeModal('modal-ubicacion')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <form onsubmit="app.saveTaxConfig(event)" class="p-6 space-y-4 text-sm">
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Nombre de la Renta / Impuesto</label>
-                    <input type="text" id="tax-name" placeholder="Ej. Impuesto de Vehículos" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-valle-500 outline-none">
+            <div class="p-6 space-y-4">
+                <input type="hidden" id="ubicacion-exp-id">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Depósito:</label>
+                        <select id="ub-dep" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                            <option value="Depósito 1 (Edificio Gobernación)">Depósito 1 (Edificio Gobernación)</option>
+                            <option value="Depósito 2 (Archivo Yumbo)">Depósito 2 (Archivo Yumbo)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">N° de Caja:</label>
+                        <input type="number" id="ub-caja" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                    </div>
                 </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Código TRD Oficial</label>
-                    <input type="text" id="tax-trd" placeholder="Ej. 1.120.40.30-63.85" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-valle-500 outline-none">
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Módulo:</label>
+                        <input type="text" id="ub-modulo" value="A-2" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Estante:</label>
+                        <input type="text" id="ub-estante" value="03" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Carpeta:</label>
+                        <input type="text" id="ub-carpeta" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                    </div>
                 </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Subserie / Descripción de la Serie</label>
-                    <input type="text" id="tax-series" placeholder="Ej. Procesos de Liquidación de Aforo" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-valle-500 outline-none">
-                </div>
-                <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="app.closeTaxModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2.5 rounded-xl font-semibold transition text-xs">Cancelar</button>
-                    <button type="submit" class="bg-valle-600 hover:bg-valle-700 text-white px-5 py-2.5 rounded-xl font-semibold transition text-xs">Guardar Renta</button>
-                </div>
-            </form>
+            </div>
+            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
+                <button onclick="closeModal('modal-ubicacion')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
+                <button onclick="saveUbicacion()" class="px-5 py-2 text-xs font-bold bg-green-600 hover:bg-green-500 text-white rounded-lg shadow">Guardar Ubicación</button>
+            </div>
         </div>
     </div>
 
-    <!-- Application Core Script -->
+    <!-- Script de lógica de la aplicación -->
     <script>
-        class GDLManager {
-            constructor() {
-                this.state = {
-                    currentTab: 'dashboard',
-                    taxes: [
-                        { id: 'tax_1', name: 'Impuesto de Vehículos Automotores', trd: '1.120.40.30-63.85', series: 'Procesos de Liquidación y Control' },
-                        { id: 'tax_2', name: 'Impuesto de Estampillas Pro-Hospitales', trd: '1.120.40.30-64.12', series: 'Control y Recaudo de Estampillas' },
-                        { id: 'tax_3', name: 'Impoconsumo Licores y Cervezas', trd: '1.120.40.30-65.02', series: 'Fiscalización de Rentas Departamentales' },
-                        { id: 'tax_4', name: 'Cobro Coactivo Tributario', trd: '1.120.40.30-66.20', series: 'Procesos Administrativos de Cobro' }
-                    ],
-                    expedients: [
-                        {
-                            id: 'exp_1',
-                            taxId: 'tax_1',
-                            code: 'EXP-2026-0101',
-                            name: 'CONCESIÓN AUTOMOTRIZ DEL VALLE S.A.',
-                            box: 'Caja 01',
-                            folder: 'Carpeta 1',
-                            status: 'active', // active | transferred
-                            transferredDate: null,
-                            documents: [
-                                { id: 'doc_1', date: '2026-01-15', type: 'Liquidación Oficial', folios: '1-4', author: 'Ana María Gómez' },
-                                { id: 'doc_2', date: '2026-02-10', type: 'Recurso de Reconsideración', folios: '5-12', author: 'Carlos Pérez' }
-                            ]
-                        },
-                        {
-                            id: 'exp_2',
-                            taxId: 'tax_3',
-                            code: 'EXP-2026-0205',
-                            name: 'DISTRIBUIDORA DE LICORES DEL PACÍFICO',
-                            box: 'Caja 02',
-                            folder: 'Carpeta 1',
-                            status: 'transferred',
-                            transferredDate: '2026-03-01',
-                            documents: [
-                                { id: 'doc_3', date: '2026-01-10', type: 'Acta de Inspección', folios: '1-6', author: 'Luis Fernando Riascos' }
-                            ]
-                        }
-                    ],
-                    currentActiveExpId: null
-                };
-                this.loadFromStorage();
-            }
+        // Fecha actual
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            loadFromStorage() {
-                const saved = localStorage.getItem('gdl_rentas_data');
-                if (saved) {
-                    try {
-                        this.state = JSON.parse(saved);
-                    } catch (e) {
-                        console.error("Error loading localStorage", e);
-                    }
+        // Estado inicial de la base de datos local
+        let db = JSON.parse(localStorage.getItem('gdl_rentas_db')) || {
+            boxes: [
+                { id: 'BOX-001', impuesto: 'Impuesto de Vehículos Automotores', remite: 'Yohana Estrada', fecha: '2026-10-15', estado: 'Pendiente', obs: 'Caja con liquidaciones trimestre 3', foto: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=100&auto=format&fit=crop&q=80' },
+                { id: 'BOX-002', impuesto: 'Impuesto de Registro', remite: 'Diana Osorio', fecha: '2026-10-18', estado: 'Procesada', obs: 'Trámites de pasaportes y exenciones', foto: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80' }
+            ],
+            expedientes: [
+                {
+                    id: 'EXP-0519',
+                    codigo: 'Exp. 0519',
+                    nombre: 'WILSON MILLAN PARRA',
+                    trd: '1.120.80.20 - 65.04 | Procesos Administrativos de Devolución',
+                    estado: 'Abierto', // Abierto, Cerrado, Trasladado
+                    ubicacion: { dep: 'Depósito 1 (Edificio Gobernación)', caja: 1, modulo: 'A-1', estante: '02', carpeta: 1 },
+                    items: [
+                        { item: 1, fdocInc: '2025-07-15', fdoc: '2025-07-15', desc: 'SOLICITUD RADICADO 2025029340', folios: '1-4', func: 'YOHANA ESTRADA', obs: 'Ninguna' },
+                        { item: 2, fdocInc: '2025-07-30', fdoc: '2025-07-30', desc: 'CERTIFICACION DE INGRESO - 2025032191', folios: '5-6', func: 'YOHANA ESTRADA', obs: 'Ok' }
+                    ]
                 }
+            ]
+        };
+
+        function saveDB() {
+            localStorage.setItem('gdl_rentas_db', JSON.stringify(db));
+            renderAll();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('border-green-600', 'text-green-700');
+                el.classList.add('border-transparent', 'text-slate-600');
+            });
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('border-transparent', 'text-slate-600');
+            activeBtn.classList.add('border-green-600', 'text-green-700');
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function openNewBoxModal() { openModal('modal-box'); }
+        function openNewExpedienteModal() { openModal('modal-exp'); }
+        function openAddItemModal() {
+            const expId = document.getElementById('select-expediente').value;
+            if(!expId) { alert('Por favor seleccione un expediente primero.'); return; }
+            openModal('modal-item');
+        }
+
+        // Guardar nueva caja en Bandeja de Entrada
+        function saveNewBox() {
+            const impuesto = document.getElementById('box-impuesto').value;
+            const remite = document.getElementById('box-remite').value || 'Colaborador';
+            const obs = document.getElementById('box-obs').value;
+            const fileInput = document.getElementById('box-foto');
+            
+            let fotoUrl = 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=100&auto=format&fit=crop&q=80';
+            if(fileInput.files && fileInput.files[0]) {
+                fotoUrl = URL.createObjectURL(fileInput.files[0]);
             }
 
-            saveToStorage() {
-                localStorage.setItem('gdl_rentas_data', JSON.stringify(this.state));
+            const newBox = {
+                id: 'BOX-' + String(db.boxes.length + 1).padStart(3, '0'),
+                impuesto,
+                remite,
+                fecha: new Date().toISOString().split('T')[0],
+                estado: 'Pendiente',
+                obs,
+                foto: fotoUrl
+            };
+
+            db.boxes.unshift(newBox);
+            saveDB();
+            closeModal('modal-box');
+        }
+
+        // Guardar nuevo expediente
+        function saveNewExpediente() {
+            const codigo = document.getElementById('exp-codigo').value;
+            const nombre = document.getElementById('exp-nombre').value;
+            const trd = document.getElementById('exp-trd').value;
+
+            if(!codigo || !nombre) { alert('Complete los campos obligatorios.'); return; }
+
+            const newExp = {
+                id: codigo,
+                codigo,
+                nombre,
+                trd,
+                estado: 'Abierto',
+                ubicacion: { dep: 'Pendiente', caja: 0, modulo: '-', estante: '-', carpeta: 1 },
+                items: []
+            };
+
+            db.expedientes.push(newExp);
+            saveDB();
+            closeModal('modal-exp');
+            document.getElementById('select-expediente').value = codigo;
+            loadExpedienteDetails();
+        }
+
+        // Cargar detalles de expediente en Hoja de Control
+        function loadExpedienteDetails() {
+            const expId = document.getElementById('select-expediente').value;
+            const container = document.getElementById('expediente-container');
+            if(!expId) {
+                container.classList.add('hidden');
+                return;
             }
 
-            init() {
-                this.switchTab(this.state.currentTab);
-                this.renderAll();
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(!exp) return;
+
+            container.classList.remove('hidden');
+            document.getElementById('title-current-exp').innerText = `${exp.codigo} - ${exp.nombre}`;
+            document.getElementById('meta-trd').innerHTML = `<strong class="text-slate-800">TRD Asignada:</strong> ${exp.trd}`;
+
+            let tbody = document.getElementById('items-table-body');
+            tbody.innerHTML = '';
+            if(exp.items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">No hay documentos incorporados todavía en este expediente.</td></tr>`;
+                return;
             }
 
-            switchTab(tabId) {
-                this.state.currentTab = tabId;
-                ['dashboard', 'inbox', 'outbox', 'catalog'].forEach(t => {
-                    const el = document.getElementById(`view-${t}`);
-                    const nav = document.getElementById(`nav-${t}`);
-                    if (t === tabId) {
-                        el.classList.remove('hidden');
-                        nav.classList.add('bg-valle-50', 'text-valle-800', 'font-semibold');
-                        nav.classList.remove('text-slate-600', 'hover:bg-slate-100');
-                    } else {
-                        el.classList.add('hidden');
-                        nav.classList.remove('bg-valle-50', 'text-valle-800', 'font-semibold');
-                        nav.classList.add('text-slate-600', 'hover:bg-slate-100');
-                    }
-                });
-                this.renderAll();
-            }
-
-            renderAll() {
-                this.renderDashboard();
-                this.renderInbox();
-                this.renderOutbox();
-                this.renderCatalog();
-                this.updateBadges();
-            }
-
-            updateBadges() {
-                const activeCount = this.state.expedients.filter(e => e.status === 'active').length;
-                const transferredCount = this.state.expedients.filter(e => e.status === 'transferred').length;
-                document.getElementById('badge-inbox').innerText = activeCount;
-                document.getElementById('badge-outbox').innerText = transferredCount;
-            }
-
-            renderDashboard() {
-                const active = this.state.expedients.filter(e => e.status === 'active');
-                const transferred = this.state.expedients.filter(e => e.status === 'transferred');
-                let totalDocs = 0;
-                this.state.expedients.forEach(e => totalDocs += e.documents.length);
-
-                document.getElementById('kpi-active').innerText = active.length;
-                document.getElementById('kpi-transferred').innerText = transferred.length;
-                document.getElementById('kpi-taxes').innerText = this.state.taxes.length;
-                document.getElementById('kpi-docs').innerText = totalDocs;
-
-                const recentContainer = document.getElementById('dashboard-recent-list');
-                recentContainer.innerHTML = '';
-                if (active.length === 0) {
-                    recentContainer.innerHTML = `<p class="text-xs text-slate-400 italic">No hay expedientes activos en este momento.</p>`;
-                    return;
-                }
-
-                active.slice(0, 5).forEach(exp => {
-                    const tax = this.state.taxes.find(t => t.id === exp.taxId) || { name: 'General', trd: 'N/A' };
-                    const div = document.createElement('div');
-                    div.className = 'flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 transition';
-                    div.innerHTML = `
-                        <div class="flex items-center space-x-3">
-                            <div class="bg-valle-100 text-valle-700 p-2.5 rounded-lg text-sm">
-                                <i class="fa-solid fa-folder"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-900">${exp.code} - ${exp.name}</h4>
-                                <p class="text-[11px] text-slate-500">${tax.name} | TRD: ${tax.trd} | ${exp.documents.length} docs</p>
-                            </div>
-                        </div>
-                        <button onclick="app.openExpedientModal('${exp.id}')" class="bg-valle-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-valle-700 transition">
-                            Gestionar
-                        </button>
-                    `;
-                    recentContainer.appendChild(div);
-                });
-            }
-
-            renderInbox() {
-                // Populate tax filter dropdown
-                const filterSelect = document.getElementById('filter-inbox-tax');
-                const currentFilter = filterSelect.value;
-                filterSelect.innerHTML = `<option value="">Todas las Rentas / Impuestos</option>`;
-                this.state.taxes.forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t.id;
-                    opt.innerText = t.name;
-                    if (t.id === currentFilter) opt.selected = true;
-                    filterSelect.appendChild(opt);
-                });
-
-                const tbody = document.getElementById('table-inbox-body');
-                tbody.innerHTML = '';
-
-                const filterVal = filterSelect.value;
-                const activeExps = this.state.expedients.filter(e => e.status === 'active' && (!filterVal || e.taxId === filterVal));
-
-                if (activeExps.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400 italic">No se encontraron expedientes activos en la bandeja de entrada.</td></tr>`;
-                    return;
-                }
-
-                activeExps.forEach(exp => {
-                    const tax = this.state.taxes.find(t => t.id === exp.taxId) || { name: 'N/A', trd: 'N/A' };
-                    let totalFolios = exp.documents.length * 3; // Estimación o se puede calcular
-
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
-                    tr.innerHTML = `
-                        <td class="p-3.5 font-semibold text-slate-900 font-mono">${exp.code}</td>
-                        <td class="p-3.5 text-slate-700 font-medium">${exp.name}</td>
-                        <td class="p-3.5 text-slate-600">${tax.name}</td>
-                        <td class="p-3.5 text-slate-500 font-mono text-xs">${tax.trd}</td>
-                        <td class="p-3.5 text-center font-semibold text-valle-700">${exp.documents.length} docs</td>
-                        <td class="p-3.5 text-center">
-                            <span class="bg-amber-100 text-amber-800 text-[11px] font-semibold px-2 py-1 rounded-full">En Trámite</span>
+            exp.items.forEach((it, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-2.5 border-b font-bold">${idx + 1}</td>
+                        <td class="p-2.5 border-b">${it.fdocInc}</td>
+                        <td class="p-2.5 border-b">${it.fdoc}</td>
+                        <td class="p-2.5 border-b font-medium">${it.desc}</td>
+                        <td class="p-2.5 border-b">${it.folios}</td>
+                        <td class="p-2.5 border-b">${it.func}</td>
+                        <td class="p-2.5 border-b text-slate-500">${it.obs}</td>
+                        <td class="p-2.5 border-b text-center">
+                            <button onclick="deleteItem('${exp.id}', ${idx})" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button>
                         </td>
-                        <td class="p-3.5 text-right space-x-2">
-                            <button onclick="app.openExpedientModal('${exp.id}')" class="bg-valle-600 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-valle-700 transition">
-                                <i class="fa-solid fa-pen-to-square"></i> Hoja Control
-                            </button>
-                            <button onclick="app.deleteExpedient('${exp.id}')" class="text-rose-500 hover:text-rose-700 p-1">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
+                    </tr>
+                `;
+            });
+        }
+
+        // Añadir ítem al expediente
+        function saveItemToExpediente() {
+            const expId = document.getElementById('select-expediente').value;
+            const fdoc = document.getElementById('item-fdoc').value || new Date().toISOString().split('T')[0];
+            const desc = document.getElementById('item-desc').value;
+            const folios = document.getElementById('item-folios').value || '1';
+            const func = document.getElementById('item-func').value;
+            const obs = document.getElementById('item-obs').value || 'Ninguna';
+
+            if(!desc) { alert('Ingrese la descripción del documento.'); return; }
+
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.items.push({
+                    item: exp.items.length + 1,
+                    fdocInc: new Date().toISOString().split('T')[0],
+                    fdoc,
+                    desc,
+                    folios,
+                    func,
+                    obs
                 });
-            }
-
-            renderOutbox() {
-                const tbody = document.getElementById('table-outbox-body');
-                tbody.innerHTML = '';
-
-                const transferredExps = this.state.expedients.filter(e => e.status === 'transferred');
-
-                if (transferredExps.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400 italic">No hay expedientes transferidos o cerrados en la bandeja de salida.</td></tr>`;
-                    return;
-                }
-
-                transferredExps.forEach(exp => {
-                    const tax = this.state.taxes.find(t => t.id === exp.taxId) || { name: 'N/A' };
-                    let minDate = exp.documents.length > 0 ? exp.documents[0].date : '2026-01-01';
-                    let maxDate = exp.documents.length > 0 ? exp.documents[exp.documents.length - 1].date : '2026-01-01';
-
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
-                    tr.innerHTML = `
-                        <td class="p-3.5 font-semibold text-slate-900 font-mono">${exp.code}<br><span class="text-xs font-normal text-slate-600">${exp.name}</span></td>
-                        <td class="p-3.5 text-slate-600">${tax.name}</td>
-                        <td class="p-3.5 text-xs text-slate-600 font-mono">${minDate} al ${maxDate}</td>
-                        <td class="p-3.5 text-center font-semibold text-valle-700">${exp.documents.length} docs</td>
-                        <td class="p-3.5 text-xs text-slate-700 font-medium"><i class="fa-solid fa-box text-valle-600"></i> ${exp.box || 'Caja 1'} / ${exp.folder || 'Carpeta 1'}</td>
-                        <td class="p-3.5 text-right space-x-2">
-                            <button onclick="app.openExpedientModal('${exp.id}')" class="bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-300 transition">
-                                Ver Detalle
-                            </button>
-                            <button onclick="app.reopenExpedient('${exp.id}')" class="bg-amber-100 text-amber-800 px-2.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-amber-200 transition" title="Reabrir trámite">
-                                Reabrir
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            renderCatalog() {
-                const grid = document.getElementById('catalog-tax-grid');
-                grid.innerHTML = '';
-
-                this.state.taxes.forEach(tax => {
-                    const count = this.state.expedients.filter(e => e.taxId === tax.id).length;
-                    const div = document.createElement('div');
-                    div.className = 'bg-slate-50 rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col justify-between';
-                    div.innerHTML = `
-                        <div>
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-xs bg-valle-100 text-valle-800 font-mono px-2 py-0.5 rounded font-semibold">${tax.trd}</span>
-                                <span class="text-xs text-slate-500 font-medium">${count} expedientes</span>
-                            </div>
-                            <h3 class="font-bold text-slate-900 text-base mb-1">${tax.name}</h3>
-                            <p class="text-xs text-slate-600">${tax.series}</p>
-                        </div>
-                        <div class="mt-6 pt-3 border-t border-slate-200 flex justify-end">
-                            <button onclick="app.deleteTax('${tax.id}')" class="text-rose-500 hover:text-rose-700 text-xs font-medium">
-                                <i class="fa-solid fa-trash"></i> Eliminar Renta
-                            </button>
-                        </div>
-                    `;
-                    grid.appendChild(div);
-                });
-            }
-
-            // MODAL EXPEDIENT CONTROL SHEET
-            openExpedientModal(expId) {
-                this.state.currentActiveExpId = expId;
-                const exp = this.state.expedients.find(e => e.id === expId);
-                if (!exp) return;
-
-                const tax = this.state.taxes.find(t => t.id === exp.taxId) || { name: 'General', trd: 'N/A' };
-
-                document.getElementById('modal-exp-title').innerText = `Hoja de Control: ${exp.code}`;
-                document.getElementById('modal-meta-office').innerText = 'UAE Impuestos y Rentas - Despacho';
-                document.getElementById('modal-meta-trd').innerText = `${tax.trd} (${tax.series})`;
-                document.getElementById('modal-meta-name').innerText = exp.name;
-
-                const statusBadge = document.getElementById('modal-exp-status-badge');
-                const toggleBtn = document.getElementById('btn-toggle-status');
-
-                if (exp.status === 'active') {
-                    statusBadge.className = 'px-2.5 py-1 rounded-full font-medium bg-amber-100 text-amber-800';
-                    statusBadge.innerText = 'Estado: En Trámite (Activo)';
-                    toggleBtn.innerText = 'Marcar como Cerrado / Listo para Transferencia';
-                    toggleBtn.className = 'bg-valle-600 hover:bg-valle-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition';
-                } else {
-                    statusBadge.className = 'px-2.5 py-1 rounded-full font-medium bg-emerald-100 text-valle-800';
-                    statusBadge.innerText = 'Estado: Transferido / Cerrado';
-                    toggleBtn.innerText = 'Reabrir Expediente';
-                    toggleBtn.className = 'bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition';
-                }
-
-                this.renderExpedientDocs(exp);
-                document.getElementById('modal-expedient').classList.remove('hidden');
-            }
-
-            renderExpedientDocs(exp) {
-                const tbody = document.getElementById('modal-docs-tbody');
-                tbody.innerHTML = '';
-
-                if (exp.documents.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">No hay documentos incorporados en esta hoja de control.</td></tr>`;
-                    return;
-                }
-
-                exp.documents.forEach((doc, idx) => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
-                    tr.innerHTML = `
-                        <td class="p-3 font-bold text-slate-900">${idx + 1}</td>
-                        <td class="p-3 font-mono text-slate-600">${doc.date}</td>
-                        <td class="p-3 font-medium text-slate-800">${doc.type}</td>
-                        <td class="p-3 text-center font-semibold text-valle-700">${doc.folios}</td>
-                        <td class="p-3 text-slate-600">${doc.author}</td>
-                        <td class="p-3 text-right">
-                            <button onclick="app.deleteDocumentFromExpedient('${doc.id}')" class="text-rose-500 hover:text-rose-700">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            closeExpedientModal() {
-                document.getElementById('modal-expedient').classList.add('hidden');
-                this.state.currentActiveExpId = null;
-            }
-
-            addDocumentToExpedient(e) {
-                e.preventDefault();
-                if (!this.state.currentActiveExpId) return;
-
-                const exp = this.state.expedients.find(e => e.id === this.state.currentActiveExpId);
-                if (!exp) return;
-
-                const newDoc = {
-                    id: 'doc_' + Date.now(),
-                    date: document.getElementById('doc-date').value,
-                    type: document.getElementById('doc-type').value,
-                    folios: document.getElementById('doc-folios').value,
-                    author: document.getElementById('doc-author').value
-                };
-
-                exp.documents.push(newDoc);
-                this.saveToStorage();
-                this.renderExpedientDocs(exp);
-                this.renderAll();
-                document.getElementById('form-add-doc').reset();
-            }
-
-            deleteDocumentFromExpedient(docId) {
-                const exp = this.state.expedients.find(e => e.id === this.state.currentActiveExpId);
-                if (!exp) return;
-
-                exp.documents = exp.documents.filter(d => d.id !== docId);
-                this.saveToStorage();
-                this.renderExpedientDocs(exp);
-                this.renderAll();
-            }
-
-            toggleExpedientStatus() {
-                const exp = this.state.expedients.find(e => e.id === this.state.currentActiveExpId);
-                if (!exp) return;
-
-                if (exp.status === 'active') {
-                    exp.status = 'transferred';
-                    exp.transferredDate = new Date().toISOString().split('T')[0];
-                } else {
-                    exp.status = 'active';
-                    exp.transferredDate = null;
-                }
-
-                this.saveToStorage();
-                this.openExpedientModal(exp.id);
-                this.renderAll();
-            }
-
-            reopenExpedient(expId) {
-                const exp = this.state.expedients.find(e => e.id === expId);
-                if (exp) {
-                    exp.status = 'active';
-                    exp.transferredDate = null;
-                    this.saveToStorage();
-                    this.renderAll();
-                }
-            }
-
-            deleteExpedient(expId) {
-                if (confirm('¿Está seguro de eliminar este expediente y su hoja de control?')) {
-                    this.state.expedients = this.state.expedients.filter(e => e.id !== expId);
-                    this.saveToStorage();
-                    this.renderAll();
-                }
-            }
-
-            // NEW EXPEDIENT MODAL
-            openNewExpedientModal() {
-                const select = document.getElementById('new-exp-tax');
-                select.innerHTML = '';
-                this.state.taxes.forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t.id;
-                    opt.innerText = `${t.name} (${t.trd})`;
-                    select.appendChild(opt);
-                });
-                document.getElementById('modal-new-exp').classList.remove('hidden');
-            }
-
-            closeNewExpedientModal() {
-                document.getElementById('modal-new-exp').classList.add('hidden');
-            }
-
-            createNewExpedient(e) {
-                e.preventDefault();
-                const newExp = {
-                    id: 'exp_' + Date.now(),
-                    taxId: document.getElementById('new-exp-tax').value,
-                    code: document.getElementById('new-exp-code').value,
-                    name: document.getElementById('new-exp-name').value,
-                    box: document.getElementById('new-exp-box').value || 'Caja 1',
-                    folder: document.getElementById('new-exp-folder').value || 'Carpeta 1',
-                    status: 'active',
-                    transferredDate: null,
-                    documents: []
-                };
-
-                this.state.expedients.push(newExp);
-                this.saveToStorage();
-                this.closeNewExpedientModal();
-                this.renderAll();
-                this.openExpedientModal(newExp.id);
-            }
-
-            // FUID GENERATOR MODAL (FO-M9-P3-06)
-            openFUIDModal() {
-                const tbody = document.getElementById('fuid-table-tbody');
-                tbody.innerHTML = '';
-
-                const transferredExps = this.state.expedients.filter(e => e.status === 'transferred');
-
-                if (transferredExps.length === 0) {
-                    alert('No hay expedientes cerrados o transferidos para generar el FUID. Marque al menos un expediente como "Cerrado/Listo para Transferencia".');
-                    return;
-                }
-
-                transferredExps.forEach((exp, idx) => {
-                    const tax = this.state.taxes.find(t => t.id === exp.taxId) || { name: 'N/A', trd: '1.120.40.30' };
-                    let minDate = exp.documents.length > 0 ? exp.documents[0].date : '2026-01-01';
-                    let maxDate = exp.documents.length > 0 ? exp.documents[exp.documents.length - 1].date : '2026-01-01';
-
-                    const tr = document.createElement('tr');
-                    tr.className = 'border-b border-slate-300 text-[11px]';
-                    tr.innerHTML = `
-                        <td class="p-2 border-r border-slate-300 text-center font-bold">${idx + 1}</td>
-                        <td class="p-2 border-r border-slate-300 font-mono">${tax.trd}</td>
-                        <td class="p-2 border-r border-slate-300">${tax.series}</td>
-                        <td class="p-2 border-r border-slate-300 font-semibold">${exp.code} - ${exp.name}</td>
-                        <td class="p-2 border-r border-slate-300 text-center font-mono">${minDate} al ${maxDate}</td>
-                        <td class="p-2 border-r border-slate-300 text-center font-bold">${exp.documents.length * 3}</td>
-                        <td class="p-2 border-r border-slate-300 text-center">Físico</td>
-                        <td class="p-2">Dep. Archivo / ${exp.box} / ${exp.folder}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-
-                document.getElementById('modal-fuid').classList.remove('hidden');
-            }
-
-            closeFUIDModal() {
-                document.getElementById('modal-fuid').classList.add('hidden');
-            }
-
-            // TAX CATALOG MODAL
-            openTaxModal() {
-                document.getElementById('modal-tax').classList.remove('hidden');
-            }
-
-            closeTaxModal() {
-                document.getElementById('modal-tax').classList.add('hidden');
-            }
-
-            saveTaxConfig(e) {
-                e.preventDefault();
-                const newTax = {
-                    id: 'tax_' + Date.now(),
-                    name: document.getElementById('tax-name').value,
-                    trd: document.getElementById('tax-trd').value,
-                    series: document.getElementById('tax-series').value
-                };
-
-                this.state.taxes.push(newTax);
-                this.saveToStorage();
-                this.closeTaxModal();
-                this.renderAll();
-            }
-
-            deleteTax(taxId) {
-                if (confirm('¿Desea eliminar esta renta del catálogo?')) {
-                    this.state.taxes = this.state.taxes.filter(t => t.id !== taxId);
-                    this.saveToStorage();
-                    this.renderAll();
-                }
-            }
-
-            exportBackup() {
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.state, null, 2));
-                const downloadAnchor = document.createElement('a');
-                downloadAnchor.setAttribute("href", dataStr);
-                downloadAnchor.setAttribute("download", `gdl_rentas_backup_${new Date().toISOString().split('T')[0]}.json`);
-                document.body.appendChild(downloadAnchor);
-                downloadAnchor.click();
-                downloadAnchor.remove();
+                saveDB();
+                closeModal('modal-item');
+                loadExpedienteDetails();
             }
         }
 
-        const app = new GDLManager();
-        window.onload = () => app.init();
+        function deleteItem(expId, idx) {
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.items.splice(idx, 1);
+                saveDB();
+                loadExpedienteDetails();
+            }
+        }
+
+        function closeExpedienteToOutbox() {
+            const expId = document.getElementById('select-expediente').value;
+            if(!expId) return;
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.estado = 'Cerrado';
+                saveDB();
+                alert('Expediente cerrado y enviado a la Bandeja de Salida para asignación de ubicación.');
+                switchTab('outbox');
+            }
+        }
+
+        // Abrir modal de ubicación
+        function openUbicacionModal(expId) {
+            document.getElementById('ubicacion-exp-id').value = expId;
+            openModal('modal-ubicacion');
+        }
+
+        function saveUbicacion() {
+            const expId = document.getElementById('ubicacion-exp-id').value;
+            const dep = document.getElementById('ub-dep').value;
+            const caja = parseInt(document.getElementById('ub-caja').value) || 1;
+            const modulo = document.getElementById('ub-modulo').value;
+            const estante = document.getElementById('ub-estante').value;
+            const carpeta = document.getElementById('ub-carpeta').value;
+
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.ubicacion = { dep, caja, modulo, estante, carpeta };
+                exp.estado = 'Archivado';
+                saveDB();
+                closeModal('modal-ubicacion');
+            }
+        }
+
+        // Renderizar todas las vistas
+        function renderAll() {
+            // Actualizar select de expedientes
+            const sel = document.getElementById('select-expediente');
+            const currentVal = sel.value;
+            sel.innerHTML = '<option value="">-- Seleccione un expediente --</option>';
+            db.expedientes.forEach(e => {
+                sel.innerHTML += `<option value="${e.id}">${e.codigo} - ${e.nombre} (${e.estado})</option>`;
+            });
+            sel.value = currentVal;
+
+            // Estadísticas
+            let pendingBoxes = db.boxes.filter(b => b.estado === 'Pendiente').length;
+            let processedBoxes = db.boxes.filter(b => b.estado === 'Procesada').length;
+            document.getElementById('stat-pending').innerText = pendingBoxes;
+            document.getElementById('stat-processed').innerText = processedBoxes;
+            document.getElementById('stat-total-boxes').innerText = db.boxes.length;
+            document.getElementById('badge-inbox').innerText = pendingBoxes;
+            document.getElementById('badge-outbox').innerText = db.expedientes.filter(e => e.estado === 'Cerrado' || e.estado === 'Archivado').length;
+
+            // Tabla Inbox
+            let inboxBody = document.getElementById('inbox-table-body');
+            inboxBody.innerHTML = '';
+            db.boxes.forEach(b => {
+                inboxBody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3"><img src="${b.foto}" class="w-10 h-10 object-cover rounded-lg border shadow-sm"></td>
+                        <td class="p-3 font-bold text-slate-700">${b.id}</td>
+                        <td class="p-3 font-semibold text-green-700">${b.impuesto}</td>
+                        <td class="p-3 text-slate-600">${b.remite}</td>
+                        <td class="p-3 text-slate-500 text-xs">${b.fecha}</td>
+                        <td class="p-3">
+                            <span class="px-2.5 py-1 text-xs font-bold rounded-full ${b.estado === 'Pendiente' ? 'bg-amber-100 text-amber-800' : 'bg-green-100 text-green-800'}">${b.estado}</span>
+                        </td>
+                        <td class="p-3 text-center">
+                            <button onclick="toggleBoxStatus('${b.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg">
+                                ${b.estado === 'Pendiente' ? 'Marcar Procesada' : 'Reabrir'}
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Tabla Outbox
+            let outboxBody = document.getElementById('outbox-table-body');
+            outboxBody.innerHTML = '';
+            db.expedientes.forEach(e => {
+                outboxBody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3 font-bold text-slate-800">${e.codigo}<br><span class="font-normal text-slate-500">${e.nombre}</span></td>
+                        <td class="p-3 text-xs text-slate-600">${e.trd}</td>
+                        <td class="p-3 font-semibold">${e.items.length > 0 ? e.items[e.items.length-1].folios : '0'}</td>
+                        <td class="p-3 text-xs">
+                            <strong class="text-slate-700">${e.ubicacion.dep}</strong><br>
+                            Caja: ${e.ubicacion.caja} | Mód: ${e.ubicacion.modulo} | Carpeta: ${e.ubicacion.carpeta}
+                        </td>
+                        <td class="p-3">
+                            <span class="px-2.5 py-1 text-xs font-bold rounded-full ${e.estado === 'Archivado' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">${e.estado}</span>
+                        </td>
+                        <td class="p-3 text-center">
+                            <button onclick="openUbicacionModal('${e.id}')" class="text-xs bg-green-700 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg shadow">
+                                <i class="fa-solid fa-map-pin mr-1"></i> Ubicación
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Tabla FUID Oficial (FO-M9-P3-06)
+            let fuidBody = document.getElementById('fuid-table-body');
+            fuidBody.innerHTML = '';
+            db.expedientes.forEach((e, idx) => {
+                let trdCode = e.trd.split('|')[0].trim();
+                let trdName = e.trd.split('|')[1] || e.trd;
+                let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
+                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-10-30';
+                let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
+
+                fuidBody.innerHTML += `
+                    <tr class="text-center text-[11px] hover:bg-slate-50">
+                        <td class="p-2 border border-slate-300 font-bold">${idx + 1}</td>
+                        <td class="p-2 border border-slate-300 font-mono text-[10px]">${trdCode}</td>
+                        <td class="p-2 border border-slate-300 text-left">${trdName}</td>
+                        <td class="p-2 border border-slate-300 text-left font-semibold">${e.codigo} - ${e.nombre}</td>
+                        <td class="p-2 border border-slate-300">${fechaIni}</td>
+                        <td class="p-2 border border-slate-300">${fechaFin}</td>
+                        <td class="p-2 border border-slate-300">${e.ubicacion.caja || 1}</td>
+                        <td class="p-2 border border-slate-300">${e.ubicacion.carpeta || 1}</td>
+                        <td class="p-2 border border-slate-300 font-bold">${nFolios}</td>
+                        <td class="p-2 border border-slate-300 text-xs">${e.ubicacion.dep}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function toggleBoxStatus(id) {
+            const box = db.boxes.find(b => b.id === id);
+            if(box) {
+                box.estado = box.estado === 'Pendiente' ? 'Procesada' : 'Pendiente';
+                saveDB();
+            }
+        }
+
+        // Exportar FUID a Excel usando SheetJS
+        function exportFUIDExcel() {
+            let wb = XLSX.utils.book_new();
+            let wsData = [
+                ["GOBERNACIÓN DEL VALLE DEL CAUCA"],
+                ["FORMATO ÚNICO DE INVENTARIO DOCUMENTAL (FUID)"],
+                ["OFICINA PRODUCTORA:", "Subgerencia de Liquidación y Devoluciones"],
+                [],
+                ["N° Orden", "Código TRD", "Nombre Serie / Subserie", "Nombre de la Unidad Documental", "Fecha Inicial", "Fecha Final", "Caja", "Carpeta", "N° Folios", "Ubicación Física"]
+            ];
+
+            db.expedientes.forEach((e, idx) => {
+                let trdCode = e.trd.split('|')[0].trim();
+                let trdName = e.trd.split('|')[1] || e.trd;
+                let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
+                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-10-30';
+                let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
+
+                wsData.push([
+                    idx + 1,
+                    trdCode,
+                    trdName,
+                    `${e.codigo} - ${e.nombre}`,
+                    fechaIni,
+                    fechaFin,
+                    e.ubicacion.caja || 1,
+                    e.ubicacion.carpeta || 1,
+                    nFolios,
+                    e.ubicacion.dep
+                ]);
+            });
+
+            let ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, "FUID_Consolidado");
+            XLSX.writeFile(wb, "FUID_Gobernacion_Valle_Rentas.xlsx");
+        }
+
+        // Inicializar render
+        renderAll();
     </script>
 </body>
 </html>
