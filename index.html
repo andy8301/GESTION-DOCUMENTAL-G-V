@@ -640,7 +640,20 @@
                         item: exp.items.length + 1,
                         fdocInc: new Date().toISOString().split('T')[0],
                         fdoc: new Date().toISOString().split('T')[0],
-                        desc: `${type} - ${num}`, folios, func, obs: 'Ingreso masivo' }); addedCount++; } });  if(addedCount > 0) { saveDB(); closeModal('modal-mass'); loadExpedienteDetails(); alert(`¡Se añadieron ${addedCount} documentos exitosamente al expediente!`);
+                        desc: `${type} - ${num}`,
+                        folios,
+                        func,
+                        obs: 'Ingreso masivo'
+                    });
+                    addedCount++;
+                }
+            });
+
+            if(addedCount > 0) {
+                saveDB();
+                closeModal('modal-mass');
+                loadExpedienteDetails();
+                alert(`¡Se añadieron ${addedCount} documentos exitosamente al expediente!`);
             } else {
                 alert('Por favor ingrese al menos un número o radicado en la plantilla.');
             }
@@ -708,7 +721,7 @@
             if(!exp) return;
 
             container.classList.remove('hidden');
-            document.getElementById('title-current-exp').innerText = `${exp.codigo} -${exp.nombre}`;
+            document.getElementById('title-current-exp').innerText = `${exp.codigo} - ${exp.nombre}`;
             document.getElementById('meta-trd').innerHTML = `<strong class="text-slate-800">TRD Asignada:</strong> ${exp.trd}`;
 
             let tbody = document.getElementById('items-table-body');
@@ -729,3 +742,237 @@
                         <td class="p-2.5 border-b">${it.func}</td>
                         <td class="p-2.5 border-b text-slate-500">${it.obs}</td>
                         <td class="p-2.5 border-b text-center">
+                            <button onclick="deleteItem('${exp.id}', ${idx})" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function saveItemToExpediente() {
+            const expId = document.getElementById('select-expediente').value;
+            const fdoc = document.getElementById('item-fdoc').value || new Date().toISOString().split('T')[0];
+            const docName = document.getElementById('item-doc-name').value;
+            const docNumber = document.getElementById('item-doc-number').value.trim();
+            const folios = document.getElementById('item-folios').value || '1';
+            const func = document.getElementById('item-func').value;
+            const obs = document.getElementById('item-obs').value || 'Ninguna';
+
+            if(!docNumber) { alert('Por favor ingrese el número o radicado posterior a la raya.'); return; }
+
+            const fullDesc = `${docName} - ${docNumber}`;
+
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.items.push({
+                    item: exp.items.length + 1,
+                    fdocInc: new Date().toISOString().split('T')[0],
+                    fdoc,
+                    desc: fullDesc,
+                    folios,
+                    func,
+                    obs
+                });
+                saveDB();
+                closeModal('modal-item');
+                loadExpedienteDetails();
+            }
+        }
+
+        function deleteItem(expId, idx) {
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.items.splice(idx, 1);
+                saveDB();
+                loadExpedienteDetails();
+            }
+        }
+
+        function closeExpedienteToOutbox() {
+            const expId = document.getElementById('select-expediente').value;
+            if(!expId) return;
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.estado = 'Cerrado';
+                saveDB();
+                alert('Expediente cerrado y enviado a la Bandeja de Salida para asignación de ubicación.');
+                switchTab('outbox');
+            }
+        }
+
+        function openUbicacionModal(expId) {
+            document.getElementById('ubicacion-exp-id').value = expId;
+            openModal('modal-ubicacion');
+        }
+
+        function saveUbicacion() {
+            const expId = document.getElementById('ubicacion-exp-id').value;
+            const dep = document.getElementById('ub-dep').value;
+            const caja = parseInt(document.getElementById('ub-caja').value) || 1;
+            const modulo = document.getElementById('ub-modulo').value;
+            const estante = document.getElementById('ub-estante').value;
+            const carpeta = document.getElementById('ub-carpeta').value;
+
+            const exp = db.expedientes.find(e => e.id === expId);
+            if(exp) {
+                exp.ubicacion = { dep, caja, modulo, estante, carpeta };
+                exp.estado = 'Archivado';
+                saveDB();
+                closeModal('modal-ubicacion');
+            }
+        }
+
+        function renderAll() {
+            const sel = document.getElementById('select-expediente');
+            const currentVal = sel.value;
+            sel.innerHTML = '<option value="">-- Seleccione un expediente --</option>';
+            db.expedientes.forEach(e => {
+                sel.innerHTML += `<option value="${e.id}">${e.codigo} - ${e.nombre} (${e.estado})</option>`;
+            });
+            sel.value = currentVal;
+
+            let pendingBoxes = db.boxes.filter(b => b.estado === 'Pendiente').length;
+            let processedBoxes = db.boxes.filter(b => b.estado === 'Procesada').length;
+            document.getElementById('stat-pending').innerText = pendingBoxes;
+            document.getElementById('stat-processed').innerText = processedBoxes;
+            document.getElementById('stat-total-boxes').innerText = db.boxes.length;
+            document.getElementById('badge-inbox').innerText = pendingBoxes;
+            document.getElementById('badge-outbox').innerText = db.expedientes.filter(e => e.estado === 'Cerrado' || e.estado === 'Archivado').length;
+
+            const searchFilter = (document.getElementById('search-box').value || '').toLowerCase();
+            let inboxBody = document.getElementById('inbox-table-body');
+            inboxBody.innerHTML = '';
+            
+            const filteredBoxes = db.boxes.filter(b => 
+                b.id.toLowerCase().includes(searchFilter) || 
+                b.remite.toLowerCase().includes(searchFilter) || 
+                b.impuesto.toLowerCase().includes(searchFilter)
+            );
+
+            if(filteredBoxes.length === 0) {
+                inboxBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">No se encontraron cajas registradas.</td></tr>`;
+            } else {
+                filteredBoxes.forEach(b => {
+                    inboxBody.innerHTML += `
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-3"><img src="${b.foto}" class="w-10 h-10 object-cover rounded-lg border shadow-sm"></td>
+                            <td class="p-3 font-bold text-slate-700">${b.id}</td>
+                            <td class="p-3 font-semibold text-emerald-700">${b.impuesto}</td>
+                            <td class="p-3 text-slate-600">${b.remite}</td>
+                            <td class="p-3 text-slate-500 text-xs">${b.fecha}</td>
+                            <td class="p-3">
+                                <span class="px-2.5 py-1 text-xs font-bold rounded-full ${b.estado === 'Pendiente' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">${b.estado}</span>
+                            </td>
+                            <td class="p-3 text-center">
+                                <button onclick="toggleBoxStatus('${b.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg shadow">
+                                    ${b.estado === 'Pendiente' ? 'Marcar Procesada' : 'Reabrir'}
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            let outboxBody = document.getElementById('outbox-table-body');
+            outboxBody.innerHTML = '';
+            if(db.expedientes.length === 0) {
+                outboxBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No hay expedientes registrados.</td></tr>`;
+            } else {
+                db.expedientes.forEach(e => {
+                    outboxBody.innerHTML += `
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-3 font-bold text-slate-800">${e.codigo}<br><span class="font-normal text-slate-500">${e.nombre}</span></td>
+                            <td class="p-3 text-xs text-slate-600">${e.trd}</td>
+                            <td class="p-3 font-semibold">${e.items.length > 0 ? e.items[e.items.length-1].folios : '0'}</td>
+                            <td class="p-3 text-xs">
+                                <strong class="text-slate-700">${e.ubicacion.dep}</strong><br>
+                                Caja: ${e.ubicacion.caja} | Mód: ${e.ubicacion.modulo} | Carpeta: ${e.ubicacion.carpeta}
+                            </td>
+                            <td class="p-3">
+                                <span class="px-2.5 py-1 text-xs font-bold rounded-full ${e.estado === 'Archivado' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${e.estado}</span>
+                            </td>
+                            <td class="p-3 text-center">
+                                <button onclick="openUbicacionModal('${e.id}')" class="text-xs bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg shadow">
+                                    <i class="fa-solid fa-map-pin mr-1"></i> Ubicación
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            let fuidBody = document.getElementById('fuid-table-body');
+            fuidBody.innerHTML = '';
+            db.expedientes.forEach((e, idx) => {
+                let trdCode = e.trd.split('|')[0].trim();
+                let trdName = e.trd.split('|')[1] || e.trd;
+                let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
+                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-10-30';
+                let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
+
+                fuidBody.innerHTML += `
+                    <tr class="text-center text-[11px] hover:bg-slate-50">
+                        <td class="p-2 border border-slate-300 font-bold">${idx + 1}</td>
+                        <td class="p-2 border border-slate-300 font-mono text-[10px]">${trdCode}</td>
+                        <td class="p-2 border border-slate-300 text-left">${trdName}</td>
+                        <td class="p-2 border border-slate-300 text-left font-semibold">${e.codigo} - ${e.nombre}</td>
+                        <td class="p-2 border border-slate-300">${fechaIni}</td>
+                        <td class="p-2 border border-slate-300">${fechaFin}</td>
+                        <td class="p-2 border border-slate-300">${e.ubicacion.caja || 1}</td>
+                        <td class="p-2 border border-slate-300">${e.ubicacion.carpeta || 1}</td>
+                        <td class="p-2 border border-slate-300 font-bold">${nFolios}</td>
+                        <td class="p-2 border border-slate-300 text-xs">${e.ubicacion.dep}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function toggleBoxStatus(id) {
+            const box = db.boxes.find(b => b.id === id);
+            if(box) {
+                box.estado = box.estado === 'Pendiente' ? 'Procesada' : 'Pendiente';
+                saveDB();
+            }
+        }
+
+        function exportFUIDExcel() {
+            let wb = XLSX.utils.book_new();
+            let wsData = [
+                ["GOBERNACIÓN DEL VALLE DEL CAUCA"],
+                ["FORMATO ÚNICO DE INVENTARIO DOCUMENTAL (FUID)"],
+                ["OFICINA PRODUCTORA:", "Subgerencia de Liquidación y Devoluciones"],
+                [],
+                ["N° Orden", "Código TRD", "Nombre Serie / Subserie", "Nombre de la Unidad Documental", "Fecha Inicial", "Fecha Final", "Caja", "Carpeta", "N° Folios", "Ubicación Física"]
+            ];
+
+            db.expedientes.forEach((e, idx) => {
+                let trdCode = e.trd.split('|')[0].trim();
+                let trdName = e.trd.split('|')[1] || e.trd;
+                let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
+                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-10-30';
+                let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
+
+                wsData.push([
+                    idx + 1,
+                    trdCode,
+                    trdName,
+                    `${e.codigo} - ${e.nombre}`,
+                    fechaIni,
+                    fechaFin,
+                    e.ubicacion.caja || 1,
+                    e.ubicacion.carpeta || 1,
+                    nFolios,
+                    e.ubicacion.dep
+                ]);
+            });
+
+            let ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, "FUID_Consolidado");
+            XLSX.writeFile(wb, "FUID_Gobernacion_Valle_Rentas.xlsx");
+        }
+
+        renderAll();
+    </script>
+</body>
+</html>
+```
