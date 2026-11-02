@@ -22,8 +22,11 @@
                     <p class="text-xs text-slate-400">Gobernación del Valle del Cauca - UAE de Impuestos, Rentas y Gestión Tributaria</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-4 text-sm">
-                <span class="bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 text-slate-300">
+            <div class="flex items-center space-x-3 text-sm">
+                <button onclick="resetDemoData()" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300 transition flex items-center gap-1.5" title="Restaurar datos de prueba">
+                    <i class="fa-solid fa-rotate-right text-emerald-400"></i> Cargar Datos Demo
+                </button>
+                <span class="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300">
                     <i class="fa-solid fa-user-shield text-green-400 mr-1.5"></i> Operador Documental
                 </span>
                 <span id="current-date" class="text-slate-400 text-xs hidden sm:inline"></span>
@@ -102,7 +105,7 @@
                 <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
                     <h3 class="font-bold text-slate-700"><i class="fa-solid fa-list-check mr-2 text-emerald-600"></i>Cajas Físicas Recibidas (Pendientes de Clasificación)</h3>
                     <div class="flex gap-2">
-                        <input type="text" id="search-box" onkeyup="renderInbox()" placeholder="Buscar por radicado o colaborador..." class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <input type="text" id="search-box" onkeyup="renderAll()" placeholder="Buscar por radicado o colaborador..." class="text-sm border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     </div>
                 </div>
                 <div class="overflow-x-auto">
@@ -133,4 +136,152 @@
                     <div>
                         <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded">CÓDIGO: FO-M9-P3-17 V02</span>
                         <h2 class="text-xl font-bold text-slate-800 mt-1">Hoja de Control de Expediente</h2>
-                        <p class="
+                        <p class="text-xs text-slate-500">Registro detallado de documentos incorporados por expediente y contribuyente.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="openNewExpedienteModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-folder-plus"></i> Nuevo Expediente
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Selector de Expediente Activo -->
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Seleccionar Expediente Activo:</label>
+                        <select id="select-expediente" onchange="loadExpedienteDetails()" class="w-full text-sm border border-slate-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-emerald-500">
+                            <option value="">-- Seleccione un expediente --</option>
+                        </select>
+                    </div>
+                    <div id="expediente-meta" class="md:col-span-2 text-xs text-slate-600 flex flex-col justify-center">
+                        <span class="font-semibold text-slate-800">Oficina Productora:</span> 1.120.80.20 - Subgerencia de Liquidación y Devoluciones
+                        <span id="meta-trd" class="mt-1"><strong class="text-slate-800">TRD Asignada:</strong> Seleccione un expediente</span>
+                    </div>
+                </div>
+
+                <!-- Detalle del Expediente y Tabla de Ítems -->
+                <div id="expediente-container" class="mt-6 hidden space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-700 text-base" id="title-current-exp">Expediente: --</h3>
+                        <button onclick="openAddItemModal()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold px-3 py-2 rounded-lg flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus"></i> Añadir Tipo Documental
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 text-slate-700 uppercase font-semibold">
+                                <tr>
+                                    <th class="p-2.5 border-b">Ítem</th>
+                                    <th class="p-2.5 border-b">F. Incorporación</th>
+                                    <th class="p-2.5 border-b">F. Documento</th>
+                                    <th class="p-2.5 border-b">Descripción / Tipo Documental</th>
+                                    <th class="p-2.5 border-b">Folios</th>
+                                    <th class="p-2.5 border-b">Funcionario</th>
+                                    <th class="p-2.5 border-b">Observaciones</th>
+                                    <th class="p-2.5 border-b text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="items-table-body" class="divide-y divide-slate-200">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-3">
+                        <button onclick="closeExpedienteToOutbox()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-4 py-2 rounded-lg shadow flex items-center gap-2">
+                            <i class="fa-solid fa-box-archive"></i> Cerrar Expediente y Enviar a Bandeja de Salida
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: BANDEJA DE SALIDA & UBICACIÓN FÍSICA ================= -->
+        <section id="tab-outbox" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-200">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Bandeja de Salida & Ubicación Física en Archivo</h2>
+                        <p class="text-xs text-slate-500">Gestión de expedientes cerrados listos para transferencia, inventario y asignación de estantería.</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-600 text-xs font-semibold uppercase">
+                                <th class="p-3">Expediente / Contribuyente</th>
+                                <th class="p-3">Impuesto / TRD</th>
+                                <th class="p-3">Folios</th>
+                                <th class="p-3">Ubicación Física (Depósito / Caja / Carpeta)</th>
+                                <th class="p-3">Estado Traslado</th>
+                                <th class="p-3 text-center">Gestionar Ubicación</th>
+                            </tr>
+                        </thead>
+                        <tbody id="outbox-table-body" class="divide-y divide-slate-200 text-xs">
+                            <!-- Dinámico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: GENERADOR FUID (FO-M9-P3-06) ================= -->
+        <section id="tab-fuid" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-200">
+                    <div>
+                        <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded">CÓDIGO: FO-M9-P3-06 V04</span>
+                        <h2 class="text-xl font-bold text-slate-800 mt-1">Formato Único de Inventario Documental (FUID)</h2>
+                        <p class="text-xs text-slate-500">Consolidado oficial para transferencias secundarias al Archivo General.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="exportFUIDExcel()" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-excel"></i> Exportar FUID a Excel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vista Previa Tabla FUID -->
+                <div class="mt-6 overflow-x-auto border border-slate-300 rounded-lg">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-800 text-white font-semibold uppercase text-center text-[11px]">
+                                <th class="p-2 border border-slate-600">N° Orden</th>
+                                <th class="p-2 border border-slate-600">Código TRD</th>
+                                <th class="p-2 border border-slate-600">Nombre Serie / Subserie</th>
+                                <th class="p-2 border border-slate-600">Nombre de la Unidad Documental</th>
+                                <th class="p-2 border border-slate-600" colspan="2">Fechas Extremas</th>
+                                <th class="p-2 border border-slate-600" colspan="2">Unidad Conservación</th>
+                                <th class="p-2 border border-slate-600">N° Folios</th>
+                                <th class="p-2 border border-slate-600">Ubicación (Dep / Caja / Carpeta)</th>
+                            </tr>
+                            <tr class="bg-slate-700 text-slate-200 text-[10px] text-center">
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600">Inicial</th>
+                                <th class="p-1 border border-slate-600">Final</th>
+                                <th class="p-1 border border-slate-600">Caja</th>
+                                <th class="p-1 border border-slate-600">Carpeta</th>
+                                <th class="p-1 border border-slate-600"></th>
+                                <th class="p-1 border border-slate-600"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="fuid-table-body" class="divide-y divide-slate-200">
+                            <!-- Dinámico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL: REGISTRAR NUEVA CAJA (BANDEJA DE ENTRADA CON FOTO) -->
+    <div id="modal-box" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-base"><i class="fa-solid fa-camera mr
