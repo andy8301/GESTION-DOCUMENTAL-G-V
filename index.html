@@ -154,7 +154,7 @@
                         </select>
                     </div>
                     <div id="expediente-meta" class="md:col-span-2 text-xs text-slate-600 flex flex-col justify-center">
-                        <span class="font-semibold text-slate-800">Oficina Productora:</span> 1.120.80.20 - Subgerencia de Liquidación y Devoluciones
+                        <span class="font-semibold text-slate-800">Oficina Productora:</span> Subgerencia de Liquidación y Devoluciones
                         <span id="meta-trd" class="mt-1"><strong class="text-slate-800">TRD Asignada:</strong> Seleccione un expediente</span>
                     </div>
                 </div>
@@ -282,14 +282,13 @@
             </div>
             <div class="p-6 space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tipo de Impuesto / Renta:</label>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tipo de Impuesto / Renta / Proceso:</label>
                     <select id="box-impuesto" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                        <option value="Devolución de Pasaportes">Devolución de Pasaportes</option>
+                        <option value="Exención de Impuesto de Registro">Exención de Impuesto de Registro</option>
                         <option value="Impuesto de Vehículos Automotores">Impuesto de Vehículos Automotores</option>
-                        <option value="Impuesto de Registro">Impuesto de Registro</option>
                         <option value="Impuesto de Licores, Vinos y Aperitivos">Impuesto de Licores, Vinos y Aperitivos</option>
                         <option value="Estampillas Departamentales">Estampillas Departamentales</option>
-                        <option value="Impoconsumo (Cerveza, Cigarrillo)">Impoconsumo (Cerveza, Cigarrillo)</option>
-                        <option value="Cobro Coactivo / Devoluciones">Cobro Coactivo / Devoluciones</option>
                     </select>
                 </div>
                 <div>
@@ -322,19 +321,18 @@
             <div class="p-6 space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número o Código de Expediente:</label>
-                    <input type="text" id="exp-codigo" placeholder="Ej. Exp. 0530" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                    <input type="text" id="exp-codigo" placeholder="Ej. EXP. 001-2026" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombre del Contribuyente / Ciudadano:</label>
                     <input type="text" id="exp-nombre" placeholder="Ej. LUIS ANDRES BOTIA" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Serie / Subserie TRD:</label>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Serie / Subserie TRD (Proceso):</label>
                     <select id="exp-trd" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                        <option value="1.120.80.20 - 65.04 | Procesos Administrativos de Devolución">65.04 - Procesos Administrativos de Devolución</option>
-                        <option value="1.120.40.30 - 63.85 | Procesos Administrativos de Aforo">63.85 - Procesos Administrativos de Aforo</option>
-                        <option value="1.120.40.30 - 63.84 | Procesos Administrativos de Revisión">63.84 - Procesos Administrativos de Revisión</option>
-                        <option value="1.120.60.20 - 64.03 | Exención de Impuesto de Registro">64.03 - Exención de Impuesto de Registro</option>
+                        <option value="1.120.60.20-64.05 | Procesos Administrativos. Proceso de Devolución de Pasaportes">1.120.60.20-64.05 - Devolución de Pasaportes</option>
+                        <option value="1.120.60.20-64.05 | Procesos Administrativos. Proceso de Exención de Impuesto de Registro">1.120.60.20-64.05 - Exención de Impuesto de Registro</option>
+                        <option value="1.120.80.20-65.04 | Procesos Administrativos de Devolución">1.120.80.20-65.04 - Procesos Administrativos de Devolución</option>
                     </select>
                 </div>
             </div>
@@ -349,7 +347,7 @@
     <div id="modal-item" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
         <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
             <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="font-bold text-base"><i class="fa-solid fa-file-circle-plus mr-2 text-emerald-400"></i> Añadir Tipo Documental (Selección)</h3>
+                <h3 class="font-bold text-base"><i class="fa-solid fa-file-circle-plus mr-2 text-emerald-400"></i> Añadir Tipo Documental (Hoja de Control)</h3>
                 <button onclick="closeModal('modal-item')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="p-6 space-y-4">
@@ -364,17 +362,15 @@
                         <option value="CERTIFICACION DE INGRESO">CERTIFICACION DE INGRESO</option>
                         <option value="CERTIFICADO DE NO PAGO">CERTIFICADO DE NO PAGO</option>
                         <option value="SOLICITUD DE CERTIFICACION">SOLICITUD DE CERTIFICACION</option>
-                        <option value="CERTIFICACION DE EXPEDICION DE PASAPORTE">CERTIFICACION DE EXPEDICION DE PASAPORTE</option>
-                        <option value="CERTIFICACION EXPEDICION DE PASAPORTES">CERTIFICACION EXPEDICION DE PASAPORTES</option>
-                        <option value="VERIFICACION PAGO TRAMITE DE PASAPORTES">VERIFICACION PAGO TRAMITE DE PASAPORTES</option>
+                        <option value="VERIFICACION PAGO TRAMITE">VERIFICACION PAGO TRAMITE</option>
                         <option value="RESPUESTA A SOLICITUD">RESPUESTA A SOLICITUD</option>
                         <option value="RESOLUCION y CDP">RESOLUCION y CDP</option>
-                        <option value="ACTA DE ENVIO Y ENTREGA DE MENSAJE DE DATOS">ACTA DE ENVIO Y ENTREGA DE MENSAJE DE DATOS</option>
-                        <option value="Constancia de notificación - Términos y ejecutoria">Constancia de notificación - Términos y ejecutoria</option>
+                        <option value="ACTA DE ENVIO Y ENTREGA DE MENSAJE">ACTA DE ENVIO Y ENTREGA DE MENSAJE</option>
+                        <option value="Constancia de notificación">Constancia de notificación</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número / Radicado posterior a la raya (-):</label>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número o Radicado posterior a la raya (-):</label>
                     <div class="flex items-center gap-2">
                         <span class="text-lg font-bold text-slate-500">-</span>
                         <input type="text" id="item-doc-number" placeholder="Ej. 2026005381" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 font-mono font-bold text-emerald-700">
@@ -397,7 +393,7 @@
             </div>
             <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
                 <button onclick="closeModal('modal-item')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
-                <button onclick="saveItemToExpediente()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Registrar Ítem</button>
+                <button onclick="saveItemToExpediente()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Registrar en Hoja de Control</button>
             </div>
         </div>
     </div>
@@ -406,12 +402,12 @@
     <div id="modal-mass" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
         <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full overflow-hidden border border-slate-200 flex flex-col max-h-[90vh]">
             <div class="bg-emerald-800 text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="font-bold text-base"><i class="fa-solid fa-table-cells mr-2"></i> Llenado Masivo - Plantilla Hoja de Control</h3>
+                <h3 class="font-bold text-base"><i class="fa-solid fa-table-cells mr-2"></i> Llenado Masivo - Hoja de Control de Expediente</h3>
                 <button onclick="closeModal('modal-mass')" class="text-emerald-200 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="p-6 overflow-y-auto space-y-4 flex-grow">
                 <p class="text-xs text-slate-500">
-                    Escoge el tipo documental en cada fila, añade su número respectivo y los folios. Puedes llenar varios documentos de forma rápida y guardarlos todos juntos.
+                    Construye la hoja de control fila por fila incorporando los tipos documentales, sus radicados y folios correspondientes.
                 </p>
                 <div class="border border-slate-300 rounded-lg overflow-x-auto">
                     <table class="w-full text-left text-xs">
@@ -425,7 +421,7 @@
                             </tr>
                         </thead>
                         <tbody id="mass-rows-container">
-                            <!-- Filas dinámicas generadas en JS -->
+                            <!-- Filas dinámicas -->
                         </tbody>
                     </table>
                 </div>
@@ -433,12 +429,11 @@
                     <button onclick="addMassRow()" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-3 py-1.5 rounded-lg">
                         <i class="fa-solid fa-plus mr-1"></i> Añadir otra fila
                     </button>
-                    <span class="text-xs text-slate-400">Se guardarán los ítems que tengan número asignado.</span>
                 </div>
             </div>
             <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
                 <button onclick="closeModal('modal-mass')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
-                <button onclick="saveMassItems()" class="px-5 py-2 text-xs font-bold bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg shadow">Guardar Lote en Hoja de Control</button>
+                <button onclick="saveMassItems()" class="px-5 py-2 text-xs font-bold bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg shadow">Guardar Hoja de Control</button>
             </div>
         </div>
     </div>
@@ -447,7 +442,7 @@
     <div id="modal-ubicacion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
         <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
             <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="font-bold text-base"><i class="fa-solid fa-map-pin mr-2 text-emerald-400"></i> Asignar Ubicación en Archivo</h3>
+                <h3 class="font-bold text-base"><i class="fa-solid fa-map-pin mr-2 text-emerald-400"></i> Asignar Ubicación Física (Bandeja de Salida)</h3>
                 <button onclick="closeModal('modal-ubicacion')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="p-6 space-y-4">
@@ -456,8 +451,8 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Depósito:</label>
                         <select id="ub-dep" class="w-full text-sm border border-slate-300 rounded-lg p-2">
-                            <option value="Depósito 1 (Edificio Gobernación)">Depósito 1 (Edificio Gobernación)</option>
-                            <option value="Depósito 2 (Archivo Yumbo)">Depósito 2 (Archivo Yumbo)</option>
+                            <option value="Deposito 1 (Archivo Central del Edificio)">Depósito 1 (Archivo Central del Edificio)</option>
+                            <option value="Deposito 2 (Archivo Central de Yumbo)">Depósito 2 (Archivo Central de Yumbo)</option>
                         </select>
                     </div>
                     <div>
@@ -467,12 +462,12 @@
                 </div>
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Módulo:</label>
-                        <input type="text" id="ub-modulo" value="A-2" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">N° Módulo:</label>
+                        <input type="text" id="ub-modulo" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Estante:</label>
-                        <input type="text" id="ub-estante" value="03" class="w-full text-sm border border-slate-300 rounded-lg p-2">
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">N° Estante:</label>
+                        <input type="text" id="ub-estante" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Carpeta:</label>
@@ -482,12 +477,12 @@
             </div>
             <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
                 <button onclick="closeModal('modal-ubicacion')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
-                <button onclick="saveUbicacion()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Guardar Ubicación</button>
+                <button onclick="saveUbicacion()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Guardar Ubicación y Archivar</button>
             </div>
         </div>
     </div>
 
-    <!-- Script de lógica de la aplicación -->
+    <!-- Script de lógica -->
     <script>
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -496,31 +491,28 @@
             "CERTIFICACION DE INGRESO",
             "CERTIFICADO DE NO PAGO",
             "SOLICITUD DE CERTIFICACION",
-            "CERTIFICACION DE EXPEDICION DE PASAPORTE",
-            "CERTIFICACION EXPEDICION DE PASAPORTES",
-            "VERIFICACION PAGO TRAMITE DE PASAPORTES",
+            "VERIFICACION PAGO TRAMITE",
             "RESPUESTA A SOLICITUD",
             "RESOLUCION y CDP",
-            "ACTA DE ENVIO Y ENTREGA DE MENSAJE DE DATOS",
-            "Constancia de notificación - Términos y ejecutoria"
+            "ACTA DE ENVIO Y ENTREGA DE MENSAJE",
+            "Constancia de notificación"
         ];
 
         const defaultDb = {
             boxes: [
-                { id: 'BOX-001', impuesto: 'Impuesto de Vehículos Automotores', remite: 'Yohana Estrada', fecha: '2026-10-15', estado: 'Pendiente', obs: 'Caja con liquidaciones trimestre 3', foto: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=100&auto=format&fit=crop&q=80' },
-                { id: 'BOX-002', impuesto: 'Impuesto de Registro', remite: 'Diana Osorio', fecha: '2026-10-18', estado: 'Procesada', obs: 'Trámites de pasaportes y exenciones', foto: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80' }
+                { id: 'BOX-001', impuesto: 'Devolución de Pasaportes', remite: 'Yohana Estrada', fecha: '2026-10-15', estado: 'Pendiente', obs: 'Caja con solicitudes de devolución', foto: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=100&auto=format&fit=crop&q=80' }
             ],
             expedientes: [
                 {
-                    id: 'EXP-0519',
-                    codigo: 'Exp. 0519',
+                    id: 'EXP-001',
+                    codigo: 'EXP. 001-2026',
                     nombre: 'WILSON MILLAN PARRA',
-                    trd: '1.120.80.20 - 65.04 | Procesos Administrativos de Devolución',
-                    estado: 'Abierto',
-                    ubicacion: { dep: 'Depósito 1 (Edificio Gobernación)', caja: 1, modulo: 'A-1', estante: '02', carpeta: 1 },
+                    trd: '1.120.60.20-64.05 | Procesos Administrativos. Proceso de Devolución de Pasaportes',
+                    estado: 'Cerrado',
+                    ubicacion: { dep: 'Deposito 1 (Archivo Central del Edificio)', caja: 1, modulo: '1', estante: '1', carpeta: 1 },
                     items: [
-                        { item: 1, fdocInc: '2025-07-15', fdoc: '2025-07-15', desc: 'SOLICITUD RADICADO - 2025029340', folios: '1-4', func: 'YOHANA ESTRADA', obs: 'Ninguna' },
-                        { item: 2, fdocInc: '2025-07-30', fdoc: '2025-07-30', desc: 'CERTIFICACION DE INGRESO - 2025032191', folios: '5-6', func: 'YOHANA ESTRADA', obs: 'Ok' }
+                        { item: 1, fdocInc: '2026-02-10', fdoc: '2026-02-10', desc: 'SOLICITUD RADICADO - 2026000123', folios: '1-3', func: 'YOHANA ESTRADA', obs: 'Ninguna' },
+                        { item: 2, fdocInc: '2026-02-15', fdoc: '2026-02-15', desc: 'CERTIFICACION DE INGRESO - 2026000456', folios: '4-5', func: 'YOHANA ESTRADA', obs: 'Ok' }
                     ]
                 }
             ]
@@ -553,14 +545,8 @@
             activeBtn.classList.add('border-green-600', 'text-green-700');
         }
 
-        function openModal(id) { 
-            const m = document.getElementById(id);
-            if(m) m.style.display = 'flex';
-        }
-        function closeModal(id) { 
-            const m = document.getElementById(id);
-            if(m) m.style.display = 'none';
-        }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function openNewBoxModal() { openModal('modal-box'); }
         function openNewExpedienteModal() { openModal('modal-exp'); }
@@ -571,52 +557,33 @@
             openModal('modal-item');
         }
 
-        // Abrir modal de llenado masivo con 5 filas por defecto
         function openMassInputModal() {
             const expId = document.getElementById('select-expediente').value;
             if(!expId) { alert('Por favor seleccione un expediente primero.'); return; }
-            
             let container = document.getElementById('mass-rows-container');
             container.innerHTML = '';
-            
-            for(let i = 1; i <= 5; i++) {
-                appendMassRow(i, '', '', i === 1 ? '1-4' : '', 'YOHANA ESTRADA');
+            for(let i = 1; i <= 4; i++) {
+                appendMassRow(i, '', '', i === 1 ? '1-3' : '', 'YOHANA ESTRADA');
             }
             openModal('modal-mass');
         }
 
         function addMassRow() {
             let container = document.getElementById('mass-rows-container');
-            let rowCount = container.rows.length + 1;
-            appendMassRow(rowCount, '', '', '', 'YOHANA ESTRADA');
+            appendMassRow(container.rows.length + 1, '', '', '', 'YOHANA ESTRADA');
         }
 
         function appendMassRow(num, selectedType, numberVal, foliosVal, funcVal) {
             let container = document.getElementById('mass-rows-container');
             let tr = document.createElement('tr');
             tr.className = "border-b border-slate-200 hover:bg-slate-50";
-
             let optionsHtml = docTypesList.map(t => `<option value="${t}" ${t === selectedType ? 'selected' : ''}>${t}</option>`).join('');
-
             tr.innerHTML = `
                 <td class="p-2 text-center font-bold text-slate-500">${num}</td>
-                <td class="p-2">
-                    <select class="mass-type w-full text-xs border border-slate-300 rounded p-1.5 bg-white font-semibold">
-                        ${optionsHtml}
-                    </select>
-                </td>
-                <td class="p-2">
-                    <div class="flex items-center gap-1">
-                        <span class="font-bold text-slate-400">-</span>
-                        <input type="text" class="mass-num w-full text-xs border border-slate-300 rounded p-1.5 font-mono font-bold text-emerald-700" placeholder="2026..." value="${numberVal}">
-                    </div>
-                </td>
-                <td class="p-2">
-                    <input type="text" class="mass-folios w-full text-xs border border-slate-300 rounded p-1.5" placeholder="Ej. 1-2" value="${foliosVal}">
-                </td>
-                <td class="p-2">
-                    <input type="text" class="mass-func w-full text-xs border border-slate-300 rounded p-1.5" value="${funcVal}">
-                </td>
+                <td class="p-2"><select class="mass-type w-full text-xs border border-slate-300 rounded p-1.5 bg-white font-semibold">${optionsHtml}</select></td>
+                <td class="p-2"><div class="flex items-center gap-1"><span class="font-bold text-slate-400">-</span><input type="text" class="mass-num w-full text-xs border border-slate-300 rounded p-1.5 font-mono font-bold text-emerald-700" placeholder="2026..." value="${numberVal}"></div></td>
+                <td class="p-2"><input type="text" class="mass-folios w-full text-xs border border-slate-300 rounded p-1.5" placeholder="Ej. 1-2" value="${foliosVal}"></td>
+                <td class="p-2"><input type="text" class="mass-func w-full text-xs border border-slate-300 rounded p-1.5" value="${funcVal}"></td>
             `;
             container.appendChild(tr);
         }
@@ -625,37 +592,31 @@
             const expId = document.getElementById('select-expediente').value;
             const exp = db.expedientes.find(e => e.id === expId);
             if(!exp) return;
-
             let rows = document.querySelectorAll('#mass-rows-container tr');
             let addedCount = 0;
-
             rows.forEach(tr => {
                 let type = tr.querySelector('.mass-type').value;
                 let num = tr.querySelector('.mass-num').value.trim();
                 let folios = tr.querySelector('.mass-folios').value.trim() || '1';
                 let func = tr.querySelector('.mass-func').value.trim() || 'YOHANA ESTRADA';
-
                 if(num !== '') {
                     exp.items.push({
                         item: exp.items.length + 1,
                         fdocInc: new Date().toISOString().split('T')[0],
                         fdoc: new Date().toISOString().split('T')[0],
                         desc: `${type} - ${num}`,
-                        folios,
-                        func,
-                        obs: 'Ingreso masivo'
+                        folios, func, obs: 'Ingreso masivo'
                     });
                     addedCount++;
                 }
             });
-
             if(addedCount > 0) {
                 saveDB();
                 closeModal('modal-mass');
                 loadExpedienteDetails();
-                alert(`¡Se añadieron ${addedCount} documentos exitosamente al expediente!`);
+                alert(`¡Se añadieron ${addedCount} documentos a la hoja de control!`);
             } else {
-                alert('Por favor ingrese al menos un número o radicado en la plantilla.');
+                alert('Ingrese al menos un radicado.');
             }
         }
 
@@ -664,23 +625,9 @@
             const remite = document.getElementById('box-remite').value || 'Colaborador';
             const obs = document.getElementById('box-obs').value;
             const fileInput = document.getElementById('box-foto');
-            
             let fotoUrl = 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=100&auto=format&fit=crop&q=80';
-            if(fileInput.files && fileInput.files[0]) {
-                fotoUrl = URL.createObjectURL(fileInput.files[0]);
-            }
-
-            const newBox = {
-                id: 'BOX-' + String(db.boxes.length + 1).padStart(3, '0'),
-                impuesto,
-                remite,
-                fecha: new Date().toISOString().split('T')[0],
-                estado: 'Pendiente',
-                obs,
-                foto: fotoUrl
-            };
-
-            db.boxes.unshift(newBox);
+            if(fileInput.files && fileInput.files[0]) { fotoUrl = URL.createObjectURL(fileInput.files[0]); }
+            db.boxes.unshift({ id: 'BOX-' + String(db.boxes.length + 1).padStart(3, '0'), impuesto, remite, fecha: new Date().toISOString().split('T')[0], estado: 'Pendiente', obs, foto: fotoUrl });
             saveDB();
             closeModal('modal-box');
         }
@@ -689,20 +636,12 @@
             const codigo = document.getElementById('exp-codigo').value;
             const nombre = document.getElementById('exp-nombre').value;
             const trd = document.getElementById('exp-trd').value;
-
             if(!codigo || !nombre) { alert('Complete los campos obligatorios.'); return; }
-
-            const newExp = {
-                id: codigo,
-                codigo,
-                nombre,
-                trd,
-                estado: 'Abierto',
-                ubicacion: { dep: 'Pendiente', caja: 0, modulo: '-', estante: '-', carpeta: 1 },
+            db.expedientes.push({
+                id: codigo, codigo, nombre, trd, estado: 'Abierto',
+                ubicacion: { dep: 'Pendiente de Traslado', caja: 0, modulo: '-', estante: '-', carpeta: 1 },
                 items: []
-            };
-
-            db.expedientes.push(newExp);
+            });
             saveDB();
             closeModal('modal-exp');
             document.getElementById('select-expediente').value = codigo;
@@ -712,25 +651,18 @@
         function loadExpedienteDetails() {
             const expId = document.getElementById('select-expediente').value;
             const container = document.getElementById('expediente-container');
-            if(!expId) {
-                container.classList.add('hidden');
-                return;
-            }
-
+            if(!expId) { container.classList.add('hidden'); return; }
             const exp = db.expedientes.find(e => e.id === expId);
             if(!exp) return;
-
             container.classList.remove('hidden');
-            document.getElementById('title-current-exp').innerText = `${exp.codigo} - ${exp.nombre}`;
+            document.getElementById('title-current-exp').innerText = `${exp.codigo} -${exp.nombre}`;
             document.getElementById('meta-trd').innerHTML = `<strong class="text-slate-800">TRD Asignada:</strong> ${exp.trd}`;
-
             let tbody = document.getElementById('items-table-body');
             tbody.innerHTML = '';
             if(exp.items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">No hay documentos incorporados todavía en este expediente.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">No hay documentos en la hoja de control todavía.</td></tr>`;
                 return;
             }
-
             exp.items.forEach((it, idx) => {
                 tbody.innerHTML += `
                     <tr>
@@ -741,9 +673,7 @@
                         <td class="p-2.5 border-b">${it.folios}</td>
                         <td class="p-2.5 border-b">${it.func}</td>
                         <td class="p-2.5 border-b text-slate-500">${it.obs}</td>
-                        <td class="p-2.5 border-b text-center">
-                            <button onclick="deleteItem('${exp.id}', ${idx})" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button>
-                        </td>
+                        <td class="p-2.5 border-b text-center"><button onclick="deleteItem('${exp.id}',${idx})" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
                 `;
             });
@@ -757,22 +687,10 @@
             const folios = document.getElementById('item-folios').value || '1';
             const func = document.getElementById('item-func').value;
             const obs = document.getElementById('item-obs').value || 'Ninguna';
-
-            if(!docNumber) { alert('Por favor ingrese el número o radicado posterior a la raya.'); return; }
-
-            const fullDesc = `${docName} - ${docNumber}`;
-
+            if(!docNumber) { alert('Ingrese el número o radicado.'); return; }
             const exp = db.expedientes.find(e => e.id === expId);
             if(exp) {
-                exp.items.push({
-                    item: exp.items.length + 1,
-                    fdocInc: new Date().toISOString().split('T')[0],
-                    fdoc,
-                    desc: fullDesc,
-                    folios,
-                    func,
-                    obs
-                });
+                exp.items.push({ item: exp.items.length + 1, fdocInc: new Date().toISOString().split('T')[0], fdoc, desc: `${docName} -${docNumber}`, folios, func, obs });
                 saveDB();
                 closeModal('modal-item');
                 loadExpedienteDetails();
@@ -781,11 +699,7 @@
 
         function deleteItem(expId, idx) {
             const exp = db.expedientes.find(e => e.id === expId);
-            if(exp) {
-                exp.items.splice(idx, 1);
-                saveDB();
-                loadExpedienteDetails();
-            }
+            if(exp) { exp.items.splice(idx, 1); saveDB(); loadExpedienteDetails(); }
         }
 
         function closeExpedienteToOutbox() {
@@ -795,7 +709,7 @@
             if(exp) {
                 exp.estado = 'Cerrado';
                 saveDB();
-                alert('Expediente cerrado y enviado a la Bandeja de Salida para asignación de ubicación.');
+                alert('Expediente cerrado y transferido a la Bandeja de Salida.');
                 switchTab('outbox');
             }
         }
@@ -812,7 +726,6 @@
             const modulo = document.getElementById('ub-modulo').value;
             const estante = document.getElementById('ub-estante').value;
             const carpeta = document.getElementById('ub-carpeta').value;
-
             const exp = db.expedientes.find(e => e.id === expId);
             if(exp) {
                 exp.ubicacion = { dep, caja, modulo, estante, carpeta };
@@ -832,82 +745,58 @@
             sel.value = currentVal;
 
             let pendingBoxes = db.boxes.filter(b => b.estado === 'Pendiente').length;
-            let processedBoxes = db.boxes.filter(b => b.estado === 'Procesada').length;
             document.getElementById('stat-pending').innerText = pendingBoxes;
-            document.getElementById('stat-processed').innerText = processedBoxes;
+            document.getElementById('stat-processed').innerText = db.boxes.filter(b => b.estado === 'Procesada').length;
             document.getElementById('stat-total-boxes').innerText = db.boxes.length;
             document.getElementById('badge-inbox').innerText = pendingBoxes;
             document.getElementById('badge-outbox').innerText = db.expedientes.filter(e => e.estado === 'Cerrado' || e.estado === 'Archivado').length;
 
-            const searchFilter = (document.getElementById('search-box').value || '').toLowerCase();
             let inboxBody = document.getElementById('inbox-table-body');
             inboxBody.innerHTML = '';
-            
-            const filteredBoxes = db.boxes.filter(b => 
-                b.id.toLowerCase().includes(searchFilter) || 
-                b.remite.toLowerCase().includes(searchFilter) || 
-                b.impuesto.toLowerCase().includes(searchFilter)
-            );
-
-            if(filteredBoxes.length === 0) {
-                inboxBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">No se encontraron cajas registradas.</td></tr>`;
-            } else {
-                filteredBoxes.forEach(b => {
-                    inboxBody.innerHTML += `
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-3"><img src="${b.foto}" class="w-10 h-10 object-cover rounded-lg border shadow-sm"></td>
-                            <td class="p-3 font-bold text-slate-700">${b.id}</td>
-                            <td class="p-3 font-semibold text-emerald-700">${b.impuesto}</td>
-                            <td class="p-3 text-slate-600">${b.remite}</td>
-                            <td class="p-3 text-slate-500 text-xs">${b.fecha}</td>
-                            <td class="p-3">
-                                <span class="px-2.5 py-1 text-xs font-bold rounded-full ${b.estado === 'Pendiente' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">${b.estado}</span>
-                            </td>
-                            <td class="p-3 text-center">
-                                <button onclick="toggleBoxStatus('${b.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg shadow">
-                                    ${b.estado === 'Pendiente' ? 'Marcar Procesada' : 'Reabrir'}
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
+            db.boxes.forEach(b => {
+                inboxBody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3"><img src="${b.foto}" class="w-10 h-10 object-cover rounded-lg border shadow-sm"></td>
+                        <td class="p-3 font-bold text-slate-700">${b.id}</td>
+                        <td class="p-3 font-semibold text-emerald-700">${b.impuesto}</td>
+                        <td class="p-3 text-slate-600">${b.remite}</td>
+                        <td class="p-3 text-slate-500 text-xs">${b.fecha}</td>
+                        <td class="p-3"><span class="px-2.5 py-1 text-xs font-bold rounded-full ${b.estado === 'Pendiente' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">${b.estado}</span></td>
+                        <td class="p-3 text-center"><button onclick="toggleBoxStatus('${b.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg shadow">${b.estado === 'Pendiente' ? 'Procesar' : 'Reabrir'}</button></td>
+                    </tr>
+                `;
+            });
 
             let outboxBody = document.getElementById('outbox-table-body');
             outboxBody.innerHTML = '';
-            if(db.expedientes.length === 0) {
-                outboxBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No hay expedientes registrados.</td></tr>`;
-            } else {
-                db.expedientes.forEach(e => {
-                    outboxBody.innerHTML += `
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-3 font-bold text-slate-800">${e.codigo}<br><span class="font-normal text-slate-500">${e.nombre}</span></td>
-                            <td class="p-3 text-xs text-slate-600">${e.trd}</td>
-                            <td class="p-3 font-semibold">${e.items.length > 0 ? e.items[e.items.length-1].folios : '0'}</td>
-                            <td class="p-3 text-xs">
-                                <strong class="text-slate-700">${e.ubicacion.dep}</strong><br>
-                                Caja: ${e.ubicacion.caja} | Mód: ${e.ubicacion.modulo} | Carpeta: ${e.ubicacion.carpeta}
-                            </td>
-                            <td class="p-3">
-                                <span class="px-2.5 py-1 text-xs font-bold rounded-full ${e.estado === 'Archivado' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${e.estado}</span>
-                            </td>
-                            <td class="p-3 text-center">
-                                <button onclick="openUbicacionModal('${e.id}')" class="text-xs bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg shadow">
-                                    <i class="fa-solid fa-map-pin mr-1"></i> Ubicación
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
+            db.expedientes.forEach(e => {
+                outboxBody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3 font-bold text-slate-800">${e.codigo}<br><span class="font-normal text-slate-500">${e.nombre}</span></td>
+                        <td class="p-3 text-xs text-slate-600">${e.trd}</td>
+                        <td class="p-3 font-semibold">${e.items.length > 0 ? e.items[e.items.length-1].folios : '0'}</td>
+                        <td class="p-3 text-xs">
+                            <strong class="text-emerald-700">${e.ubicacion.dep}</strong><br>
+                            Caja: ${e.ubicacion.caja} | Mód: ${e.ubicacion.modulo} | Estante: ${e.ubicacion.estante} | Carpeta:${e.ubicacion.carpeta}
+                        </td>
+                        <td class="p-3"><span class="px-2.5 py-1 text-xs font-bold rounded-full ${e.estado === 'Archivado' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${e.estado}</span></td>
+                        <td class="p-3 text-center">
+                            <button onclick="openUbicacionModal('${e.id}')" class="text-xs bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg shadow">
+                                <i class="fa-solid fa-map-pin mr-1"></i> Asignar Ubicación
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
 
             let fuidBody = document.getElementById('fuid-table-body');
             fuidBody.innerHTML = '';
             db.expedientes.forEach((e, idx) => {
-                let trdCode = e.trd.split('|')[0].trim();
-                let trdName = e.trd.split('|')[1] || e.trd;
+                let parts = e.trd.split('|');
+                let trdCode = parts[0].trim();
+                let trdName = parts[1] || e.trd;
                 let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
-                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-10-30';
+                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-11-08';
                 let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
 
                 fuidBody.innerHTML += `
@@ -915,64 +804,9 @@
                         <td class="p-2 border border-slate-300 font-bold">${idx + 1}</td>
                         <td class="p-2 border border-slate-300 font-mono text-[10px]">${trdCode}</td>
                         <td class="p-2 border border-slate-300 text-left">${trdName}</td>
-                        <td class="p-2 border border-slate-300 text-left font-semibold">${e.codigo} - ${e.nombre}</td>
+                        <td class="p-2 border border-slate-300 text-left font-semibold">${e.codigo} -${e.nombre}</td>
                         <td class="p-2 border border-slate-300">${fechaIni}</td>
                         <td class="p-2 border border-slate-300">${fechaFin}</td>
                         <td class="p-2 border border-slate-300">${e.ubicacion.caja || 1}</td>
                         <td class="p-2 border border-slate-300">${e.ubicacion.carpeta || 1}</td>
-                        <td class="p-2 border border-slate-300 font-bold">${nFolios}</td>
-                        <td class="p-2 border border-slate-300 text-xs">${e.ubicacion.dep}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        function toggleBoxStatus(id) {
-            const box = db.boxes.find(b => b.id === id);
-            if(box) {
-                box.estado = box.estado === 'Pendiente' ? 'Procesada' : 'Pendiente';
-                saveDB();
-            }
-        }
-
-        function exportFUIDExcel() {
-            let wb = XLSX.utils.book_new();
-            let wsData = [
-                ["GOBERNACIÓN DEL VALLE DEL CAUCA"],
-                ["FORMATO ÚNICO DE INVENTARIO DOCUMENTAL (FUID)"],
-                ["OFICINA PRODUCTORA:", "Subgerencia de Liquidación y Devoluciones"],
-                [],
-                ["N° Orden", "Código TRD", "Nombre Serie / Subserie", "Nombre de la Unidad Documental", "Fecha Inicial", "Fecha Final", "Caja", "Carpeta", "N° Folios", "Ubicación Física"]
-            ];
-
-            db.expedientes.forEach((e, idx) => {
-                let trdCode = e.trd.split('|')[0].trim();
-                let trdName = e.trd.split('|')[1] || e.trd;
-                let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
-                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-10-30';
-                let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
-
-                wsData.push([
-                    idx + 1,
-                    trdCode,
-                    trdName,
-                    `${e.codigo} - ${e.nombre}`,
-                    fechaIni,
-                    fechaFin,
-                    e.ubicacion.caja || 1,
-                    e.ubicacion.carpeta || 1,
-                    nFolios,
-                    e.ubicacion.dep
-                ]);
-            });
-
-            let ws = XLSX.utils.aoa_to_sheet(wsData);
-            XLSX.utils.book_append_sheet(wb, ws, "FUID_Consolidado");
-            XLSX.writeFile(wb, "FUID_Gobernacion_Valle_Rentas.xlsx");
-        }
-
-        renderAll();
-    </script>
-</body>
-</html>
-```
+                        <td class="p-2 border border-slate-300 font-bold">${nFolios}
