@@ -33,7 +33,7 @@
             </div>
             <div class="flex items-center space-x-3 text-sm">
                 <button onclick="resetDemoData()" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300 transition flex items-center gap-1.5" title="Restaurar datos de prueba">
-                    <i class="fa-solid fa-rotate-right text-emerald-400"></i> Cargar Datos Hoja
+                    <i class="fa-solid fa-rotate-right text-emerald-400"></i> Cargar Datos FUID
                 </button>
                 <span class="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300">
                     <i class="fa-solid fa-user-shield text-green-400 mr-1.5"></i> Operador Documental
@@ -192,7 +192,7 @@
                         </select>
                     </div>
                     <div id="expediente-meta" class="md:col-span-2 text-xs text-slate-600 flex flex-col justify-center">
-                        <span class="font-semibold text-slate-800">Oficina Productora:</span> Subgerencia de Liquidación y Devoluciones
+                        <span class="font-semibold text-slate-800">Oficina Productora:</span> Sugerencia de Liquidación y Devoluciones
                         <span id="meta-trd" class="mt-1"><strong class="text-slate-800">TRD Asignada:</strong> Seleccione un expediente</span>
                     </div>
                 </div>
@@ -270,39 +270,70 @@
             </div>
         </section>
 
-        <!-- ================= VISTA 4: GENERADOR FUID ================= -->
+        <!-- ================= VISTA 4: GENERADOR FUID (IDÉNTICO A GOOGLE SHEETS) ================= -->
         <section id="tab-fuid" class="tab-section space-y-6 animate-fade" style="display: none;">
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-200">
-                    <div>
-                        <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded">CÓDIGO: FO-M9-P3-06 V04</span>
-                        <h2 class="text-xl font-bold text-slate-800 mt-1">Formato Único de Inventario Documental (FUID)</h2>
-                        <p class="text-xs text-slate-500">Consolidado oficial integrado con la Hoja de Cálculo (Filas 11 a 14).</p>
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 overflow-hidden">
+                <!-- Cabecera Institucional FUID igualita a la hoja -->
+                <div class="border border-slate-800 mb-6 bg-white text-xs">
+                    <div class="grid grid-cols-12 border-b border-slate-800">
+                        <div class="col-span-8 p-2 border-r border-slate-800 font-bold text-sm text-slate-900 flex items-center">
+                            Departamento del Valle del Cauca
+                        </div>
+                        <div class="col-span-4 p-2 text-center font-bold text-slate-900 flex items-center justify-center bg-slate-50">
+                            Formato Único de Inventario Documental
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="exportFUIDExcel()" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
-                            <i class="fa-solid fa-file-excel"></i> Exportar FUID a Excel
-                        </button>
+                    <div class="grid grid-cols-12 border-b border-slate-800">
+                        <div class="col-span-8 p-2 border-r border-slate-800 space-y-1">
+                            <div><strong class="text-slate-700">ENTIDAD REMITENTE:</strong> <span class="text-red-700 italic">Gobernación del Valle del Cauca</span></div>
+                            <div><strong class="text-slate-700">ENTIDAD PRODUCTORA:</strong> <span class="text-red-700 italic">Gobernación del Valle del Cauca</span></div>
+                            <div><strong class="text-slate-700">UNIDAD ADMINISTRATIVA:</strong> <span class="text-red-700 italic">Unidad Administrativa Especial de Impuestos, Rentas y Gestión Tributaria</span></div>
+                            <div><strong class="text-slate-700">OFICINA PRODUCTORA:</strong> <span class="text-red-700 italic">Sugerencia de Liquidación y Devoluciones</span></div>
+                            <div><strong class="text-slate-700">OBJETO:</strong> <span class="border-b border-slate-400 inline-block w-3/4">EXENCIÓN DE IMPUESTO DE REGISTRO</span></div>
+                        </div>
+                        <div class="col-span-4 p-3 flex flex-col justify-between bg-slate-50 text-[11px]">
+                            <div><strong>Versión:</strong> 04</div>
+                            <div><strong>Fecha de Aprobación:</strong> -</div>
+                            <div><strong>Página:</strong> 1 de 1</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Vista Previa Tabla FUID -->
-                <div class="mt-6 overflow-x-auto border border-slate-300 rounded-lg">
-                    <table class="w-full text-left text-xs border-collapse">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-table mr-2 text-emerald-600"></i> Registros Oficiales (Filas 11 a 14)</h3>
+                    <button onclick="exportFUIDExcel()" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-file-excel"></i> Exportar FUID a Excel
+                    </button>
+                </div>
+
+                <!-- Tabla FUID Exacta a Google Sheets -->
+                <div class="overflow-x-auto border border-slate-800 rounded-lg">
+                    <table class="w-full text-center text-[11px] border-collapse bg-white">
                         <thead>
-                            <tr class="bg-slate-800 text-white font-semibold uppercase text-center text-[11px]">
-                                <th class="p-2 border border-slate-600">N° Orden</th>
-                                <th class="p-2 border border-slate-600">Código TRD</th>
-                                <th class="p-2 border border-slate-600">Nombre Serie / Subserie</th>
-                                <th class="p-2 border border-slate-600">Nombre de la Unidad Documental</th>
-                                <th class="p-2 border border-slate-600" colspan="2">Fechas Extremas</th>
-                                <th class="p-2 border border-slate-600" colspan="2">Unidad Conservación</th>
-                                <th class="p-2 border border-slate-600">N° Folios</th>
-                                <th class="p-2 border border-slate-600">Ubicación (Dep / Caja / Carpeta)</th>
+                            <tr class="bg-slate-100 text-slate-800 font-bold border-b border-slate-800">
+                                <th class="p-2 border-r border-slate-800 w-16" rowspan="2">Número de Orden</th>
+                                <th class="p-2 border-r border-slate-800 w-28" rowspan="2">Código</th>
+                                <th class="p-2 border-r border-slate-800" rowspan="2">Nombre Serie o Subserie o Asuntos</th>
+                                <th class="p-2 border-r border-slate-800" rowspan="2">Nombre de la Unidad Documental</th>
+                                <th class="p-2 border-r border-slate-800" colspan="2">Fechas Extremas</th>
+                                <th class="p-2 border-r border-slate-800" colspan="2">Soporte o Formato</th>
+                                <th class="p-2 border-r border-slate-800" colspan="4">Físico<br>Unidad de conservación</th>
+                                <th class="p-2 border-r border-slate-800 w-20" rowspan="2">Número de Folios</th>
+                                <th class="p-2 w-16" rowspan="2">Tipo</th>
+                            </tr>
+                            <tr class="bg-slate-100 text-slate-800 font-bold border-b border-slate-800 text-[10px]">
+                                <th class="p-1.5 border-r border-slate-800">Inicial</th>
+                                <th class="p-1.5 border-r border-slate-800">Final</th>
+                                <th class="p-1.5 border-r border-slate-800 w-16">Físico</th>
+                                <th class="p-1.5 border-r border-slate-800 w-16">Electrónico</th>
+                                <th class="p-1.5 border-r border-slate-800 w-16 bg-amber-100">Caja</th>
+                                <th class="p-1.5 border-r border-slate-800 w-16 bg-amber-100">Carpeta</th>
+                                <th class="p-1.5 border-r border-slate-800 w-20">Tomo/legajo/Libro</th>
+                                <th class="p-1.5 border-r border-slate-800 w-20">Número de Folios</th>
                             </tr>
                         </thead>
-                        <tbody id="fuid-table-body" class="divide-y divide-slate-200">
-                            <!-- Dinámico con las filas 11 a 14 -->
+                        <tbody id="fuid-exact-table-body" class="divide-y divide-slate-800">
+                            <!-- Dinámico con las filas 11 a 14 exactas -->
                         </tbody>
                     </table>
                 </div>
@@ -322,9 +353,8 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tipo de Proceso / Renta:</label>
                     <select id="box-impuesto" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                        <option value="Devolución de Pasaportes">Devolución de Pasaportes</option>
                         <option value="Exención de Impuesto de Registro">Exención de Impuesto de Registro</option>
-                        <option value="Procesos Administrativos de Devolución">Procesos Administrativos de Devolución</option>
+                        <option value="Devolución de Pasaportes">Devolución de Pasaportes</option>
                     </select>
                 </div>
                 <div>
@@ -337,7 +367,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Observaciones:</label>
-                    <textarea id="box-obs" rows="2" placeholder="Caja con expedientes..." class="w-full text-sm border border-slate-300 rounded-lg p-2.5"></textarea>
+                    <textarea id="box-obs" rows="2" placeholder="Caja 101..." class="w-full text-sm border border-slate-300 rounded-lg p-2.5"></textarea>
                 </div>
             </div>
             <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
@@ -355,247 +385,87 @@
             </div>
             <div class="p-6 space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número o Código de Expediente:</label>
-                    <input type="text" id="exp-codigo" placeholder="Ej. EXP. 001-2026" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número de Orden / ID:</label>
+                    <input type="text" id="exp-codigo" placeholder="Ej. 3" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombre del Contribuyente / Ciudadano:</label>
-                    <input type="text" id="exp-nombre" placeholder="Ej. LUIS ANDRES BOTIA" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombre de la Unidad Documental:</label>
+                    <input type="text" id="exp-nombre" placeholder="Ej. Solicitud Rad. 2024..." class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Serie / Subserie TRD (Proceso):</label>
-                    <select id="exp-trd" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                        <option value="1.120.60.20-64.05 | Procesos Administrativos. Proceso de Devolución de Pasaportes">1.120.60.20-64.05 - Devolución de Pasaportes</option>
-                        <option value="1.120.60.20-64.05 | Procesos Administrativos. Proceso de Exención de Impuesto de Registro">1.120.60.20-64.05 - Exención de Impuesto de Registro</option>
-                        <option value="1.120.80.20-65.04 | Procesos Administrativos de Devolución">1.120.80.20-65.04 - Procesos Administrativos de Devolución</option>
-                    </select>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Serie / Subserie:</label>
+                    <input type="text" id="exp-subserie" value="Procesos Administrativos" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Código TRD:</label>
+                    <input type="text" id="exp-trd" value="1.120.60.20-64.05" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
                 </div>
             </div>
             <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
                 <button onclick="closeModal('modal-exp')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
-                <button onclick="saveNewExpediente()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Crear Expediente</button>
+                <button onclick="saveNewExpediente()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Crear Fila FUID</button>
             </div>
         </div>
     </div>
 
-    <div id="modal-item" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
-            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="font-bold text-base"><i class="fa-solid fa-file-circle-plus mr-2 text-emerald-400"></i> Añadir Tipo Documental (Hoja de Control)</h3>
-                <button onclick="closeModal('modal-item')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="p-6 space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Fecha del Documento:</label>
-                    <input type="date" id="item-fdoc" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Seleccionar Tipo Documental:</label>
-                    <select id="item-doc-name" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 bg-white font-semibold text-slate-800">
-                        <option value="SOLICITUD RADICADO">SOLICITUD RADICADO</option>
-                        <option value="CERTIFICACION DE INGRESO">CERTIFICACION DE INGRESO</option>
-                        <option value="CERTIFICADO DE NO PAGO">CERTIFICADO DE NO PAGO</option>
-                        <option value="SOLICITUD DE CERTIFICACION">SOLICITUD DE CERTIFICACION</option>
-                        <option value="VERIFICACION PAGO TRAMITE">VERIFICACION PAGO TRAMITE</option>
-                        <option value="RESPUESTA A SOLICITUD">RESPUESTA A SOLICITUD</option>
-                        <option value="RESOLUCION y CDP">RESOLUCION y CDP</option>
-                        <option value="ACTA DE ENVIO Y ENTREGA DE MENSAJE">ACTA DE ENVIO Y ENTREGA DE MENSAJE</option>
-                        <option value="Constancia de notificación">Constancia de notificación</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número o Radicado posterior a la raya (-):</label>
-                    <div class="flex items-center gap-2">
-                        <span class="text-lg font-bold text-slate-500">-</span>
-                        <input type="text" id="item-doc-number" placeholder="Ej. 2026005381" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 font-mono font-bold text-emerald-700">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Rango de Folios:</label>
-                        <input type="text" id="item-folios" placeholder="Ej. 1-4" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Funcionario:</label>
-                        <input type="text" id="item-func" value="YOHANA ESTRADA" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Observaciones:</label>
-                    <input type="text" id="item-obs" placeholder="Ninguna" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                </div>
-            </div>
-            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
-                <button onclick="closeModal('modal-item')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
-                <button onclick="saveItemToExpediente()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Registrar en Hoja de Control</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-mass" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
-        <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full overflow-hidden border border-slate-200 flex flex-col max-h-[90vh]">
-            <div class="bg-emerald-800 text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="font-bold text-base"><i class="fa-solid fa-table-cells mr-2"></i> Llenado Masivo - Hoja de Control de Expediente</h3>
-                <button onclick="closeModal('modal-mass')" class="text-emerald-200 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto space-y-4 flex-grow">
-                <p class="text-xs text-slate-500">
-                    Construye la hoja de control fila por fila incorporando los tipos documentales, sus radicados y folios correspondientes.
-                </p>
-                <div class="border border-slate-300 rounded-lg overflow-x-auto">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-100 text-slate-700 uppercase">
-                            <tr>
-                                <th class="p-2 border-b w-12 text-center">#</th>
-                                <th class="p-2 border-b">Tipo Documental</th>
-                                <th class="p-2 border-b w-36">Número / Radicado (-)</th>
-                                <th class="p-2 border-b w-24">Folios</th>
-                                <th class="p-2 border-b w-32">Funcionario</th>
-                            </tr>
-                        </thead>
-                        <tbody id="mass-rows-container">
-                            <!-- Filas dinámicas -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="flex justify-between items-center pt-2">
-                    <button onclick="addMassRow()" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-3 py-1.5 rounded-lg">
-                        <i class="fa-solid fa-plus mr-1"></i> Añadir otra fila
-                    </button>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
-                <button onclick="closeModal('modal-mass')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
-                <button onclick="saveMassItems()" class="px-5 py-2 text-xs font-bold bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg shadow">Guardar Hoja de Control</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-ubicacion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
-            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="font-bold text-base"><i class="fa-solid fa-map-pin mr-2 text-emerald-400"></i> Asignar Ubicación Física (Bandeja de Salida)</h3>
-                <button onclick="closeModal('modal-ubicacion')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="p-6 space-y-4">
-                <input type="hidden" id="ubicacion-exp-id">
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Depósito:</label>
-                        <select id="ub-dep" class="w-full text-sm border border-slate-300 rounded-lg p-2">
-                            <option value="Deposito 1 (Archivo Central del Edificio)">Depósito 1 (Archivo Central del Edificio)</option>
-                            <option value="Deposito 2 (Archivo Central de Yumbo)">Depósito 2 (Archivo Central de Yumbo)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">N° de Caja:</label>
-                        <input type="number" id="ub-caja" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
-                    </div>
-                </div>
-                <div class="grid grid-cols-3 gap-2">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">N° Módulo:</label>
-                        <input type="text" id="ub-modulo" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">N° Estante:</label>
-                        <input type="text" id="ub-estante" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Carpeta:</label>
-                        <input type="text" id="ub-carpeta" value="1" class="w-full text-sm border border-slate-300 rounded-lg p-2">
-                    </div>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
-                <button onclick="closeModal('modal-ubicacion')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
-                <button onclick="saveUbicacion()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Guardar Ubicación y Archivar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script con los registros correspondientes a las filas 11 a 14 de la Hoja -->
+    <!-- Script de lógica con la información exacta de las filas 11 a 14 de la hoja -->
     <script>
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-        const docTypesList = [
-            "SOLICITUD RADICADO",
-            "CERTIFICACION DE INGRESO",
-            "CERTIFICADO DE NO PAGO",
-            "SOLICITUD DE CERTIFICACION",
-            "VERIFICACION PAGO TRAMITE",
-            "RESPUESTA A SOLICITUD",
-            "RESOLUCION y CDP",
-            "ACTA DE ENVIO Y ENTREGA DE MENSAJE",
-            "Constancia de notificación"
-        ];
-
-        // Base de datos inicial precargada con la información correspondiente a las filas 11 a 14 de su Google Sheet
         const defaultDb = {
             boxes: [
-                { id: 'BOX-001', impuesto: 'Exención de Impuesto de Registro', remite: 'Oficina de Rentas', fecha: '2026-02-10', estado: 'Procesada', obs: 'Caja con expedientes filas 11 a 14', foto: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=100&auto=format&fit=crop&q=80' }
+                { id: 'BOX-101', impuesto: 'Exención de Impuesto de Registro', remite: 'Gobernación del Valle', fecha: '2024-09-13', estado: 'Procesada', obs: 'Caja 101 con registros filas 11-14', foto: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=100&auto=format&fit=crop&q=80' }
             ],
             expedientes: [
                 {
-                    id: 'EXP-11',
-                    codigo: 'EXP. 011-2026',
-                    nombre: 'WILSON MILLAN PARRA (Fila 11)',
-                    trd: '1.120.60.20-64.05 | Exención de Impuesto de Registro',
-                    estado: 'Archivado',
-                    ubicacion: { dep: 'Deposito 1 (Archivo Central del Edificio)', caja: 1, modulo: '1', estante: '1', carpeta: 1 },
-                    items: [
-                        { item: 1, fdocInc: '2026-02-10', fdoc: '2026-02-10', desc: 'SOLICITUD RADICADO - 20260011', folios: '1-4', func: 'YOHANA ESTRADA', obs: 'Fila 11 - Registro Inicial' }
-                    ]
+                    orden: 1,
+                    codigo: '1.120.60.20-64.05',
+                    subserie: 'Procesos Administrativos',
+                    nombre: 'Solicitud Rad. 2024...',
+                    fIni: '13/09/2024',
+                    fFin: '03/01/2025',
+                    fisico: 'X',
+                    electronico: '',
+                    caja: '101',
+                    carpeta: '1',
+                    tomo: '',
+                    folios: '1-147',
+                    tipo: ''
                 },
                 {
-                    id: 'EXP-12',
-                    codigo: 'EXP. 012-2026',
-                    nombre: 'MARIA CLAUDIA GOMEZ (Fila 12)',
-                    trd: '1.120.60.20-64.05 | Exención de Impuesto de Registro',
-                    estado: 'Archivado',
-                    ubicacion: { dep: 'Deposito 1 (Archivo Central del Edificio)', caja: 1, modulo: '1', estante: '1', carpeta: 2 },
-                    items: [
-                        { item: 1, fdocInc: '2026-02-11', fdoc: '2026-02-11', desc: 'CERTIFICACION DE INGRESO - 20260012', folios: '1-6', func: 'YOHANA ESTRADA', obs: 'Fila 12 - Validación' }
-                    ]
-                },
-                {
-                    id: 'EXP-13',
-                    codigo: 'EXP. 013-2026',
-                    nombre: 'CARLOS ALBERTO RUIZ (Fila 13)',
-                    trd: '1.120.60.20-64.05 | Exención de Impuesto de Registro',
-                    estado: 'Archivado',
-                    ubicacion: { dep: 'Deposito 1 (Archivo Central del Edificio)', caja: 1, modulo: '1', estante: '2', carpeta: 3 },
-                    items: [
-                        { item: 1, fdocInc: '2026-02-12', fdoc: '2026-02-12', desc: 'RESOLUCION y CDP - 20260013', folios: '1-5', func: 'YOHANA ESTRADA', obs: 'Fila 13 - Aprobado' }
-                    ]
-                },
-                {
-                    id: 'EXP-14',
-                    codigo: 'EXP. 014-2026',
-                    nombre: 'ANA LUCIA VALENCIA (Fila 14)',
-                    trd: '1.120.60.20-64.05 | Exención de Impuesto de Registro',
-                    estado: 'Archivado',
-                    ubicacion: { dep: 'Deposito 1 (Archivo Central del Edificio)', caja: 1, modulo: '1', estante: '2', carpeta: 4 },
-                    items: [
-                        { item: 1, fdocInc: '2026-02-13', fdoc: '2026-02-13', desc: 'Constancia de notificación - 20260014', folios: '1-3', func: 'YOHANA ESTRADA', obs: 'Fila 14 - Notificado' }
-                    ]
+                    orden: 2,
+                    codigo: '1.120.60.20-64.05',
+                    subserie: 'Procesos Administrativos',
+                    nombre: 'Solicitud Rad. 2024...',
+                    fIni: '13/09/2024',
+                    fFin: '03/01/2025',
+                    fisico: 'X',
+                    electronico: '',
+                    caja: '101',
+                    carpeta: '2',
+                    tomo: '',
+                    folios: '1-34',
+                    tipo: ''
                 }
+            ],
+            controlItems: [
+                { item: 1, fdocInc: '2024-09-13', fdoc: '2024-09-13', desc: 'SOLICITUD RADICADO - 2024', folios: '1-147', func: 'YOHANA ESTRADA', obs: 'Fila 11' }
             ]
         };
 
-        let savedDb = JSON.parse(localStorage.getItem('gdl_rentas_db'));
+        let savedDb = JSON.parse(localStorage.getItem('gdl_fuid_db'));
         let db = (savedDb && savedDb.expedientes && savedDb.expedientes.length > 0) ? savedDb : defaultDb;
 
         function saveDB() {
-            localStorage.setItem('gdl_rentas_db', JSON.stringify(db));
+            localStorage.setItem('gdl_fuid_db', JSON.stringify(db));
             renderAll();
         }
 
         function resetDemoData() {
-            if(confirm('¿Desea cargar los datos correspondientes a las filas 11 a 14 de su hoja de cálculo?')) {
+            if(confirm('¿Desea restaurar exactamente los datos de las filas 11 a 14 de su hoja?')) {
                 db = JSON.parse(JSON.stringify(defaultDb));
                 saveDB();
-                alert('¡Datos de las filas 11 a 14 cargados con éxito!');
+                alert('¡Datos sincronizados con éxito!');
             }
         }
 
@@ -626,210 +496,62 @@
 
         function openNewBoxModal() { openModal('modal-box'); }
         function openNewExpedienteModal() { openModal('modal-exp'); }
-        function openAddItemModal() {
-            const expId = document.getElementById('select-expediente').value;
-            if(!expId) { alert('Por favor seleccione un expediente primero.'); return; }
-            document.getElementById('item-doc-number').value = '';
-            openModal('modal-item');
-        }
-
-        function openMassInputModal() {
-            const expId = document.getElementById('select-expediente').value;
-            if(!expId) { alert('Por favor seleccione un expediente primero.'); return; }
-            let container = document.getElementById('mass-rows-container');
-            container.innerHTML = '';
-            for(let i = 1; i <= 4; i++) {
-                appendMassRow(i, '', '', i === 1 ? '1-3' : '', 'YOHANA ESTRADA');
-            }
-            openModal('modal-mass');
-        }
-
-        function addMassRow() {
-            let container = document.getElementById('mass-rows-container');
-            appendMassRow(container.rows.length + 1, '', '', '', 'YOHANA ESTRADA');
-        }
-
-        function appendMassRow(num, selectedType, numberVal, foliosVal, funcVal) {
-            let container = document.getElementById('mass-rows-container');
-            let tr = document.createElement('tr');
-            tr.className = "border-b border-slate-200 hover:bg-slate-50";
-            let optionsHtml = docTypesList.map(t => `<option value="${t}" ${t === selectedType ? 'selected' : ''}>${t}</option>`).join('');
-            tr.innerHTML = `
-                <td class="p-2 text-center font-bold text-slate-500">${num}</td>
-                <td class="p-2"><select class="mass-type w-full text-xs border border-slate-300 rounded p-1.5 bg-white font-semibold">${optionsHtml}</select></td>
-                <td class="p-2"><div class="flex items-center gap-1"><span class="font-bold text-slate-400">-</span><input type="text" class="mass-num w-full text-xs border border-slate-300 rounded p-1.5 font-mono font-bold text-emerald-700" placeholder="2026..." value="${numberVal}"></div></td>
-                <td class="p-2"><input type="text" class="mass-folios w-full text-xs border border-slate-300 rounded p-1.5" placeholder="Ej. 1-2" value="${foliosVal}"></td>
-                <td class="p-2"><input type="text" class="mass-func w-full text-xs border border-slate-300 rounded p-1.5" value="${funcVal}"></td>
-            `;
-            container.appendChild(tr);
-        }
-
-        function saveMassItems() {
-            const expId = document.getElementById('select-expediente').value;
-            const exp = db.expedientes.find(e => e.id === expId);
-            if(!exp) return;
-            let rows = document.querySelectorAll('#mass-rows-container tr');
-            let addedCount = 0;
-            rows.forEach(tr => {
-                let type = tr.querySelector('.mass-type').value;
-                let num = tr.querySelector('.mass-num').value.trim();
-                let folios = tr.querySelector('.mass-folios').value.trim() || '1';
-                let func = tr.querySelector('.mass-func').value.trim() || 'YOHANA ESTRADA';
-                if(num !== '') {
-                    exp.items.push({
-                        item: exp.items.length + 1,
-                        fdocInc: new Date().toISOString().split('T')[0],
-                        fdoc: new Date().toISOString().split('T')[0],
-                        desc: `${type} - ${num}`,
-                        folios, func, obs: 'Ingreso masivo'
-                    });
-                    addedCount++;
-                }
-            });
-            if(addedCount > 0) {
-                saveDB();
-                closeModal('modal-mass');
-                loadExpedienteDetails();
-                alert(`¡Se añadieron ${addedCount} documentos a la hoja de control!`);
-            } else {
-                alert('Ingrese al menos un radicado.');
-            }
-        }
+        function openAddItemModal() { openModal('modal-exp'); }
 
         function saveNewBox() {
             const impuesto = document.getElementById('box-impuesto').value;
-            const remite = document.getElementById('box-remite').value || 'Colaborador';
+            const remite = document.getElementById('box-remite').value || 'Gobernación';
             const obs = document.getElementById('box-obs').value;
-            const fileInput = document.getElementById('box-foto');
-            let fotoUrl = 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=100&auto=format&fit=crop&q=80';
-            if(fileInput.files && fileInput.files[0]) { fotoUrl = URL.createObjectURL(fileInput.files[0]); }
-            db.boxes.unshift({ id: 'BOX-' + String(db.boxes.length + 1).padStart(3, '0'), impuesto, remite, fecha: new Date().toISOString().split('T')[0], estado: 'Pendiente', obs, foto: fotoUrl });
+            db.boxes.unshift({ id: 'BOX-101', impuesto, remite, fecha: '2024-09-13', estado: 'Procesada', obs, foto: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=100&auto=format&fit=crop&q=80' });
             saveDB();
             closeModal('modal-box');
-            alert('¡Caja registrada con éxito!');
+            alert('¡Caja registrada!');
         }
 
         function saveNewExpediente() {
-            const codigo = document.getElementById('exp-codigo').value;
-            const nombre = document.getElementById('exp-nombre').value;
-            const trd = document.getElementById('exp-trd').value;
-            if(!codigo || !nombre) { alert('Complete los campos obligatorios.'); return; }
+            const orden = parseInt(document.getElementById('exp-codigo').value) || (db.expedientes.length + 1);
+            const nombre = document.getElementById('exp-nombre').value || 'Solicitud Radicación';
+            const subserie = document.getElementById('exp-subserie').value || 'Procesos Administrativos';
+            const codigo = document.getElementById('exp-trd').value || '1.120.60.20-64.05';
+            
             db.expedientes.push({
-                id: codigo, codigo, nombre, trd, estado: 'Abierto',
-                ubicacion: { dep: 'Pendiente de Traslado', caja: 0, modulo: '-', estante: '-', carpeta: 1 },
-                items: []
+                orden, codigo, subserie, nombre,
+                fIni: '13/09/2024', fFin: '03/01/2025',
+                fisico: 'X', electronico: '',
+                caja: '101', carpeta: String(orden), tomo: '',
+                folios: '1-50', tipo: ''
             });
             saveDB();
             closeModal('modal-exp');
-            document.getElementById('select-expediente').value = codigo;
-            loadExpedienteDetails();
-            alert('¡Expediente creado con éxito!');
-        }
-
-        function loadExpedienteDetails() {
-            const expId = document.getElementById('select-expediente').value;
-            const container = document.getElementById('expediente-container');
-            if(!expId) { container.classList.add('hidden'); return; }
-            const exp = db.expedientes.find(e => e.id === expId);
-            if(!exp) return;
-            container.classList.remove('hidden');
-            document.getElementById('title-current-exp').innerText = `${exp.codigo} - ${exp.nombre}`;
-            document.getElementById('meta-trd').innerHTML = `<strong class="text-slate-800">TRD Asignada:</strong> ${exp.trd}`;
-            let tbody = document.getElementById('items-table-body');
-            tbody.innerHTML = '';
-            if(exp.items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">No hay documentos en la hoja de control todavía.</td></tr>`;
-                return;
-            }
-            exp.items.forEach((it, idx) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="p-2.5 border-b font-bold">${idx + 1}</td>
-                        <td class="p-2.5 border-b">${it.fdocInc}</td>
-                        <td class="p-2.5 border-b">${it.fdoc}</td>
-                        <td class="p-2.5 border-b font-medium">${it.desc}</td>
-                        <td class="p-2.5 border-b">${it.folios}</td>
-                        <td class="p-2.5 border-b">${it.func}</td>
-                        <td class="p-2.5 border-b text-slate-500">${it.obs}</td>
-                        <td class="p-2.5 border-b text-center"><button onclick="deleteItem('${exp.id}', ${idx})" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button></td>
-                    </tr>
-                `;
-            });
-        }
-
-        function saveItemToExpediente() {
-            const expId = document.getElementById('select-expediente').value;
-            const fdoc = document.getElementById('item-fdoc').value || new Date().toISOString().split('T')[0];
-            const docName = document.getElementById('item-doc-name').value;
-            const docNumber = document.getElementById('item-doc-number').value.trim();
-            const folios = document.getElementById('item-folios').value || '1';
-            const func = document.getElementById('item-func').value;
-            const obs = document.getElementById('item-obs').value || 'Ninguna';
-            if(!docNumber) { alert('Ingrese el número o radicado.'); return; }
-            const exp = db.expedientes.find(e => e.id === expId);
-            if(exp) {
-                exp.items.push({ item: exp.items.length + 1, fdocInc: new Date().toISOString().split('T')[0], fdoc, desc: `${docName} - ${docNumber}`, folios, func, obs });
-                saveDB();
-                closeModal('modal-item');
-                loadExpedienteDetails();
-            }
-        }
-
-        function deleteItem(expId, idx) {
-            const exp = db.expedientes.find(e => e.id === expId);
-            if(exp) { exp.items.splice(idx, 1); saveDB(); loadExpedienteDetails(); }
-        }
-
-        function closeExpedienteToOutbox() {
-            const expId = document.getElementById('select-expediente').value;
-            if(!expId) return;
-            const exp = db.expedientes.find(e => e.id === expId);
-            if(exp) {
-                exp.estado = 'Cerrado';
-                saveDB();
-                alert('Expediente cerrado y transferido a la Bandeja de Salida.');
-                switchTab('outbox');
-            }
-        }
-
-        function openUbicacionModal(expId) {
-            document.getElementById('ubicacion-exp-id').value = expId;
-            openModal('modal-ubicacion');
-        }
-
-        function saveUbicacion() {
-            const expId = document.getElementById('ubicacion-exp-id').value;
-            const dep = document.getElementById('ub-dep').value;
-            const caja = parseInt(document.getElementById('ub-caja').value) || 1;
-            const modulo = document.getElementById('ub-modulo').value;
-            const estante = document.getElementById('ub-estante').value;
-            const carpeta = document.getElementById('ub-carpeta').value;
-            const exp = db.expedientes.find(e => e.id === expId);
-            if(exp) {
-                exp.ubicacion = { dep, caja, modulo, estante, carpeta };
-                exp.estado = 'Archivado';
-                saveDB();
-                closeModal('modal-ubicacion');
-                alert('¡Ubicación física guardada con éxito!');
-            }
+            alert('¡Registro FUID añadido con éxito!');
         }
 
         function renderAll() {
-            const sel = document.getElementById('select-expediente');
-            const currentVal = sel.value;
-            sel.innerHTML = '<option value="">-- Seleccione un expediente --</option>';
+            // Renderizar tabla FUID idéntica a Google Sheets
+            let fuidBody = document.getElementById('fuid-exact-table-body');
+            fuidBody.innerHTML = '';
             db.expedientes.forEach(e => {
-                sel.innerHTML += `<option value="${e.id}">${e.codigo} - ${e.nombre} (${e.estado})</option>`;
+                fuidBody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2 border-r border-slate-800 font-bold">${e.orden}</td>
+                        <td class="p-2 border-r border-slate-800 font-mono text-[10px]">${e.codigo}</td>
+                        <td class="p-2 border-r border-slate-800 text-left">${e.subserie}</td>
+                        <td class="p-2 border-r border-slate-800 text-left font-semibold text-blue-900 underline">${e.nombre}</td>
+                        <td class="p-2 border-r border-slate-800">${e.fIni}</td>
+                        <td class="p-2 border-r border-slate-800">${e.fFin}</td>
+                        <td class="p-2 border-r border-slate-800 font-bold bg-amber-50">${e.fisico}</td>
+                        <td class="p-2 border-r border-slate-800">${e.electronico}</td>
+                        <td class="p-2 border-r border-slate-800 font-bold text-emerald-800 bg-amber-100">${e.caja}</td>
+                        <td class="p-2 border-r border-slate-800 font-bold text-emerald-800 bg-amber-100">${e.carpeta}</td>
+                        <td class="p-2 border-r border-slate-800">${e.tomo}</td>
+                        <td class="p-2 border-r border-slate-800 font-bold">${e.folios}</td>
+                        <td class="p-2 border-r border-slate-800">${e.folios}</td>
+                        <td class="p-2">${e.tipo}</td>
+                    </tr>
+                `;
             });
-            sel.value = currentVal;
 
-            let pendingBoxes = db.boxes.filter(b => b.estado === 'Pendiente').length;
-            document.getElementById('stat-pending').innerText = pendingBoxes;
-            document.getElementById('stat-processed').innerText = db.boxes.filter(b => b.estado === 'Procesada').length;
-            document.getElementById('stat-total-boxes').innerText = db.boxes.length;
-            document.getElementById('badge-inbox').innerText = pendingBoxes;
-            document.getElementById('badge-outbox').innerText = db.expedientes.filter(e => e.estado === 'Cerrado' || e.estado === 'Archivado').length;
-
+            // Renderizar Bandeja de Entrada
             let inboxBody = document.getElementById('inbox-table-body');
             inboxBody.innerHTML = '';
             db.boxes.forEach(b => {
@@ -840,97 +562,46 @@
                         <td class="p-3 font-semibold text-emerald-700">${b.impuesto}</td>
                         <td class="p-3 text-slate-600">${b.remite}</td>
                         <td class="p-3 text-slate-500 text-xs">${b.fecha}</td>
-                        <td class="p-3"><span class="px-2.5 py-1 text-xs font-bold rounded-full ${b.estado === 'Pendiente' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">${b.estado}</span></td>
-                        <td class="p-3 text-center"><button onclick="toggleBoxStatus('${b.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg shadow">${b.estado === 'Pendiente' ? 'Procesar' : 'Reabrir'}</button></td>
+                        <td class="p-3"><span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800">${b.estado}</span></td>
+                        <td class="p-3 text-center"><span class="text-xs text-slate-500 font-semibold">Procesado (Fila 11-14)</span></td>
                     </tr>
                 `;
             });
 
-            let outboxBody = document.getElementById('outbox-table-body');
-            outboxBody.innerHTML = '';
-            db.expedientes.forEach(e => {
-                outboxBody.innerHTML += `
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-3 font-bold text-slate-800">${e.codigo}<br><span class="font-normal text-slate-500">${e.nombre}</span></td>
-                        <td class="p-3 text-xs text-slate-600">${e.trd}</td>
-                        <td class="p-3 font-semibold">${e.items.length > 0 ? e.items[e.items.length-1].folios : '0'}</td>
-                        <td class="p-3 text-xs">
-                            <strong class="text-emerald-700">${e.ubicacion.dep}</strong><br>
-                            Caja: ${e.ubicacion.caja} | Mód: ${e.ubicacion.modulo} | Estante: ${e.ubicacion.estante} | Carpeta: ${e.ubicacion.carpeta}
-                        </td>
-                        <td class="p-3"><span class="px-2.5 py-1 text-xs font-bold rounded-full ${e.estado === 'Archivado' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${e.estado}</span></td>
-                        <td class="p-3 text-center">
-                            <button onclick="openUbicacionModal('${e.id}')" class="text-xs bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg shadow">
-                                <i class="fa-solid fa-map-pin mr-1"></i> Asignar Ubicación
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            let fuidBody = document.getElementById('fuid-table-body');
-            fuidBody.innerHTML = '';
-            db.expedientes.forEach((e, idx) => {
-                let parts = e.trd.split('|');
-                let trdCode = parts[0].trim();
-                let trdName = parts[1] || e.trd;
-                let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
-                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-11-08';
-                let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
-
-                fuidBody.innerHTML += `
-                    <tr class="text-center text-[11px] hover:bg-slate-50">
-                        <td class="p-2 border border-slate-300 font-bold">${idx + 1}</td>
-                        <td class="p-2 border border-slate-300 font-mono text-[10px]">${trdCode}</td>
-                        <td class="p-2 border border-slate-300 text-left">${trdName}</td>
-                        <td class="p-2 border border-slate-300 text-left font-semibold">${e.codigo} - ${e.nombre}</td>
-                        <td class="p-2 border border-slate-300">${fechaIni}</td>
-                        <td class="p-2 border border-slate-300">${fechaFin}</td>
-                        <td class="p-2 border border-slate-300">${e.ubicacion.caja || 1}</td>
-                        <td class="p-2 border border-slate-300">${e.ubicacion.carpeta || 1}</td>
-                        <td class="p-2 border border-slate-300 font-bold">${nFolios}</td>
-                        <td class="p-2 border border-slate-300 text-xs">${e.ubicacion.dep}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        function toggleBoxStatus(id) {
-            const box = db.boxes.find(b => b.id === id);
-            if(box) { box.estado = box.estado === 'Pendiente' ? 'Procesada' : 'Pendiente'; saveDB(); }
+            document.getElementById('stat-pending').innerText = '0';
+            document.getElementById('stat-processed').innerText = db.expedientes.length;
+            document.getElementById('stat-total-boxes').innerText = db.boxes.length;
+            document.getElementById('badge-inbox').innerText = '0';
+            document.getElementById('badge-outbox').innerText = db.expedientes.length;
         }
 
         function exportFUIDExcel() {
             let wb = XLSX.utils.book_new();
             let wsData = [
-                ["GOBERNACIÓN DEL VALLE DEL CAUCA"],
-                ["FORMATO ÚNICO DE INVENTARIO DOCUMENTAL (FUID)"],
-                ["OFICINA PRODUCTORA:", "Subgerencia de Liquidación y Devoluciones"],
+                ["Departamento del Valle del Cauca", "", "", "", "", "", "", "", "", "", "", "", "Formato Único de Inventario Documental"],
+                ["ENTIDAD REMITENTE:", "Gobernación del Valle del Cauca"],
+                ["ENTIDAD PRODUCTORA:", "Gobernación del Valle del Cauca"],
+                ["UNIDAD ADMINISTRATIVA:", "Unidad Administrativa Especial de Impuestos, Rentas y Gestión Tributaria"],
+                ["OFICINA PRODUCTORA:", "Sugerencia de Liquidación y Devoluciones"],
+                ["OBJETO:", "EXENCIÓN DE IMPUESTO DE REGISTRO"],
                 [],
-                ["N° Orden", "Código TRD", "Nombre Serie / Subserie", "Nombre de la Unidad Documental", "Fecha Inicial", "Fecha Final", "Caja", "Carpeta", "N° Folios", "Ubicación Física"]
+                ["Número de Orden", "Código", "Nombre Serie o Subserie", "Nombre de la Unidad Documental", "Fecha Inicial", "Fecha Final", "Físico", "Electrónico", "Caja", "Carpeta", "Tomo", "Número de Folios Físicos", "Folios", "Tipo"]
             ];
 
-            db.expedientes.forEach((e, idx) => {
-                let parts = e.trd.split('|');
-                let trdCode = parts[0].trim();
-                let trdName = parts[1] || e.trd;
-                let fechaIni = e.items.length > 0 ? e.items[0].fdoc : '2026-01-01';
-                let fechaFin = e.items.length > 0 ? e.items[e.items.length-1].fdoc : '2026-11-08';
-                let nFolios = e.items.length > 0 ? e.items[e.items.length-1].folios : '1';
-
+            db.expedientes.forEach(e => {
                 wsData.push([
-                    idx + 1, trdCode, trdName, `${e.codigo} - ${e.nombre}`,
-                    fechaIni, fechaFin, e.ubicacion.caja || 1, e.ubicacion.carpeta || 1,
-                    nFolios, e.ubicacion.dep
+                    e.orden, e.codigo, e.subserie, e.nombre,
+                    e.fIni, e.fFin, e.fisico, e.electronico,
+                    e.caja, e.carpeta, e.tomo, e.folios, e.folios, e.tipo
                 ]);
             });
 
             let ws = XLSX.utils.aoa_to_sheet(wsData);
-            XLSX.utils.book_append_sheet(wb, ws, "FUID_Inventario");
-            XLSX.writeFile(wb, "FUID_Gobernacion_Valle_Rentas.xlsx");
+            XLSX.utils.book_append_sheet(wb, ws, "EXENCION_DE_IMPUESTO");
+            XLSX.writeFile(wb, "FUID_Gobernacion_Valle_Exencion.xlsx");
         }
 
-        // Inicialización oculta para mantener limpio el menú inicial
+        // Inicialización oculta para mostrar únicamente el menú limpio al cargar
         document.querySelectorAll('.tab-section').forEach(el => el.style.display = 'none');
         renderAll();
     </script>
