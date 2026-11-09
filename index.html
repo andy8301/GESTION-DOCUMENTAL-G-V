@@ -34,12 +34,12 @@
         </div>
     </header>
 
-    <!-- Menú Principal con Botones Cuadrados Modernos -->
+    <!-- Menú Principal de Navegación (Tarjetas Modernas) -->
     <nav class="bg-white border-b border-slate-200 shadow-sm py-4">
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <!-- Botón 1: Bandeja de Entrada -->
-                <button onclick="switchTab('inbox')" id="btn-inbox" class="menu-card bg-emerald-50 border-2 border-emerald-600 text-emerald-900 p-4 rounded-xl flex flex-col items-center justify-center text-center transition hover:shadow-md relative">
+                <button onclick="switchTab('inbox')" id="btn-inbox" class="menu-card bg-emerald-50 border-2 border-emerald-600 text-emerald-900 p-4 rounded-xl flex flex-col items-center justify-center text-center transition hover:shadow-md relative cursor-pointer">
                     <span id="badge-inbox" class="absolute top-2 right-2 bg-emerald-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
                     <div class="w-12 h-12 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-xl mb-2 shadow">
                         <i class="fa-solid fa-inbox"></i>
@@ -49,7 +49,7 @@
                 </button>
 
                 <!-- Botón 2: Hoja de Control -->
-                <button onclick="switchTab('control')" id="btn-control" class="menu-card bg-white border-2 border-slate-200 text-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center transition hover:border-emerald-500 hover:shadow-md">
+                <button onclick="switchTab('control')" id="btn-control" class="menu-card bg-white border-2 border-slate-200 text-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center transition hover:border-emerald-500 hover:shadow-md cursor-pointer">
                     <div class="w-12 h-12 bg-slate-800 text-white rounded-xl flex items-center justify-center text-xl mb-2 shadow">
                         <i class="fa-solid fa-file-lines"></i>
                     </div>
@@ -58,7 +58,7 @@
                 </button>
 
                 <!-- Botón 3: Bandeja de Salida -->
-                <button onclick="switchTab('outbox')" id="btn-outbox" class="menu-card bg-white border-2 border-slate-200 text-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center transition hover:border-emerald-500 hover:shadow-md relative">
+                <button onclick="switchTab('outbox')" id="btn-outbox" class="menu-card bg-white border-2 border-slate-200 text-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center transition hover:border-emerald-500 hover:shadow-md relative cursor-pointer">
                     <span id="badge-outbox" class="absolute top-2 right-2 bg-slate-700 text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
                     <div class="w-12 h-12 bg-amber-600 text-white rounded-xl flex items-center justify-center text-xl mb-2 shadow">
                         <i class="fa-solid fa-box-archive"></i>
@@ -68,7 +68,7 @@
                 </button>
 
                 <!-- Botón 4: Generador FUID -->
-                <button onclick="switchTab('fuid')" id="btn-fuid" class="menu-card bg-white border-2 border-slate-200 text-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center transition hover:border-emerald-500 hover:shadow-md">
+                <button onclick="switchTab('fuid')" id="btn-fuid" class="menu-card bg-white border-2 border-slate-200 text-slate-700 p-4 rounded-xl flex flex-col items-center justify-center text-center transition hover:border-emerald-500 hover:shadow-md cursor-pointer">
                     <div class="w-12 h-12 bg-blue-700 text-white rounded-xl flex items-center justify-center text-xl mb-2 shadow">
                         <i class="fa-solid fa-table"></i>
                     </div>
@@ -82,8 +82,8 @@
     <!-- Contenido Principal -->
     <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
 
-        <!-- ================= TAB 1: BANDEJA DE ENTRADA ================= -->
-        <section id="tab-inbox" class="tab-content space-y-6">
+        <!-- ================= VISTA 1: BANDEJA DE ENTRADA ================= -->
+        <div id="tab-inbox" class="tab-content space-y-6">
             <div class="bg-gradient-to-r from-emerald-800 to-slate-900 rounded-xl p-6 text-white shadow-lg">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
@@ -91,7 +91,7 @@
                             <i class="fa-solid fa-camera-retro text-emerald-400"></i> Ingreso Rápido de Cajas (Bandeja de Entrada)
                         </h2>
                         <p class="text-slate-300 text-sm mt-1">
-                            Toma o sube la foto de la caja que dejaron los colaboradores, asigna el tipo de impuesto y registra el lote pendiente para clasificar.
+                            Toma o sube la foto de la caja que dejaron los colaboradores, asigna el tipo de proceso y registra el lote pendiente para clasificar.
                         </p>
                     </div>
                     <button onclick="openNewBoxModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
@@ -139,7 +139,7 @@
                             <tr class="bg-slate-100 text-slate-600 text-xs font-semibold uppercase tracking-wider">
                                 <th class="p-3">Foto Evidencia</th>
                                 <th class="p-3">ID / Lote</th>
-                                <th class="p-3">Impuesto / Proceso</th>
+                                <th class="p-3">Proceso / Renta</th>
                                 <th class="p-3">Colaborador / Remite</th>
                                 <th class="p-3">Fecha Recepción</th>
                                 <th class="p-3">Estado</th>
@@ -152,10 +152,10 @@
                     </table>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- ================= TAB 2: HOJA DE CONTROL (FO-M9-P3-17) ================= -->
-        <section id="tab-control" class="tab-content hidden space-y-6">
+        <!-- ================= VISTA 2: HOJA DE CONTROL (FO-M9-P3-17) ================= -->
+        <div id="tab-control" class="tab-content hidden space-y-6">
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-200">
                     <div>
@@ -225,10 +225,10 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- ================= TAB 3: BANDEJA DE SALIDA & UBICACIÓN ================= -->
-        <section id="tab-outbox" class="tab-content hidden space-y-6">
+        <!-- ================= VISTA 3: BANDEJA DE SALIDA & UBICACIÓN ================= -->
+        <div id="tab-outbox" class="tab-content hidden space-y-6">
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-200">
                     <div>
@@ -255,10 +255,10 @@
                     </table>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- ================= TAB 4: GENERADOR FUID ================= -->
-        <section id="tab-fuid" class="tab-content hidden space-y-6">
+        <!-- ================= VISTA 4: GENERADOR FUID ================= -->
+        <div id="tab-fuid" class="tab-content hidden space-y-6">
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-200">
                     <div>
@@ -294,7 +294,7 @@
                     </table>
                 </div>
             </div>
-        </section>
+        </div>
 
     </main>
 
@@ -338,33 +338,4 @@
     <div id="modal-exp" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4" style="display: none;">
         <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
             <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="font-bold text-base"><i class="fa-solid fa-folder-plus mr-2 text-emerald-400"></i> Crear Nuevo Expediente</h3>
-                <button onclick="closeModal('modal-exp')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="p-6 space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Número o Código de Expediente:</label>
-                    <input type="text" id="exp-codigo" placeholder="Ej. EXP. 001-2026" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombre del Contribuyente / Ciudadano:</label>
-                    <input type="text" id="exp-nombre" placeholder="Ej. LUIS ANDRES BOTIA" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Serie / Subserie TRD (Proceso):</label>
-                    <select id="exp-trd" class="w-full text-sm border border-slate-300 rounded-lg p-2.5">
-                        <option value="1.120.60.20-64.05 | Procesos Administrativos. Proceso de Devolución de Pasaportes">1.120.60.20-64.05 - Devolución de Pasaportes</option>
-                        <option value="1.120.60.20-64.05 | Procesos Administrativos. Proceso de Exención de Impuesto de Registro">1.120.60.20-64.05 - Exención de Impuesto de Registro</option>
-                        <option value="1.120.80.20-65.04 | Procesos Administrativos de Devolución">1.120.80.20-65.04 - Procesos Administrativos de Devolución</option>
-                    </select>
-                </div>
-            </div>
-            <div class="bg-slate-50 px-6 py-3 flex justify-end gap-3 border-t border-slate-200">
-                <button onclick="closeModal('modal-exp')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg">Cancelar</button>
-                <button onclick="saveNewExpediente()" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow">Crear Expediente</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: AÑADIR ÍTEM (POR SELECCIÓN INDIVIDUAL) -->
-    <div id="modal-item" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z
+                <h3 class="font-bold text-base"><i class="fa-solid fa-folder-plus mr-2 text
